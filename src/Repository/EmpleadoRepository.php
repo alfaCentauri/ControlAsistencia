@@ -39,7 +39,7 @@ class EmpleadoRepository extends ServiceEntityRepository
      */
     public function paginarEmpleados($inicio, $fin){
         $resultado = $this->getEntityManager()
-            ->createQuery('SELECT a FROM Empleado E ORDER BY E.id ASC')
+            ->createQuery('SELECT E FROM Empleado E ORDER BY E.cedula ASC')
             ->setFirstResult($inicio)
             ->setMaxResults($fin)
             ->getResult();
