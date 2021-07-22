@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modificar Empleado{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    {% include ('empleado/menu.html.twig') %}
+    <div class="card">
+        <div class="card-header">
+            <h1>Modificar Empleado</h1>
+        </div>
+        {{ include('empleado/_form.html.twig', {'button_label': 'Actualizar'}) }}
+</div>
+{% endblock %}
