@@ -35,6 +35,21 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $password;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $cedula;
+
+    /**
+     * @ORM\Column(type="string", length=100)
+     */
+    private $nombre;
+
+    /**
+     * @ORM\Column(type="string", length=100)
+     */
+    private $apellido;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -123,4 +138,53 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getCedula()
+    {
+        return $this->cedula;
+    }
+
+    /**
+     * @param mixed $cedula
+     */
+    public function setCedula($cedula): void
+    {
+        $this->cedula = $cedula;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNombre()
+    {
+        return $this->nombre;
+    }
+
+    /**
+     * @param mixed $nombre
+     */
+    public function setNombre($nombre): void
+    {
+        $this->nombre = $nombre;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getApellido()
+    {
+        return $this->apellido;
+    }
+
+    /**
+     * @param mixed $apellido
+     */
+    public function setApellido($apellido): void
+    {
+        $this->apellido = $apellido;
+    }
+
 }
