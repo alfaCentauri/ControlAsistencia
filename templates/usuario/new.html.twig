@@ -1,11 +1,16 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Usuario{% endblock %}
+{% block title %}Nuevo Usuario{% endblock %}
 
 {% block body %}
-    <h1>Create new Usuario</h1>
+<div class="container-fluid">
+    {% include ('empleado/menu.html.twig') %}
+    <div class="card">
+        <div class="card-header">
+            <h1>Nuevo Usuario</h1>
+        </div>
+        {{ include('usuario/_form.html.twig') }}
 
-    {{ include('usuario/_form.html.twig') }}
-
-    <a href="{{ path('usuario_index') }}">back to list</a>
+    </div>
+</div>
 {% endblock %}

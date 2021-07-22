@@ -1,4 +1,58 @@
+<div class="card-body">
 {{ form_start(form) }}
+    <div class="row">
+        <div class="col-sx-12 col-sm-12 col-lg-12 col-xg-12">
+            <div class="errores">{{ form_errors(form) }}</div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sx-6 col-sm-6 offset-md-1 col-md-2 col-lg-2">
+            {{ form_label(form.cedula, 'Cedula: ', {'label_attr': {'class': 'form-label'}} ) }}
+        </div>
+        <div class="col-sx-6 col-sm-6 col-md-2 col-lg-2">
+            {{ form_widget(form.cedula, { 'attr': {'class': 'form-control'} }) }}
+            {{ form_errors(form.cedula) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sx-6 col-sm-6 offset-md-1 col-md-2 col-lg-2">
+            {{ form_label(form.nombre, 'Nombre: ') }}
+        </div>
+        <div class="col-sx-6 col-sm-6 col-md-6 col-lg-4">
+            {{ form_widget(form.nombre, { 'attr': {'class': 'form-control'} }) }}
+            {{ form_errors(form.nombre) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sx-6 col-sm-6 offset-md-1 col-md-2 col-lg-2">
+            {{ form_label(form.apellido, 'Apellido: ') }}
+        </div>
+        <div class="col-sx-6 col-sm-6 col-md-6 col-lg-4">
+            {{ form_widget(form.apellido, { 'attr': {'class': 'form-control'} }) }}
+            {{ form_errors(form.apellido) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sx-6 col-sm-6 offset-md-1 col-md-2 col-lg-2">
+            {{ form_label(form.email, 'Email: ') }}
+        </div>
+        <div class="col-sx-6 col-sm-6 col-md-6 col-lg-4">
+            {{ form_widget(form.email, { 'attr': {'class': 'form-control'} }) }}
+            {{ form_errors(form.email) }}
+        </div>
+    </div>
+    <div class="row">
     {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+    </div>
+</div>
+<div class="card-footer">
+    <div class="row">
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <button class="btn btn-primary">{{ button_label|default('Guardar') }}</button>
+            <a href="{{ path('usuario_index') }}" class="btn btn-secondary">
+                <i class="bi bi-back"></i>Regresar
+            </a>
+        </div>
+    </div>
+</div>
 {{ form_end(form) }}

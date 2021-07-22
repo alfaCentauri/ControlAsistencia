@@ -3,32 +3,56 @@
 {% block title %}Usuario{% endblock %}
 
 {% block body %}
-    <h1>Usuario</h1>
-
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ usuario.id }}</td>
-            </tr>
-            <tr>
-                <th>Email</th>
-                <td>{{ usuario.email }}</td>
-            </tr>
-            <tr>
-                <th>Roles</th>
-                <td>{{ usuario.roles ? usuario.roles|json_encode : '' }}</td>
-            </tr>
-            <tr>
-                <th>Password</th>
-                <td>{{ usuario.password }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <a href="{{ path('usuario_index') }}">back to list</a>
-
-    <a href="{{ path('usuario_edit', {'id': usuario.id}) }}">edit</a>
-
-    {{ include('usuario/_delete_form.html.twig') }}
+<div class="card">
+    <div class="card-header">
+        <h1>Datos del Usuario</h1>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="offset-1 col-sm-6 col-md-2">
+                Cedula:
+            </div>
+            <div class="col-sm-6 col-md-4">
+                {{ usuario.cedula }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="offset-1 col-sm-6 col-md-2">
+                Nombre:
+            </div>
+            <div class="col-sm-6 col-md-4">
+                {{ usuario.nombre }}
+            </div>
+            <div class="offset-1 col-sm-6 col-md-2">
+                Apellido:
+            </div>
+            <div class="col-sm-6 col-md-4">
+                {{ usuario.apellido }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="offset-1 col-sm-6 col-md-2">
+                Correo electr&oacute;nico:
+            </div>
+            <div class="col-sm-6 col-md-4">
+                {{ usuario.email }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="offset-1 col-sm-6 col-md-2">
+                Roles:
+            </div>
+            <div class="col-sm-6 col-md-4">
+                {{ usuario.roles ? usuario.roles|json_encode : '' }}
+            </div>
+        </div>
+    </div>
+    <div class="card-footer">
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <a href="{{ path('usuario_index') }}" class="btn btn-secondary">
+                Regresar
+            </a>
+        </div>
+    </div>
+</div>
 {% endblock %}
