@@ -19,6 +19,33 @@ class EmpleadoRepository extends ServiceEntityRepository
         parent::__construct($registry, Empleado::class);
     }
 
+    /**
+     * Este método permite contar todos los empleados.
+     * @return integer Cantidad total de empleados registrados en el sistema.
+     */
+    public function contarTodos(){
+        $qb = $this->getEntityManager()->createQueryBuilder('empleado');
+        return $qb->select($qb->expr()->count('empleado.id'))
+            ->from('Empleado','empleado')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    /**
+     * Este método regresa una cantidad de registros indicados por el parametro $inicio.
+     * @param int $inicio Indice de inicio de la busqueda.
+     * @param int $fin Cantidad de registros ha buscar.
+     * @return array Arreglo con el resultado de la busqueda.
+     */
+    public function paginarEmpleados($inicio, $fin){
+        $resultado = $this->getEntityManager()
+            ->createQuery('SELECT a FROM Empleado E ORDER BY E.id ASC')
+            ->setFirstResult($inicio)
+            ->setMaxResults($fin)
+            ->getResult();
+        return $resultado;
+    }
+
     // /**
     //  * @return Empleado[] Returns an array of Empleado objects
     //  */
