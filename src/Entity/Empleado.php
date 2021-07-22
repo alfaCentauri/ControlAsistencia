@@ -18,7 +18,7 @@ class Empleado
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="bigint")
      */
     private $cedula;
 
@@ -31,6 +31,12 @@ class Empleado
      * @ORM\Column(type="string", length=100)
      */
     private $apellido;
+
+    /**
+     * @var Asistencia
+     * @ORM\OneToMany(targetEntity="Asistencia", mappedBy="empleado")
+     */
+    private $asistencias;
 
     public function getId(): ?int
     {

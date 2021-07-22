@@ -42,6 +42,15 @@ class Asistencia
      */
     private $horaSalida;
 
+    /**
+     * @var Empleado
+     * @ORM\ManyToOne(targetEntity="Empleado", inversedBy="asistencias")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="empleadoId", referencedColumnName="id")
+     * })
+     */
+    private $empleado;
+
     public function getId(): ?int
     {
         return $this->id;
