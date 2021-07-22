@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\EmpleadoRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass=EmpleadoRepository::class)
@@ -37,6 +38,15 @@ class Empleado
      * @ORM\OneToMany(targetEntity="Asistencia", mappedBy="empleado")
      */
     private $asistencias;
+
+    /**
+     * Empleado constructor.
+     */
+    public function __construct()
+    {
+        $this->asistencias = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {
@@ -78,4 +88,21 @@ class Empleado
 
         return $this;
     }
+
+    /**
+     * @return Asistencia
+     */
+    public function getAsistencias(): Asistencia
+    {
+        return $this->asistencias;
+    }
+
+    /**
+     * @param Asistencia $asistencias
+     */
+    public function setAsistencias(Asistencia $asistencias): void
+    {
+        $this->asistencias = $asistencias;
+    }
+
 }
