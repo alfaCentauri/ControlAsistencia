@@ -6,7 +6,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-sx-6 col-sm-6 offset-md-1 col-md-2 col-lg-2">
+        <div class="col-sx-6 col-sm-6 offset-md-2 col-md-2 col-lg-2">
             {{ form_label(form.cedula, 'Cedula: ', {'label_attr': {'class': 'form-label'}} ) }}
         </div>
         <div class="col-sx-6 col-sm-6 col-md-2 col-lg-2">
@@ -15,7 +15,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-sx-6 col-sm-6 offset-md-1 col-md-2 col-lg-2">
+        <div class="col-sx-6 col-sm-6 offset-md-2 col-md-2 col-lg-2">
             {{ form_label(form.nombre, 'Nombre: ') }}
         </div>
         <div class="col-sx-6 col-sm-6 col-md-6 col-lg-4">
@@ -24,7 +24,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-sx-6 col-sm-6 offset-md-1 col-md-2 col-lg-2">
+        <div class="col-sx-6 col-sm-6 offset-md-2 col-md-2 col-lg-2">
             {{ form_label(form.apellido, 'Apellido: ') }}
         </div>
         <div class="col-sx-6 col-sm-6 col-md-6 col-lg-4">
@@ -33,7 +33,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-sx-6 col-sm-6 offset-md-1 col-md-2 col-lg-2">
+        <div class="col-sx-6 col-sm-6 offset-md-2 col-md-2 col-lg-2">
             {{ form_label(form.email, 'Email: ') }}
         </div>
         <div class="col-sx-6 col-sm-6 col-md-6 col-lg-4">
@@ -42,7 +42,13 @@
         </div>
     </div>
     <div class="row">
-    {{ form_widget(form) }}
+        <div class="col-sx-6 col-sm-6 offset-md-2 col-md-2 col-lg-2">
+            {{ form_label(form.password) }}
+        </div>
+        <div class="col-sx-6 col-sm-6 col-md-6 col-lg-4">
+            {{ form_widget(form.password) }}
+            {{ form_errors(form.password) }}
+        </div>
     </div>
 </div>
 <div class="card-footer">

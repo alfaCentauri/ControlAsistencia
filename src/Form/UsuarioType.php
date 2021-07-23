@@ -6,7 +6,11 @@ use App\Entity\Usuario;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 
 class UsuarioType extends AbstractType
 {
@@ -17,12 +21,32 @@ class UsuarioType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email')
-            ->add('roles')
-            ->add('password')
-            ->add('cedula')
-            ->add('nombre')
-            ->add('apellido')
+            ->add('email', EmailType::class, array('label'=> 'Login: ',
+                'attr' => array('class' => 'form-control',
+                    'placeholder' => 'Indique un email',
+                    'tooltip' => 'Escriba un email de usuario',
+                    'required'   => true)))
+//            ->add('roles')
+            ->add('password', PasswordType::class, array('label'=> 'Clave: ',
+                'attr' => array('class' => 'form-control',
+                    'placeholder' => 'Indique una clave',
+                    'tooltip' => 'Escriba una clave',
+                    'required'   => true)))
+            ->add('cedula', NumberType::class, array('label'=> 'Cédula: ',
+                'attr' => array('class' => 'form-control',
+                    'placeholder' => '0000000',
+                    'tooltip' => 'Escribe la cédula del usuario',
+                    'required'   => true)))
+            ->add('nombre', TextType::class, array('label'=> 'Nombre: ',
+                'attr' => array('class' => 'form-control',
+                    'placeholder' => 'Indique su nombre',
+                    'tooltip' => 'Escribe el nombre',
+                    'required'   => true)))
+            ->add('apellido', TextType::class, array('label'=> 'Apellido: ',
+                'attr' => array('class' => 'form-control',
+                    'placeholder' => 'Indique su apellido',
+                    'tooltip' => 'Escribe el apellido',
+                    'required'   => true)))
         ;
     }
 
