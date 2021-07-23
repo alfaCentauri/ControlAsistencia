@@ -46,7 +46,7 @@ class Asistencia
      * @var Empleado
      * @ORM\ManyToOne(targetEntity="Empleado", inversedBy="asistencias")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="empleadoId", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="empleado_id", referencedColumnName="id")
      * })
      */
     private $empleado;
