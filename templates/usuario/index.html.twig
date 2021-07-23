@@ -33,6 +33,8 @@
                     <thead>
                     <tr>
                         <th>#</th>
+                        <th>Nombres</th>
+                        <th>Apellidos</th>
                         <th>Correo electr&oacute;nico</th>
                         <th>Roles</th>
                         <th>Acciones</th>
@@ -42,6 +44,8 @@
                     {% for i, usuario in usuarios %}
                         <tr>
                             <td>{{ i + 1 }}</td>
+                            <td>{{ usuario.nombre }}</td>
+                            <td>{{ usuario.apellido }}</td>
                             <td>{{ usuario.email }}</td>
                             <td>{{ usuario.roles ? usuario.roles|json_encode : '' }}</td>
                             <td>
@@ -49,9 +53,9 @@
                                 <a href="{{ path('usuario_edit', {'id': usuario.id}) }}" class="btn btn-success btn-sm">Editar</a>
                                 <a href="{{ path('usuario_delete', {'id': usuario.id}) }}" class="btn btn-danger btn-sm">Borrar</a>
                                 {% if usuario.isActive %}
-                                    <a href="{{ path('usuario_desactivar', {'id': usuario.id}) }}" class="btn btn-check btn-sm">Desactivar</a>
+                                    <a href="{{ path('usuario_desactivar', {'id': usuario.id}) }}" class="btn btn-warning btn-sm">Desactivar</a>
                                 {% else %}
-                                    <a href="{{ path('usuario_activar', {'id': usuario.id}) }}" class="btn btn-check btn-sm">Activar</a>
+                                    <a href="{{ path('usuario_activar', {'id': usuario.id}) }}" class="btn btn-secondary btn-sm">Activar</a>
                                 {% endif %}
                             </td>
                         </tr>
