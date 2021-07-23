@@ -48,7 +48,11 @@
                                 <a href="{{ path('usuario_show', {'id': usuario.id}) }}" class="btn btn-info btn-sm">Ver</a>
                                 <a href="{{ path('usuario_edit', {'id': usuario.id}) }}" class="btn btn-success btn-sm">Editar</a>
                                 <a href="{{ path('usuario_delete', {'id': usuario.id}) }}" class="btn btn-danger btn-sm">Borrar</a>
-                                <a href="{{ path('usuario_activar', {'id': usuario.id}) }}" class="btn btn-check btn-sm">Activar</a>
+                                {% if usuario.isActive %}
+                                    <a href="{{ path('usuario_desactivar', {'id': usuario.id}) }}" class="btn btn-check btn-sm">Desactivar</a>
+                                {% else %}
+                                    <a href="{{ path('usuario_activar', {'id': usuario.id}) }}" class="btn btn-check btn-sm">Activar</a>
+                                {% endif %}
                             </td>
                         </tr>
                     {% else %}

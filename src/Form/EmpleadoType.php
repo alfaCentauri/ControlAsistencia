@@ -16,9 +16,21 @@ class EmpleadoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('cedula')
-            ->add('nombre')
-            ->add('apellido')
+            ->add('cedula', NumberType::class, array('label'=> 'Cédula: ',
+                'attr' => array('class' => 'form-control',
+                    'placeholder' => '0000000',
+                    'tooltip' => 'Escribe la cédula del usuario',
+                    'required'   => true)))
+            ->add('nombre', TextType::class, array('label'=> 'Nombre: ',
+                'attr' => array('class' => 'form-control',
+                    'placeholder' => 'Indique su nombre',
+                    'tooltip' => 'Escribe el nombre',
+                    'required'   => true)))
+            ->add('apellido', TextType::class, array('label'=> 'Apellido: ',
+                'attr' => array('class' => 'form-control',
+                    'placeholder' => 'Indique su apellido',
+                    'tooltip' => 'Escribe el apellido',
+                    'required'   => true)))
         ;
     }
 

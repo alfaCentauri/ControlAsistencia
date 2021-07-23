@@ -10,7 +10,7 @@
                 {{ form_label(form.cedula, 'Cedula: ', {'label_attr': {'class': 'form-label'}} ) }}
             </div>
             <div class="col-sx-6 col-sm-6 col-md-2 col-lg-2">
-                {{ form_widget(form.cedula, { 'attr': {'class': 'form-control'} }) }}
+                {{ form_widget(form.cedula) }}
                 {{ form_errors(form.cedula) }}
             </div>
         </div>
@@ -19,7 +19,7 @@
                 {{ form_label(form.nombre, 'Nombre: ') }}
             </div>
             <div class="col-sx-6 col-sm-6 col-md-6 col-lg-4">
-                {{ form_widget(form.nombre, { 'attr': {'class': 'form-control'} }) }}
+                {{ form_widget(form.nombre) }}
                 {{ form_errors(form.nombre) }}
             </div>
         </div>
@@ -28,7 +28,7 @@
                 {{ form_label(form.apellido, 'Apellido: ') }}
             </div>
             <div class="col-sx-6 col-sm-6 col-md-6 col-lg-4">
-                {{ form_widget(form.apellido, { 'attr': {'class': 'form-control'} }) }}
+                {{ form_widget(form.apellido) }}
                 {{ form_errors(form.apellido) }}
             </div>
         </div>

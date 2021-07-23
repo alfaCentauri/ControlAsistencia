@@ -16,6 +16,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class UsuarioController extends AbstractController
 {
     /**
+     * @var Usuario
+     */
+    private $usuario;
+
+    /**
      * @Route("/", name="usuario_index", methods={"GET"})
      */
     public function index(UsuarioRepository $usuarioRepository): Response
@@ -89,6 +94,36 @@ class UsuarioController extends AbstractController
             $entityManager->flush();
         }
 
+        return $this->redirectToRoute('usuario_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    /**
+     * @Route("/activar/{id}", name="usuario_activar")
+     */
+    public function activar(Request $request, int $id): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $this->usuario = $entityManager->getRepository(Usuario::class)->find($id);
+        if($this->usuario)
+        {
+            $this->usuario->setIsActive(true);
+            $entityManager->flush();
+        }
+        return $this->redirectToRoute('usuario_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    /**
+     * @Route("/desactivar/{id}", name="usuario_desactivar")
+     */
+    public function desactivar(Request $request, int $id): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $this->usuario = $entityManager->getRepository(Usuario::class)->find($id);
+        if($this->usuario)
+        {
+            $this->usuario->setIsActive(false);
+            $entityManager->flush();
+        }
         return $this->redirectToRoute('usuario_index', [], Response::HTTP_SEE_OTHER);
     }
 }

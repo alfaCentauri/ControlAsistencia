@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\EmpleadoRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=EmpleadoRepository::class)
@@ -19,16 +20,33 @@ class Empleado
     private $id;
 
     /**
+     * @var integer
      * @ORM\Column(type="bigint")
      */
     private $cedula;
 
     /**
+     * @var string Nombre del empleado.
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(
+     *     min = 2,
+     *     max = 100,
+     *     minMessage = "El nombre debe ser mínimo {{ limit }} caracteres de largo",
+     *     maxMessage = "El nombre no debe tener más de {{ limit }} caracteres")
      * @ORM\Column(type="string", length=100)
      */
     private $nombre;
 
     /**
+     * @var string Apellido del empleado.
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(
+     *     min = 2,
+     *     max = 100,
+     *     minMessage = "El apellido debe ser mínimo {{ limit }} caracteres de largo",
+     *     maxMessage = "El apellido no debe tener más de {{ limit }} caracteres")
      * @ORM\Column(type="string", length=100)
      */
     private $apellido;

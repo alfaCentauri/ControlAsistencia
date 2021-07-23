@@ -6,6 +6,7 @@ use App\Repository\UsuarioRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UsuarioRepository::class)
@@ -13,6 +14,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
 {
     /**
+     * @var integer
+     *
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -20,6 +23,14 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
     private $id;
 
     /**
+     * @var string Email del usuario.
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(
+     *     min = 2,
+     *     max = 180,
+     *     minMessage = "El email debe ser mínimo {{ limit }} caracteres de largo",
+     *     maxMessage = "El email no debe tener más de {{ limit }} caracteres")
      * @ORM\Column(type="string", length=180, unique=true)
      */
     private $email;
@@ -31,35 +42,88 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @var string The hashed password
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(
+     *     min = 4,
+     *     max = 255,
+     *     minMessage = "La contraseña debe ser mínimo {{ limit }} caracteres de largo",
+     *     maxMessage = "La contraseña no debe tener más de {{ limit }} caracteres")
      * @ORM\Column(type="string")
      */
     private $password;
 
     /**
+     * @var integer
      * @ORM\Column(type="bigint")
      */
     private $cedula;
 
     /**
+     * @var string Nombre del usuario.
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(
+     *     min = 2,
+     *     max = 100,
+     *     minMessage = "El nombre debe ser mínimo {{ limit }} caracteres de largo",
+     *     maxMessage = "El nombre no debe tener más de {{ limit }} caracteres")
      * @ORM\Column(type="string", length=100)
      */
     private $nombre;
 
     /**
+     * @var string Apellido del usuario.
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(
+     *     min = 2,
+     *     max = 100,
+     *     minMessage = "El apellido debe ser mínimo {{ limit }} caracteres de largo",
+     *     maxMessage = "El apellido no debe tener más de {{ limit }} caracteres")
      * @ORM\Column(type="string", length=100)
      */
     private $apellido;
 
+    /**
+     * @var boolean
+     * @ORM\Column(name="is_active", type="boolean")
+     */
+    private $isActive;
+
+    /**
+     * Usuario constructor.
+     */
+    public function __construct()
+    {
+        $this->id = 0;
+        $this->cedula = 0;
+        $this->nombre = "";
+        $this->apellido = "";
+        $this->email = "";
+        $this->isActive = true;
+    }
+
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return null|string
+     */
     public function getEmail(): ?string
     {
         return $this->email;
     }
 
+    /**
+     * @param string $email
+     * @return Usuario
+     */
     public function setEmail(string $email): self
     {
         $this->email = $email;
@@ -97,6 +161,10 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
         return array_unique($roles);
     }
 
+    /**
+     * @param array $roles
+     * @return Usuario
+     */
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
@@ -186,5 +254,22 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->apellido = $apellido;
     }
+
+    /**
+     * @return bool
+     */
+    public function isActive(): bool
+    {
+        return $this->isActive;
+    }
+
+    /**
+     * @param bool $isActive
+     */
+    public function setIsActive(bool $isActive): void
+    {
+        $this->isActive = $isActive;
+    }
+
 
 }
