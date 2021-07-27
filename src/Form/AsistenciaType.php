@@ -38,18 +38,18 @@ class AsistenciaType extends AbstractType
                     'tooltip' => 'Seleccione una hora',
                     'required'   => true )))
             //Muestra todos los empleados
-            ->add('empleadoId', EntityType::class, array(
-                'class' => 'App:Empleado',
-                'choice_value' => function ($empleado){
-                    return ( $empleado ? $empleado->getId() : 0 );
-                },
-                'choice_label' => function ($empleado){
-                    return strtoupper( $empleado->getNombre()." ".$empleado->getApellido() );
-                },
-                'placeholder' => 'Seleccione un empleado',
-                'required' => true,
-                'attr' => ['class' => 'form-control'],
-            ))
+//            ->add('empleadoId', EntityType::class, array(
+//                'class' => 'App:Empleado',
+//                'choice_value' => function ($empleado){
+//                    return ( $empleado ? $empleado->getId() : 0 );
+//                },
+//                'choice_label' => function ($empleado){
+//                    return strtoupper( $empleado->getNombre()." ".$empleado->getApellido() );
+//                },
+//                'placeholder' => 'Seleccione un empleado',
+//                'required' => true,
+//                'attr' => ['class' => 'form-control'],
+//            ))
         ;
     }
 

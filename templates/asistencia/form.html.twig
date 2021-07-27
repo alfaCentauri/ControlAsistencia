@@ -6,55 +6,42 @@
             </div>
         </div>
     </div>
-    {{ form_start(form) }}
-    <div class="row mb-1">
-        <div class="col-sx-12 col-sm-12 col-lg-12 col-xg-12">
-            <div class="errores">{{ form_errors(form) }}</div>
+    <form action="{{ path('asistencia_new') }}?operation=do" method="post">
+        {% include('messages/messages.html.twig') %}
+        <div class="row mb-1">
+            <div class="col-sx-6 col-sm-6 offset-md-1 col-md-2 col-lg-2">
+                <label class="form-label">Empleado: </label>
+            </div>
+            <div class="col-sx-6 col-sm-6 col-md-6 col-lg-6">
+                <select class="js-example-basic-single" id="selectEmpleados" name="selectEmpleados">
+                    {% for empleado in listaEmpleados %}
+                    <option value="{{ empleado.id }}">{{ empleado.nombre }} {{ empleado.apellido }}</option>
+                    {% endfor %}
+                </select>
+            </div>
         </div>
-    </div>
-    <div class="row mb-1">
-        <div class="col-sx-6 col-sm-6 offset-md-1 col-md-2 col-lg-2">
-            <label class="form-label">Empleado: </label>
+        <div class="row mb-1">
+            <div class="col-sx-5 col-sm-2 offset-md-1 col-md-2 col-lg-2">
+                <label class="form-label">Hora de entrada: </label>
+            </div>
+            <div class="col-sx-3 col-sm-5 col-md-2 col-lg-2">
+                <input type="time" id="horaEntrada" name="horaEntrada" class="form-control" title="Indica la hora de entrada">
+            </div>
+            <div class="col-sx-6 col-sm-12 col-md-5 col-lg-3">
+                <small>El horario de oficina comienza a las 08:00</small>
+            </div>
         </div>
-        <div class="col-sx-6 col-sm-6 col-md-6 col-lg-6">
-            <select class="js-example-basic-single" id="selectEmpleados" name="selectEmpleados">
-                {% for empleado in listaEmpleados %}
-                <option value="{{ empleado.id }}">{{ empleado.nombre }} {{ empleado.apellido }}</option>
-                {% endfor %}
-            </select>
-        </div>
-    </div>
-    <div class="row mb-1">
-        <div class="col-sx-5 col-sm-2 offset-md-1 col-md-2 col-lg-2">
-            {{ form_label(form.horaEntrada, 'Hora de entrada: ', {'label_attr': {'class': 'form-label'}}) }}
-        </div>
-        <div class="col-sx-3 col-sm-5 col-md-1 col-lg-1">
-            {{ form_widget(form.horaEntrada.hour, {'attr': {'class': 'form-control', 'tooltip': 'Horas',
-                'title': 'Indica las horas'}}) }}
-        </div>
-        <div class="col-sx-3 col-sm-5 col-md-1 col-lg-1">
-            {{ form_widget(form.horaEntrada.minute, {'attr': {'class': 'form-control', 'tooltip': 'Minutos',
-                'title': 'Indica los minutos'}}) }}
-        </div>
-        <div class="col-sx-6 col-sm-12 col-md-5 col-lg-3">
-            <small>El horario de oficina es desde las 08:00 hasta las 17:00</small>
-        </div>
-        <div class="col-sx-6 col-sm-12 col-md-4 col-lg-4">
-            {{ form_errors(form.horaEntrada) }}
-        </div>
-    </div>
-    <div class="row mb-1">
-    {{ form_widget(form) }}
-    </div>
+    </form>
 </div>
 <div class="card-footer">
     <div class="row">
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-            <button class="btn btn-primary">{{ button_label|default('Guardar') }}</button>
-            <a href="{{ path('asistencia_index') }}" class="btn btn-secondary">
+            <a href="{{ path('asistencia_new') }}" class="btn btn-primary" name="btnGuardar" id="btnGuardar">
+                Guardar
+            </a>
+            <a href="{{ path('asistencia_index') }}" class="btn btn-secondary" name="btnRegresar" id="btnRegresar">
                 <i class="bi bi-back"></i>Regresar
             </a>
         </div>
     </div>
 </div>
-{{ form_end(form) }}

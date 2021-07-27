@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Entity\Empleado;
 use App\Entity\Asistencia;
 use App\Form\AsistenciaType;
+use App\Repository\EmpleadoRepository;
 use App\Repository\AsistenciaRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -45,24 +46,27 @@ class AsistenciaController extends AbstractController
     public function new(Request $request): Response
     {
         $this->asistencia = new Asistencia();
+        $listaEmpleados = array();
         $operation = $request->query->get('operation', 'ui');
         $entityManager = $this->getDoctrine()->getManager();
         if($operation == 'do') {
             $cedula = $request->request->get('selectEmpleados',0);
             $horaEntrada = $request->request->get('horaEntrada');
-            $empleado = $entityManager->getRepository('Empleado')->findOneByCedula($cedula);
-            $this->asistencia->setEmpleadoId($empleado->getId());
-            $this->asistencia->setFecha(new \DateTime());
-            $this->asistencia->setHoraEntrada($horaEntrada);
-            $entityManager->persist($this->asistencia);
-            $entityManager->flush();
-            $this->addFlash('success','La asistencia del empleado fue agregada exitosamente.!');
-            return $this->redirectToRoute('asistencia_index', [], Response::HTTP_SEE_OTHER);
+            if($cedula > 0){
+                $empleado = $entityManager->getRepository('App:Empleado')->findOneByCedula($cedula);
+                $this->asistencia->setEmpleadoId($empleado->getId());
+                $this->asistencia->setFecha(new \DateTime());
+                $this->asistencia->setHoraEntrada($horaEntrada);
+                $entityManager->persist($this->asistencia);
+                $entityManager->flush();
+                $this->addFlash('success','La asistencia del empleado fue agregada exitosamente.!');
+                return $this->redirectToRoute('asistencia_index', [], Response::HTTP_SEE_OTHER);
+            }
         }
         else{
-            $listaEmpleados = $entityManager->getRepository('Empleado')->findAll();
+            $listaEmpleados = $entityManager->getRepository('App:Empleado')->findAll();
         }
-        return $this->renderForm('asistencia/form.html.twig', [
+        return $this->renderForm('asistencia/new.html.twig', [
             'listaEmpleados' => $listaEmpleados,
         ]);
     }
