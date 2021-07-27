@@ -37,18 +37,18 @@
                     {% for i, asistencia in asistencias %}
                         <tr>
                             <td>{{ i + 1 }}</td>
-                            {% if empleado is defined %}
-                                <td>{{ empleado.cedula }}</td>
-                                <td>{{ empleado.nombre }}</td>
-                                <td>{{ empleado.apellido }}</td>
+                            {% if asistencia.empleado is defined %}
+                                <td>{{ asistencia.empleado.cedula }}</td>
+                                <td>{{ asistencia.empleado.nombre|upper }}</td>
+                                <td>{{ asistencia.empleado.apellido|upper }}</td>
                             {% endif %}
-                            <td>{{ asistencia.fecha }}</td>
+                            <td>{{ asistencia.fecha|date }}</td>
                             <td>
-                                <a href="{{ path('empleado_show', {'id': empleado.id}) }}" class="btn btn-info btn-sm">
+                                <a href="{{ path('asistencia_show', {'id': asistencia.id}) }}" class="btn btn-info btn-sm">
                                     <i class="bi bi-clipboard-data"></i>Ver
                                 </a>
-                                <a href="{{ path('empleado_edit', {'id': empleado.id}) }}" class="btn btn-success btn-sm">Editar</a>
-                                <a href="{{ path('empleado_delete', {'id': empleado.id}) }}" class="btn btn-danger btn-sm">Borrar</a>
+                                <a href="{{ path('asistencia_edit', {'id': asistencia.id}) }}" class="btn btn-success btn-sm">Editar</a>
+                                <a href="{{ path('asistencia_delete', {'id': asistencia.id}) }}" class="btn btn-danger btn-sm">Borrar</a>
                             </td>
                         </tr>
                     {% else %}

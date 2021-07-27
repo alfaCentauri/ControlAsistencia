@@ -83,4 +83,61 @@ class AsistenciaController extends AbstractController
             'listaEmpleados' => $this->listaEmpleados,
         ]);
     }
+
+    /**
+     * @Route("/{id}", name="asistencia_show")
+     *
+     * @param Asistencia $asistencia
+     * @return Response
+     */
+    public function show(Asistencia $asistencia): Response
+    {
+        return $this->render('asistencia/show.html.twig', [
+            'asistencia' => $asistencia,
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/edit", name="asistencia_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param Asistencia $asistencia
+     * @return Response
+     */
+    public function edit(Request $request, Asistencia $asistencia): Response
+    {
+        $form = $this->createForm(Asistencia::class, $asistencia);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+            $this->addFlash('success','La asistencia del empleado fue actualizada exitosamente.!');
+            return $this->redirectToRoute('asistencia_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('asistencia/edit.html.twig', [
+            'asistencia' => $asistencia,
+            'form' => $form,
+        ]);
+    }
+
+    /**
+     * @Route("/eliminar/{id}", name="asistencia_delete", methods={"GET","POST"})
+     * @param Request $request
+     * @param int $id
+     * @return Response
+     */
+    public function delete(Request $request, int $id): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $this->asistencia = $entityManager->getRepository(Asistencia::class)->find($id);
+        if($this->asistencia){
+            $entityManager->remove($this->asistencia);
+            $entityManager->flush();
+            $this->addFlash('success','La asistencia borrada con exito. ');
+        }
+        else{
+            $this->addFlash('danger','La asistencia no pudo ser borrada. ');
+        }
+        return $this->redirectToRoute('asistencia_index', [], Response::HTTP_SEE_OTHER);
+    }
 }
