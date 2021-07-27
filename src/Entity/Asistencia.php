@@ -115,4 +115,21 @@ class Asistencia
 
         return $this;
     }
+
+    /**
+     * @return Empleado
+     */
+    public function getEmpleado(): Empleado
+    {
+        return $this->empleado;
+    }
+
+    /**
+     * @param Empleado $empleado
+     */
+    public function setEmpleado(Empleado $empleado): void
+    {
+        $this->empleado = $empleado;
+    }
+
 }

@@ -62,9 +62,10 @@ class AsistenciaController extends AbstractController
                 $empleado = $entityManager->getRepository('App:Empleado')->find($id);
                 if ($empleado){
                     $this->asistencia->setUserId(1);//debug
-                    $this->asistencia->setEmpleadoId($empleado->getId());
+                    $this->asistencia->setEmpleado($empleado);
                     $this->asistencia->setFecha(new \DateTime());
                     $this->asistencia->setHoraEntrada(new \DateTime($horaEntrada.':'.$minutosEntrada));
+                    $this->asistencia->setHoraSalida(new \DateTime($horaEntrada.':'.$minutosEntrada));
                     $entityManager->persist($this->asistencia);
                     $entityManager->flush();
                     $this->addFlash('success','La asistencia del empleado fue agregada exitosamente.!');
@@ -80,8 +81,6 @@ class AsistenciaController extends AbstractController
         }
         return $this->renderForm('asistencia/new.html.twig', [
             'listaEmpleados' => $this->listaEmpleados,
-            'form' => $form,
-            'asistencia' => $this->asistencia,
         ]);
     }
 }
