@@ -31,12 +31,20 @@ class AsistenciaType extends AbstractType
 //                    'tooltip' => 'Escriba una fecha',
 //                    'required'   => true)))
             ->add('horaEntrada', TimeType::class)
-            ->add('horaSalida')
+            ->add('horaSalida', TimeType::class, array(
+                'label'=> 'Hora de salida:',
+                'attr' => array('class' => 'form-control',
+                    'placeholder' => 'Seleccione una hora',
+                    'tooltip' => 'Seleccione una hora',
+                    'required'   => true )))
             //Muestra todos los empleados
             ->add('empleadoId', EntityType::class, array(
                 'class' => 'App:Empleado',
+                'choice_value' => function ($empleado){
+                    return ( $empleado ? $empleado->getId() : 0 );
+                },
                 'choice_label' => function ($empleado){
-                    return ( $empleado->getNombre()." ".$empleado->getApellido() );
+                    return strtoupper( $empleado->getNombre()." ".$empleado->getApellido() );
                 },
                 'placeholder' => 'Seleccione un empleado',
                 'required' => true,
