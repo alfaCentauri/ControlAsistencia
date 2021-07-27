@@ -22,6 +22,11 @@ class AsistenciaController extends AbstractController
     private $asistencia;
 
     /**
+     * @var array
+     */
+    private $listaEmpleados;
+
+    /**
      * @Route("/", name="asistencia_index")
      *
      * @param AsistenciaRepository $asistenciaRepository
@@ -46,7 +51,7 @@ class AsistenciaController extends AbstractController
     public function new(Request $request): Response
     {
         $this->asistencia = new Asistencia();
-        $listaEmpleados = array();
+        $this->listaEmpleados = array();
         $operation = $request->query->get('operation', 'ui');
         $entityManager = $this->getDoctrine()->getManager();
         if($operation == 'do') {
@@ -54,20 +59,25 @@ class AsistenciaController extends AbstractController
             $horaEntrada = $request->request->get('horaEntrada');
             if($cedula > 0){
                 $empleado = $entityManager->getRepository('App:Empleado')->findOneByCedula($cedula);
-                $this->asistencia->setEmpleadoId($empleado->getId());
-                $this->asistencia->setFecha(new \DateTime());
-                $this->asistencia->setHoraEntrada($horaEntrada);
-                $entityManager->persist($this->asistencia);
-                $entityManager->flush();
-                $this->addFlash('success','La asistencia del empleado fue agregada exitosamente.!');
+                if ($empleado){
+                    $this->asistencia->setEmpleadoId($empleado->getId());
+                    $this->asistencia->setFecha(new \DateTime());
+                    $this->asistencia->setHoraEntrada($horaEntrada);
+                    $entityManager->persist($this->asistencia);
+                    $entityManager->flush();
+                    $this->addFlash('success','La asistencia del empleado fue agregada exitosamente.!');
+                }
+                else{
+                    $this->addFlash('warning','La asistencia del empleado no pudo ser agregada. ');
+                }
                 return $this->redirectToRoute('asistencia_index', [], Response::HTTP_SEE_OTHER);
             }
         }
         else{
-            $listaEmpleados = $entityManager->getRepository('App:Empleado')->findAll();
+            $this->listaEmpleados = $entityManager->getRepository('App:Empleado')->findAll();
         }
         return $this->renderForm('asistencia/new.html.twig', [
-            'listaEmpleados' => $listaEmpleados,
+            'listaEmpleados' => $this->listaEmpleados,
         ]);
     }
 }

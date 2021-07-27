@@ -1,7 +1,7 @@
-<div class="row">
+<div class="row mt-1">
     {% for label, messages in app.flashes(['success', 'warning']) %}
         {% for message in messages %}
-            <div class="flash-{{ label }}">
+            <div class="alert alert-{{ label }}">
                 {{ message }}
             </div>
         {% endfor %}
