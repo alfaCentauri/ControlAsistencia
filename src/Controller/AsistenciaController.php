@@ -133,7 +133,7 @@ class AsistenciaController extends AbstractController
         if($this->asistencia){
             $entityManager->remove($this->asistencia);
             $entityManager->flush();
-            $this->addFlash('success','La asistencia borrada con exito. ');
+            $this->addFlash('success','La asistencia fue borrada con exito. ');
         }
         else{
             $this->addFlash('danger','La asistencia no pudo ser borrada. ');

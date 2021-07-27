@@ -47,7 +47,7 @@ class UsuarioController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($usuario);
             $entityManager->flush();
-
+            $this->addFlash('success','El usuario fue agregado exitosamente.!');
             return $this->redirectToRoute('usuario_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -82,7 +82,7 @@ class UsuarioController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-
+            $this->addFlash('success','El usuario fue actualizado exitosamente.!');
             return $this->redirectToRoute('usuario_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -105,6 +105,10 @@ class UsuarioController extends AbstractController
             if($this->usuario){
                 $entityManager->remove($this->usuario);
                 $entityManager->flush();
+                $this->addFlash('success','El usuario fue borrado con exito. ');
+            }
+            else{
+                $this->addFlash('danger','El usuario no pudo ser borrado. ');
             }
         return $this->redirectToRoute('usuario_index', [], Response::HTTP_SEE_OTHER);
     }
@@ -123,6 +127,7 @@ class UsuarioController extends AbstractController
         {
             $this->usuario->setIsActive(true);
             $entityManager->flush();
+            $this->addFlash('success','El usuario fue activado exitosamente.!');
         }
         return $this->redirectToRoute('usuario_index', [], Response::HTTP_SEE_OTHER);
     }
@@ -138,6 +143,7 @@ class UsuarioController extends AbstractController
         {
             $this->usuario->setIsActive(false);
             $entityManager->flush();
+            $this->addFlash('warning','El usuario fue desactivado.!');
         }
         return $this->redirectToRoute('usuario_index', [], Response::HTTP_SEE_OTHER);
     }
