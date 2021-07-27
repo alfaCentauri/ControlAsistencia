@@ -80,6 +80,9 @@ class EmpleadoController extends AbstractController
 
     /**
      * @Route("/eliminar/{id}", name="empleado_delete", methods={"POST"})
+     * @param Request $request
+     * @param int $id
+     * @return Response
      */
     public function delete(Request $request, int $id): Response
     {
@@ -91,5 +94,25 @@ class EmpleadoController extends AbstractController
             $entityManager->flush();
         }
         return $this->redirectToRoute('empleado_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    /**
+     * @Route("/buscar", name="buscar_empleado", methods={"POST"})
+     * @param Request $request
+     * @return Response
+     */
+    public function buscar(Request $request): Response
+    {
+        $empleado = null;
+        $entityManager = $this->getDoctrine()->getManager();
+        $id = $request->request->get('id', 0);
+        if($id > 0) {
+            $empleado = $entityManager->getRepository('Empleado')->find($id);
+            return $this->renderForm('asistencia/formBuscar.html.twig', array( 'empleado' => $empleado ));
+        }
+        else{
+            $this->addFlash('warning','La información del empleado no pudo ser encontrada.');
+        }
+        return $this->renderForm('asistencia/formBuscar.html.twig', array( 'empleado' => $empleado ));
     }
 }

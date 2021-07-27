@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Entity\Empleado;
 use App\Entity\Asistencia;
 use App\Form\AsistenciaType;
 use App\Repository\AsistenciaRepository;
@@ -43,20 +44,26 @@ class AsistenciaController extends AbstractController
      */
     public function new(Request $request): Response
     {
-        $this->asistencia = new Asistencia();
-        $form = $this->createForm(AsistenciaType::class, $this->asistencia);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $this->asistencia->setFecha(new \DateTime());
-            $entityManager->persist($this->asistencia);
-            $entityManager->flush();
-            $this->addFlash('success','La asistencia del empleado fue agregada exitosamente.!');
-            return $this->redirectToRoute('asistencia_index', [], Response::HTTP_SEE_OTHER);
+        $operation = $request->query->get('operation', 'ui');
+        if($operation == 'ui') {
+            
         }
-        return $this->renderForm('asistencia/new.html.twig', [
-            'asistencia' => $this->asistencia,
-            'form' => $form,
+        else{
+            $id = $request->request->get('id',0);
+        }
+//        $this->asistencia = new Asistencia();
+//        $form = $this->createForm(AsistenciaType::class, $this->asistencia);
+//        $form->handleRequest($request);
+//        if ($form->isSubmitted() && $form->isValid()) {
+//            $entityManager = $this->getDoctrine()->getManager();
+//            $this->asistencia->setFecha(new \DateTime());
+//            $entityManager->persist($this->asistencia);
+//            $entityManager->flush();
+//            $this->addFlash('success','La asistencia del empleado fue agregada exitosamente.!');
+//            return $this->redirectToRoute('asistencia_index', [], Response::HTTP_SEE_OTHER);
+//        }
+        return $this->renderForm('asistencia/formBuscar.html.twig', [
+//            'asistencia' => $this->asistencia,
         ]);
     }
 }

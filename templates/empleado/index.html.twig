@@ -19,15 +19,7 @@
                         </a>
                     </div>
                 </div>
-                <div class="row">
-                    {% for label, messages in app.flashes(['success', 'warning']) %}
-                        {% for message in messages %}
-                            <div class="flash-{{ label }}">
-                                {{ message }}
-                            </div>
-                        {% endfor %}
-                    {% endfor %}
-                </div>
+                {% include('messages/messages.html.twig') %}
                 <div class="row">
                     <table class="table table-striped">
                         <thead>
