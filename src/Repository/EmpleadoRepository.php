@@ -63,15 +63,18 @@ class EmpleadoRepository extends ServiceEntityRepository
     }
     */
 
-    /*
-    public function findOneBySomeField($value): ?Empleado
+    /**
+     * @param $value
+     * @return Empleado|null
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findOneByCedula($value): ?Empleado
     {
         return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
+            ->andWhere('e.cedula = :val')
             ->setParameter('val', $value)
             ->getQuery()
             ->getOneOrNullResult()
         ;
     }
-    */
 }

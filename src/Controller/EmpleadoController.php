@@ -105,9 +105,9 @@ class EmpleadoController extends AbstractController
     {
         $empleado = null;
         $entityManager = $this->getDoctrine()->getManager();
-        $id = $request->request->get('id', 0);
-        if($id > 0) {
-            $empleado = $entityManager->getRepository('Empleado')->find($id);
+        $cedula = $request->request->get('buscar', 0);
+        if($cedula > 0) {
+            $empleado = $entityManager->getRepository('Empleado')->findOneByCedula($cedula);
             return $this->renderForm('asistencia/formBuscar.html.twig', array( 'empleado' => $empleado ));
         }
         else{

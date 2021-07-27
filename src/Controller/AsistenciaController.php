@@ -44,26 +44,26 @@ class AsistenciaController extends AbstractController
      */
     public function new(Request $request): Response
     {
+        $this->asistencia = new Asistencia();
         $operation = $request->query->get('operation', 'ui');
-        if($operation == 'ui') {
-            
+        $entityManager = $this->getDoctrine()->getManager();
+        if($operation == 'do') {
+            $cedula = $request->request->get('selectEmpleados',0);
+            $horaEntrada = $request->request->get('horaEntrada');
+            $empleado = $entityManager->getRepository('Empleado')->findOneByCedula($cedula);
+            $this->asistencia->setEmpleadoId($empleado->getId());
+            $this->asistencia->setFecha(new \DateTime());
+            $this->asistencia->setHoraEntrada($horaEntrada);
+            $entityManager->persist($this->asistencia);
+            $entityManager->flush();
+            $this->addFlash('success','La asistencia del empleado fue agregada exitosamente.!');
+            return $this->redirectToRoute('asistencia_index', [], Response::HTTP_SEE_OTHER);
         }
         else{
-            $id = $request->request->get('id',0);
+            $listaEmpleados = $entityManager->getRepository('Empleado')->findAll();
         }
-//        $this->asistencia = new Asistencia();
-//        $form = $this->createForm(AsistenciaType::class, $this->asistencia);
-//        $form->handleRequest($request);
-//        if ($form->isSubmitted() && $form->isValid()) {
-//            $entityManager = $this->getDoctrine()->getManager();
-//            $this->asistencia->setFecha(new \DateTime());
-//            $entityManager->persist($this->asistencia);
-//            $entityManager->flush();
-//            $this->addFlash('success','La asistencia del empleado fue agregada exitosamente.!');
-//            return $this->redirectToRoute('asistencia_index', [], Response::HTTP_SEE_OTHER);
-//        }
-        return $this->renderForm('asistencia/formBuscar.html.twig', [
-//            'asistencia' => $this->asistencia,
+        return $this->renderForm('asistencia/form.html.twig', [
+            'listaEmpleados' => $listaEmpleados,
         ]);
     }
 }
