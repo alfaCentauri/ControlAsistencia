@@ -24,8 +24,20 @@
             <div class="col-sx-5 col-sm-2 offset-md-1 col-md-2 col-lg-2">
                 <label class="form-label">Hora de entrada: </label>
             </div>
-            <div class="col-sx-3 col-sm-5 col-md-2 col-lg-2">
-                <input type="time" id="horaEntrada" name="horaEntrada" class="form-control" title="Indica la hora de entrada">
+            <div class="col-sx-3 col-sm-3 col-md-1 col-lg-2">
+                <div class="input-group mb-3">
+                    <select  id="hora" name="hora" class="form-control" title="Indica la hora de entrada">
+                        {% for i in 0..23 %}
+                        <option value="{{ i }}">{{ i }}</option>
+                        {% endfor %}
+                    </select>
+                    <span class="input-group-text">:</span>
+                    <select  id="minutos" name="minutos" class="form-control" title="Indique los minutos de la entrada">
+                        {% for i in 0..59 %}
+                            <option value="{{ i }}">{{ i }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
             </div>
             <div class="col-sx-6 col-sm-12 col-md-5 col-lg-3">
                 <small>El horario de oficina comienza a las 08:00</small>

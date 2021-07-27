@@ -54,15 +54,17 @@ class AsistenciaController extends AbstractController
         $this->listaEmpleados = array();
         $operation = $request->query->get('operation', 'ui');
         $entityManager = $this->getDoctrine()->getManager();
-        if($operation == 'do') {
-            $cedula = $request->request->get('selectEmpleados',0);
-            $horaEntrada = $request->request->get('horaEntrada');
-            if($cedula > 0){
-                $empleado = $entityManager->getRepository('App:Empleado')->findOneByCedula($cedula);
+        if ($operation == 'do') {
+            $id = intval($request->request->get('selectEmpleados',0));
+            $horaEntrada = $request->request->get('hora', 0);
+            $minutosEntrada = $request->request->get('minutos', 0);
+            if($id > 0){
+                $empleado = $entityManager->getRepository('App:Empleado')->find($id);
                 if ($empleado){
+                    $this->asistencia->setUserId(1);//debug
                     $this->asistencia->setEmpleadoId($empleado->getId());
                     $this->asistencia->setFecha(new \DateTime());
-                    $this->asistencia->setHoraEntrada($horaEntrada);
+                    $this->asistencia->setHoraEntrada(new \DateTime($horaEntrada.':'.$minutosEntrada));
                     $entityManager->persist($this->asistencia);
                     $entityManager->flush();
                     $this->addFlash('success','La asistencia del empleado fue agregada exitosamente.!');
@@ -78,6 +80,8 @@ class AsistenciaController extends AbstractController
         }
         return $this->renderForm('asistencia/new.html.twig', [
             'listaEmpleados' => $this->listaEmpleados,
+            'form' => $form,
+            'asistencia' => $this->asistencia,
         ]);
     }
 }

@@ -1,0 +1,53 @@
+{{ form_start(form) }}
+<div class="card-body">
+    <div class="row">
+        <div class="col-sx-12 col-sm-12 offset-md-8 col-md-2 col-lg-2">
+            <div class="mb-1">
+                Fecha actual: {{ "now"|date("d/m/Y") }}
+            </div>
+        </div>
+    </div>
+    {% include('messages/messages.html.twig') %}
+    <div class="row mb-1">
+        <div class="col-sx-6 col-sm-6 offset-md-1 col-md-2 col-lg-2">
+            <label class="form-label">Empleado: </label>
+        </div>
+        {% if empleado is defined %}
+            <div class="col-sx-6 col-sm-2 col-md-1 col-lg-1">
+                Cedula: {{ empleado.cedula }}
+            </div>
+            <div class="col-sx-6 col-sm-4 col-md-4 col-lg-4">
+                Nombre: {{ empleado.nombre }}
+            </div>
+            <div class="col-sx-6 col-sm-4 col-md-4 col-lg-4">
+                Apellido: {{ empleado.apellido }}
+            </div>
+        {% endif %}
+    </div>
+    <div class="row mb-1">
+        <div class="col-sx-6 col-sm-6 offset-md-1 col-md-2 col-lg-2">
+            {{ form_label(form.horaEntrada) }}
+        </div>
+        <div class="col-sx-6 col-sm-4 col-md-2 col-lg-2">
+            <div class="input-group mb-3">
+                {{ form_widget(form.horaEntrada.hour) }}
+                <span class="input-group-text">:</span>
+                {{ form_widget(form.horaEntrada.minute) }}
+            </div>
+            {{ form_errors(form.horaEntrada) }}
+        </div>
+    </div>
+</div>
+<div class="card-footer">
+    <div class="row">
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <button type="submit" class="btn btn-primary" name="btnGuardar" id="btnGuardar" >
+                Guardar
+            </button>
+            <a href="{{ path('asistencia_index') }}" class="btn btn-secondary" name="btnRegresar" id="btnRegresar">
+                <i class="bi bi-back"></i>Regresar
+            </a>
+        </div>
+    </div>
+</div>
+{{ form_end(form) }}
