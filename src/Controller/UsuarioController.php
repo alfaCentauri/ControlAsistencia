@@ -22,6 +22,8 @@ class UsuarioController extends AbstractController
 
     /**
      * @Route("/", name="usuario_index", methods={"GET"})
+     * @param UsuarioRepository $usuarioRepository
+     * @return Response
      */
     public function index(UsuarioRepository $usuarioRepository): Response
     {
@@ -32,6 +34,8 @@ class UsuarioController extends AbstractController
 
     /**
      * @Route("/new", name="usuario_new", methods={"GET","POST"})
+     * @param Request $request
+     * @return Response
      */
     public function new(Request $request): Response
     {
@@ -55,6 +59,8 @@ class UsuarioController extends AbstractController
 
     /**
      * @Route("/{id}", name="usuario_show", methods={"GET"})
+     * @param Usuario $usuario
+     * @return Response
      */
     public function show(Usuario $usuario): Response
     {
@@ -65,6 +71,9 @@ class UsuarioController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="usuario_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param Usuario $usuario
+     * @return Response
      */
     public function edit(Request $request, Usuario $usuario): Response
     {
@@ -85,6 +94,9 @@ class UsuarioController extends AbstractController
 
     /**
      * @Route("/eliminar/{id}", name="usuario_delete", methods={"GET","POST"})
+     * @param Request $request
+     * @param int $id
+     * @return Response
      */
     public function delete(Request $request, int $id): Response
     {
@@ -99,6 +111,9 @@ class UsuarioController extends AbstractController
 
     /**
      * @Route("/activar/{id}", name="usuario_activar")
+     * @param Request $request
+     * @param int $id
+     * @return Response
      */
     public function activar(Request $request, int $id): Response
     {

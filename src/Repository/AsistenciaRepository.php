@@ -23,12 +23,15 @@ class AsistenciaRepository extends ServiceEntityRepository
      * Este método permite contar todas las asistencias de los empleados.
      * @return integer Cantidad total de asistencias en el sistema.
      */
-    public function ContarTodas(){
-        $qb = $this->getEntityManager()->createQueryBuilder('asistencia');
-        return $qb->select($qb->expr()->count('asistencia.id'))
-            ->from('Asistencia','asistencia')
-            ->getQuery()
-            ->getSingleScalarResult();
+    public function contarTodas(){
+        $entityManager = $this->getEntityManager();
+        try{
+            $resultado = $entityManager->createQuery('SELECT count(a.id) FROM App\Entity\Asistencia a')
+                ->getScalarResult();
+        }catch(NoResultException $e){
+            return null;
+        }
+        return $resultado;
     }
 
     /**

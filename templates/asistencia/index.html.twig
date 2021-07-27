@@ -14,7 +14,7 @@
                 <div class="offset-sm-6 offset-md-9 offset-lg-10 col-sm-6 col-md-3 col-lg-2">
                     <a href="{{ path('asistencia_new') }}">
                         <button type="button" class="btn btn-success">
-                            <i class="bi bi-plus-circle"></i>Agregar asistencia
+                            <i class="bi bi-plus-circle"></i>Agregar Asistencia
                         </button>
                     </a>
                 </div>
@@ -36,9 +36,11 @@
                     {% for i, asistencia in asistencias %}
                         <tr>
                             <td>{{ i + 1 }}</td>
-                            <td>{{ empleado.cedula }}</td>
-                            <td>{{ empleado.nombre }}</td>
-                            <td>{{ empleado.apellido }}</td>
+                            {% if empleado is defined %}
+                                <td>{{ empleado.cedula }}</td>
+                                <td>{{ empleado.nombre }}</td>
+                                <td>{{ empleado.apellido }}</td>
+                            {% endif %}
                             <td>{{ asistencia.fecha }}</td>
                             <td>
                                 <a href="{{ path('empleado_show', {'id': empleado.id}) }}" class="btn btn-info btn-sm">
@@ -50,7 +52,7 @@
                         </tr>
                     {% else %}
                         <tr>
-                            <td colspan="5">No se encontraron datos</td>
+                            <td colspan="6">No se encontraron datos</td>
                         </tr>
                     {% endfor %}
                     </tbody>
