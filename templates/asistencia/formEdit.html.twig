@@ -10,19 +10,12 @@
     {% include('messages/messages.html.twig') %}
     <div class="row mb-1">
         <div class="col-sx-6 col-sm-6 offset-md-1 col-md-2 col-lg-2">
-            <label class="form-label">Empleado: </label>
+            {{ form_label(form.empleadoId, 'Empleado: ') }}
         </div>
-        {% if empleado is defined %}
-            <div class="col-sx-6 col-sm-2 col-md-1 col-lg-1">
-                Cedula: {{ empleado.cedula }}
-            </div>
-            <div class="col-sx-6 col-sm-4 col-md-4 col-lg-4">
-                Nombre: {{ empleado.nombre }}
-            </div>
-            <div class="col-sx-6 col-sm-4 col-md-4 col-lg-4">
-                Apellido: {{ empleado.apellido }}
-            </div>
-        {% endif %}
+        <div class="col-sx-6 col-sm-6 col-md-6 col-lg-4">
+            {{ form_widget(form.empleadoId) }}
+            {{ form_errors(form.empleadoId) }}
+        </div>
     </div>
     <div class="row mb-1">
         <div class="col-sx-6 col-sm-6 offset-md-1 col-md-2 col-lg-2">

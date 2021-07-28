@@ -50,7 +50,8 @@ class AsistenciaType extends AbstractType
                 },
                 'placeholder' => 'Seleccione un empleado',
                 'required' => true,
-                'attr' => ['class' => 'form-control'],
+                'attr' => ['class' => 'form-control',
+                    'readonly' => true],
             ))
         ;
     }
@@ -70,6 +71,6 @@ class AsistenciaType extends AbstractType
      * @return String Nombre del formulario.
      */
     public function getName(){
-        return 'nueva_asistencia';
+        return 'modificar_asistencia';
     }
 }
