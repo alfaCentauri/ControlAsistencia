@@ -3,7 +3,6 @@
 {% block title %}Control de Asistencias!{% endblock %}
 
 {% block body %}
-
 <div class="container-fluid">
     {% include ('asistencia/menu.html.twig') %}
     <div class="card">
@@ -44,11 +43,17 @@
                             {% endif %}
                             <td>{{ asistencia.fecha|date }}</td>
                             <td>
-                                <a href="{{ path('asistencia_show', {'id': asistencia.id}) }}" class="btn btn-info btn-sm">
-                                    <i class="bi bi-clipboard-data"></i>Ver
+                                <a href="{{ path('asistencia_show', {'id': asistencia.id}) }}" class="btn btn-info btn-sm"
+                                   title="Ver">
+                                    <span class="material-icons">description</span>
                                 </a>
-                                <a href="{{ path('asistencia_edit', {'id': asistencia.id}) }}" class="btn btn-success btn-sm">Editar</a>
-                                <a href="{{ path('asistencia_delete', {'id': asistencia.id}) }}" class="btn btn-danger btn-sm">Borrar</a>
+                                <a href="{{ path('asistencia_edit', {'id': asistencia.id}) }}" class="btn btn-success btn-sm"
+                                   title="Editar">
+                                    <span class="material-icons">edit</span>
+                                </a>
+                                <a href="{{ path('asistencia_delete', {'id': asistencia.id}) }}" class="btn btn-danger btn-sm"
+                                   title="Borrar">
+                                    <span class="material-icons">delete</span></a>
                             </td>
                         </tr>
                     {% else %}

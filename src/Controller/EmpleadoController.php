@@ -79,7 +79,7 @@ class EmpleadoController extends AbstractController
     }
 
     /**
-     * @Route("/eliminar/{id}", name="empleado_delete", methods={"POST"})
+     * @Route("/eliminar/{id}", name="empleado_delete", methods={"GET","POST"})
      * @param Request $request
      * @param int $id
      * @return Response
@@ -87,11 +87,15 @@ class EmpleadoController extends AbstractController
     public function delete(Request $request, int $id): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
-        $empleado = $entityManager->getRepository('Empleado')->find($id);
+        $empleado = $entityManager->getRepository('App:Empleado')->find($id);
         if($empleado) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($empleado);
             $entityManager->flush();
+            $this->addFlash('success','El empleado fue borrado con exito. ');
+        }
+        else{
+            $this->addFlash('danger','El empleado no pudo ser borrado. ');
         }
         return $this->redirectToRoute('empleado_index', [], Response::HTTP_SEE_OTHER);
     }
@@ -107,7 +111,7 @@ class EmpleadoController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $cedula = $request->request->get('buscar', 0);
         if($cedula > 0) {
-            $empleado = $entityManager->getRepository('Empleado')->findOneByCedula($cedula);
+            $empleado = $entityManager->getRepository('App:Empleado')->findOneByCedula($cedula);
             return $this->renderForm('asistencia/formBuscar.html.twig', array( 'empleado' => $empleado ));
         }
         else{

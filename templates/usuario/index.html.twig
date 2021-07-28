@@ -19,15 +19,7 @@
                     </a>
                 </div>
             </div>
-            <div class="row">
-                {% for label, messages in app.flashes(['success', 'warning']) %}
-                    {% for message in messages %}
-                        <div class="flash-{{ label }}">
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-                {% endfor %}
-            </div>
+            {% include('messages/messages.html.twig') %}
             <div class="row">
                 <table class="table table-striped">
                     <thead>
@@ -49,13 +41,28 @@
                             <td>{{ usuario.email }}</td>
                             <td>{{ usuario.roles ? usuario.roles|json_encode : '' }}</td>
                             <td>
-                                <a href="{{ path('usuario_show', {'id': usuario.id}) }}" class="btn btn-info btn-sm">Ver</a>
-                                <a href="{{ path('usuario_edit', {'id': usuario.id}) }}" class="btn btn-success btn-sm">Editar</a>
-                                <a href="{{ path('usuario_delete', {'id': usuario.id}) }}" class="btn btn-danger btn-sm">Borrar</a>
+                                <a href="{{ path('usuario_show', {'id': usuario.id}) }}" class="btn btn-info btn-sm"
+                                   title="Ver">
+                                    <span class="material-icons">description</span>
+                                </a>
+                                <a href="{{ path('usuario_edit', {'id': usuario.id}) }}" class="btn btn-success btn-sm"
+                                   title="Editar">
+                                    <span class="material-icons">edit</span>
+                                </a>
+                                <a href="{{ path('usuario_delete', {'id': usuario.id}) }}" class="btn btn-danger btn-sm"
+                                   title="Borrar">
+                                    <span class="material-icons">delete</span>
+                                </a>
                                 {% if usuario.isActive %}
-                                    <a href="{{ path('usuario_desactivar', {'id': usuario.id}) }}" class="btn btn-warning btn-sm">Desactivar</a>
+                                    <a href="{{ path('usuario_desactivar', {'id': usuario.id}) }}"
+                                       class="btn btn-warning btn-sm" title="Desactivar">
+                                        <span class="material-icons">highlight_off</span>
+                                    </a>
                                 {% else %}
-                                    <a href="{{ path('usuario_activar', {'id': usuario.id}) }}" class="btn btn-secondary btn-sm">Activar</a>
+                                    <a href="{{ path('usuario_activar', {'id': usuario.id}) }}"
+                                       class="btn btn-secondary btn-sm" title="Activar">
+                                        <span class="material-icons">check_circle_outline</span>
+                                    </a>
                                 {% endif %}
                             </td>
                         </tr>

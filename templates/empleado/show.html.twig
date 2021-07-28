@@ -3,42 +3,44 @@
 {% block title %}Empleado{% endblock %}
 
 {% block body %}
-    <div class="card">
-        <div class="card-header">
-            <h1>Datos del Empleado</h1>
-        </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="offset-md-1 col-sm-6 col-md-2">
-                    Cedula:
+    <div class="container-fluid">
+        {% include ('asistencia/menu.html.twig') %}
+        <div class="card">
+            <div class="card-header">
+                <h1>Datos del Empleado</h1>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="offset-md-1 col-sm-6 col-md-2">
+                        Cedula:
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        {{ empleado.cedula }}
+                    </div>
                 </div>
-                <div class="col-sm-6 col-md-4">
-                    {{ empleado.cedula }}
+                <div class="row">
+                    <div class="offset-md-1 col-sm-6 col-md-2">
+                        Nombre:
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        {{ empleado.nombre }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="offset-md-1 col-sm-6 col-md-2">
+                        Apellido:
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        {{ empleado.apellido }}
+                    </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="offset-md-1 col-sm-6 col-md-2">
-                    Nombre:
+            <div class="card-footer">
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <a href="{{ path('empleado_index') }}" class="btn btn-secondary">
+                        Regresar
+                    </a>
                 </div>
-                <div class="col-sm-6 col-md-4">
-                    {{ empleado.nombre }}
-                </div>
-            </div>
-            <div class="row">
-                <div class="offset-md-1 col-sm-6 col-md-2">
-                    Apellido:
-                </div>
-                <div class="col-sm-6 col-md-4">
-                    {{ empleado.apellido }}
-                </div>
-            </div>
-            </div>
-        </div>
-        <div class="card-footer">
-            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                <a href="{{ path('empleado_index') }}" class="btn btn-secondary">
-                    Regresar
-                </a>
             </div>
         </div>
     </div>
