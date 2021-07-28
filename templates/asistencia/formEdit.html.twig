@@ -26,15 +26,37 @@
     </div>
     <div class="row mb-1">
         <div class="col-sx-6 col-sm-6 offset-md-1 col-md-2 col-lg-2">
+            {{ form_label(form.fecha) }}
+        </div>
+        <div class="col-sx-6 col-sm-6 col-md-4 col-lg-3">
+            {{ form_widget(form.fecha, { 'attr': {'class': 'form-control'} }) }}
+            {{ form_errors(form.fecha) }}
+        </div>
+    </div>
+    <div class="row mb-1">
+        <div class="col-sx-6 col-sm-6 offset-md-1 col-md-2 col-lg-2">
             {{ form_label(form.horaEntrada) }}
         </div>
         <div class="col-sx-6 col-sm-4 col-md-2 col-lg-2">
             <div class="input-group mb-3">
-                {{ form_widget(form.horaEntrada.hour) }}
+                {{ form_widget(form.horaEntrada.hour, { 'attr': {'class': 'form-control'} }) }}
                 <span class="input-group-text">:</span>
-                {{ form_widget(form.horaEntrada.minute) }}
+                {{ form_widget(form.horaEntrada.minute, { 'attr': {'class': 'form-control'} }) }}
             </div>
             {{ form_errors(form.horaEntrada) }}
+        </div>
+    </div>
+    <div class="row mb-1">
+        <div class="col-sx-6 col-sm-6 offset-md-1 col-md-2 col-lg-2">
+            {{ form_label(form.horaSalida) }}
+        </div>
+        <div class="col-sx-6 col-sm-4 col-md-2 col-lg-2">
+            <div class="input-group mb-3">
+                {{ form_widget(form.horaSalida.hour, { 'attr': {'class': 'form-control'} }) }}
+                <span class="input-group-text">:</span>
+                {{ form_widget(form.horaSalida.minute, { 'attr': {'class': 'form-control'} }) }}
+            </div>
+            {{ form_errors(form.horaSalida) }}
         </div>
     </div>
 </div>

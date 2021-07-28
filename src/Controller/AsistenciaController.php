@@ -2,15 +2,13 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use App\Entity\Empleado;
 use App\Entity\Asistencia;
 use App\Form\AsistenciaType;
-use App\Repository\EmpleadoRepository;
 use App\Repository\AsistenciaRepository;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+
 /**
  * @Route("/asistencia")
  */
@@ -105,7 +103,7 @@ class AsistenciaController extends AbstractController
      */
     public function edit(Request $request, Asistencia $asistencia): Response
     {
-        $form = $this->createForm(Asistencia::class, $asistencia);
+        $form = $this->createForm(AsistenciaType::class, $asistencia);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

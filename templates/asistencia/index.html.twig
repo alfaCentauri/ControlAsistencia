@@ -41,7 +41,7 @@
                                 <td>{{ asistencia.empleado.nombre|upper }}</td>
                                 <td>{{ asistencia.empleado.apellido|upper }}</td>
                             {% endif %}
-                            <td>{{ asistencia.fecha|date }}</td>
+                            <td>{{ asistencia.fecha|date("d/m/Y") }}</td>
                             <td>
                                 <a href="{{ path('asistencia_show', {'id': asistencia.id}) }}" class="btn btn-info btn-sm"
                                    title="Ver">
