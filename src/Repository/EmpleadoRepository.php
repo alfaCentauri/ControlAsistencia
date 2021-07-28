@@ -46,22 +46,21 @@ class EmpleadoRepository extends ServiceEntityRepository
         return $resultado;
     }
 
-    // /**
-    //  * @return Empleado[] Returns an array of Empleado objects
-    //  */
-    /*
-    public function findByExampleField($value)
+     /**
+      * @return Empleado[] Returns an array of Empleado objects
+      */
+    public function buscar($value)
     {
         return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
+            ->where('e.cedula like :%val%')
+            ->andWhere('e.nombre like :%val%')
+            ->andWhere('e.apellido like :%val%')
             ->setParameter('val', $value)
             ->orderBy('e.id', 'ASC')
-            ->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
 
     /**
      * @param $value

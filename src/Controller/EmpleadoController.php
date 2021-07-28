@@ -16,12 +16,29 @@ use Symfony\Component\Routing\Annotation\Route;
 class EmpleadoController extends AbstractController
 {
     /**
-     * @Route("/", name="empleado_index", methods={"GET"})
+     * @var array
      */
-    public function index(EmpleadoRepository $empleadoRepository): Response
+    private $listaEmpleados;
+
+    /**
+     * @Route("/", name="empleado_index", methods={"GET"})
+     * @param Request $request
+     * @param EmpleadoRepository $empleadoRepository
+     * @return Response
+     */
+    public function index(Request $request, EmpleadoRepository $empleadoRepository): Response
     {
+        $palabra = $request->request->get('palabra', null);
+        $this->listaEmpleados = null;
+        if(!$palabra){
+            $this->listaEmpleados = $empleadoRepository->findAll();
+        }
+        else {
+            $this->addFlash('info', 'Buscando: '.$palabra);
+            $this->listaEmpleados = $empleadoRepository->buscar($palabra);
+        }
         return $this->render('empleado/index.html.twig', [
-            'empleados' => $empleadoRepository->findAll(),
+            'empleados' => $this->listaEmpleados,
         ]);
     }
 
