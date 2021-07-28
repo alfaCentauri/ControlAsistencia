@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Asistencia;
 use App\Form\AsistenciaType;
 use App\Repository\AsistenciaRepository;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
