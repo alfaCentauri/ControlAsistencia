@@ -27,12 +27,14 @@ class EmpleadoType extends AbstractType
                 'attr' => array('class' => 'form-control',
                     'placeholder' => 'Indique su nombre',
                     'tooltip' => 'Escribe el nombre',
-                    'required'   => true)))
+                    'required' => true,
+                    'maxlength' => 100)))
             ->add('apellido', TextType::class, array('label'=> 'Apellido: ',
                 'attr' => array('class' => 'form-control',
                     'placeholder' => 'Indique su apellido',
                     'tooltip' => 'Escribe el apellido',
-                    'required'   => true)))
+                    'required' => true,
+                    'maxlength' => 100)))
         ;
     }
 
