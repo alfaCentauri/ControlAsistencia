@@ -4,7 +4,7 @@
 
 {% block body %}
 <div class="container-fluid">
-    {% include ('asistencia/menu.html.twig') %}
+    {% include ('reportes/menu.html.twig') %}
     <div class="card">
         <div class="card-header alert-primary">
             <h1>Listado de asistencias</h1>
@@ -28,8 +28,7 @@
                         <th>Cedula</th>
                         <th>Nombre</th>
                         <th>Apellido</th>
-                        <th>Fecha</th>
-                        <th>Acciones</th>
+                        <th>Hora T.</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -41,25 +40,7 @@
                                 <td>{{ asistencia.empleado.nombre|upper }}</td>
                                 <td>{{ asistencia.empleado.apellido|upper }}</td>
                             {% endif %}
-                            <td>{{ asistencia.fecha|date("d/m/Y") }}</td>
-                            <td>
-                                <a href="{{ path('asistencia_show', {'id': asistencia.id}) }}" class="btn btn-info btn-sm"
-                                   title="Ver">
-                                    <span class="material-icons">description</span>
-                                </a>
-                                <a href="{{ path('asistencia_out', {'id': asistencia.id}) }}" class="btn btn-primary btn-sm"
-                                   title="Agregar hora de salida">
-                                    <span class="material-icons">clock</span>
-                                </a>
-                                <a href="{{ path('asistencia_edit', {'id': asistencia.id}) }}" class="btn btn-success btn-sm"
-                                   title="Editar">
-                                    <span class="material-icons">edit</span>
-                                </a>
-                                <a href="{{ path('asistencia_delete', {'id': asistencia.id}) }}" class="btn btn-danger btn-sm"
-                                   title="Borrar">
-                                    <span class="material-icons">delete</span>
-                                </a>
-                            </td>
+                            <td>{{ asistencia.horasTrabajadas }}</td>
                         </tr>
                     {% else %}
                         <tr>

@@ -35,6 +35,23 @@ class AsistenciaRepository extends ServiceEntityRepository
     }
 
     /**
+     * Este método permite contar todas las asistencias de los empleados para un mes especifico.
+     * @param string $mes
+     * @return mixed[]|null Cantidad total de asistencias en el sistema.
+     */
+    public function contarTodasAsistenciasMes(string $mes){
+        $entityManager = $this->getEntityManager();
+        try{
+            $resultado = $entityManager->createQuery('SELECT count(a.id) FROM App\Entity\Asistencia a WHERE a.fecha LIKE %:mes% ')
+                ->setParameter('mes', $mes)
+                ->getScalarResult();
+        }catch(NoResultException $e){
+            return null;
+        }
+        return $resultado;
+    }
+
+    /**
      * Este método regresa una cantidad de registros indicados por el parametro $inicio.
      * @param int $inicio Indice de inicio de la busqueda.
      * @param int $fin Cantidad de registros ha buscar.
@@ -50,14 +67,15 @@ class AsistenciaRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return Array Contiene la lista de todas las asistencias.
+     * @param string $mes
+     * @return \Doctrine\ORM\Query|null Contiene la lista de todas las asistencias del mes indicado.
      */
-    public function listarAsistencias(){
+    public function listarAsistencias(string $mes){
         try{
             $resultado = $this->createQueryBuilder('a')
-                ->select('a, e')
-                ->leftJoin('a.empleados', 'e')
-                ->where('a.empleadoId = :e.id')
+                ->select('a')
+                ->where('a.fecha like %:mes%')
+                ->setParameter('mes', $mes)
                 ->orderBy('a.nombre', 'ASC')
                 ->getQuery();
         }catch(NoResultException $e){

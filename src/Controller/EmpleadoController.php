@@ -106,7 +106,6 @@ class EmpleadoController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $empleado = $entityManager->getRepository('App:Empleado')->find($id);
         if($empleado) {
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($empleado);
             $entityManager->flush();
             $this->addFlash('success','El empleado fue borrado con exito. ');

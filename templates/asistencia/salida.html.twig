@@ -1,14 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Modificar Asistencia{% endblock %}
-
 {% block body %}
-<div class="container-fluid">
+    <div class="container-fluid">
     {% include ('asistencia/menu.html.twig') %}
     <div class="card">
         <div class="card-header alert-primary">
-            <h1>Modificar Asistencia</h1>
+            <h1>Agregar la hora de salida</h1>
         </div>
-        {% include('asistencia/formEdit.html.twig') %}
-</div>
+        {% include('asistencia/formSalida.html.twig') %}
+    </div>
 {% endblock %}

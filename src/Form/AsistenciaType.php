@@ -19,14 +19,14 @@ class AsistenciaType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('fecha', DateType::class, array(
-                'mapped' => false,
-                'empty_data' => array('year' => 'Año', 'month' => 'Mes', 'day' => 'Día'),
-                'years'=> range(2021,2025),
-                'attr' => array('class' => 'form-control',
-                    'placeholder' => 'Indique una fecha',
-                    'tooltip' => 'Escriba una fecha',
-                    'readonly'   => true)))
+//            ->add('fecha', DateType::class, array(
+//                'mapped' => false,
+//                'empty_data' => array('year' => 'Año', 'month' => 'Mes', 'day' => 'Día'),
+//                'years'=> range(2021,2025),
+//                'attr' => array('class' => 'form-control',
+//                    'placeholder' => 'Indique una fecha',
+//                    'tooltip' => 'Escriba una fecha',
+//                    'readonly'   => true)))
             ->add('horaEntrada', TimeType::class, array('label' => 'Hora de Entrada: ',
                 'attr' => array(
                 'placeholder' => 'Seleccione una hora',
@@ -39,20 +39,20 @@ class AsistenciaType extends AbstractType
                     'tooltip' => 'Seleccione una hora',
                     'required'   => true )))
             //Muestra todos los empleados
-            ->add('empleadoId', EntityType::class, array(
-                'mapped' => false,
-                'class' => 'App:Empleado',
-                'choice_value' => function ($empleado){
-                    return ( $empleado ? $empleado->getId() : 0 );
-                },
-                'choice_label' => function ($empleado){
-                    return strtoupper( $empleado->getNombre()." ".$empleado->getApellido() );
-                },
-                'placeholder' => 'Seleccione un empleado',
-                'required' => true,
-                'attr' => ['class' => 'form-control',
-                    'readonly' => true],
-            ))
+//            ->add('empleadoId', EntityType::class, array(
+//                'mapped' => false,
+//                'class' => 'App:Empleado',
+//                'choice_value' => function ($empleado){
+//                    return ( $empleado ? $empleado->getId() : 0 );
+//                },
+//                'choice_label' => function ($empleado){
+//                    return strtoupper( $empleado->getNombre()." ".$empleado->getApellido() );
+//                },
+//                'placeholder' => 'Seleccione un empleado',
+//                'required' => true,
+//                'attr' => ['class' => 'form-control',
+//                    'readonly' => true],
+//            ))
         ;
     }
 

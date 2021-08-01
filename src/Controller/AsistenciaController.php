@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Asistencia;
 use App\Form\AsistenciaType;
+use App\Form\AsistenciaSalidaType;
 use App\Repository\AsistenciaRepository;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -138,5 +139,28 @@ class AsistenciaController extends AbstractController
             $this->addFlash('danger','La asistencia no pudo ser borrada. ');
         }
         return $this->redirectToRoute('asistencia_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    /**
+     * @Route("/{id}/salida", name="asistencia_out", methods={"GET","POST"})
+     * @param Request $request
+     * @param Asistencia $asistencia
+     * @return Response
+     */
+    public function out(Request $request, Asistencia $asistencia): Response
+    {
+        $form = $this->createForm(AsistenciaSalidaType::class, $asistencia);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+            $this->addFlash('success','La hora de salida de la asistencia del empleado fue agregada exitosamente.!');
+            return $this->redirectToRoute('asistencia_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('asistencia/salida.html.twig', [
+            'asistencia' => $asistencia,
+            'form' => $form,
+        ]);
     }
 }
