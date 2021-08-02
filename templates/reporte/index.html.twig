@@ -62,7 +62,9 @@
                                 <td>{{ asistencia.empleado.nombre|upper }}</td>
                                 <td>{{ asistencia.empleado.apellido|upper }}</td>
                             {% endif %}
+                            {% if asistencia.horasTrabajadas is defined %}
                             <td>{{ asistencia.horasTrabajadas }}</td>
+                            {% endif %}
                         </tr>
                     {% else %}
                         <tr>
