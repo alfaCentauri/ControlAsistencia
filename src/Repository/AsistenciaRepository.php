@@ -42,7 +42,7 @@ class AsistenciaRepository extends ServiceEntityRepository
     public function contarTodasAsistenciasMes(string $mes){
         $entityManager = $this->getEntityManager();
         try{
-            $resultado = $entityManager->createQuery('SELECT count(a.id) FROM App\Entity\Asistencia a WHERE a.fecha LIKE %:mes% ')
+            $resultado = $entityManager->createQuery('SELECT count(a.id) FROM App\Entity\Asistencia a WHERE a.fecha LIKE %:mes ')
                 ->setParameter('mes', $mes)
                 ->getScalarResult();
         }catch(NoResultException $e){

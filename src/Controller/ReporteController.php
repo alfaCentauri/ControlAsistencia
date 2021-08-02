@@ -26,8 +26,9 @@ class ReporteController extends AbstractController
      */
     public function index(AsistenciaRepository $asistenciaRepository): Response
     {
-        $mesActual = new \DateTime(); //Debug
-        $totalAsistenciasMes = $asistenciaRepository->contarTodasAsistenciasMes($mesActual);
+//        $mesActual = "01-2021"; //Debug
+//        $totalAsistenciasMes = $asistenciaRepository->contarTodasAsistenciasMes($mesActual);
+        $totalAsistenciasMes = 0;
         $this->listadoAsistencias = $asistenciaRepository->findAll();
         return $this->render('reporte/index.html.twig', [
             'asistencias' => $this->listaAsistencias,

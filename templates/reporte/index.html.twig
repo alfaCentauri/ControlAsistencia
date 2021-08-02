@@ -4,21 +4,43 @@
 
 {% block body %}
 <div class="container-fluid">
-    {% include ('reportes/menu.html.twig') %}
+    {% include ('reporte/menu.html.twig') %}
     <div class="card">
         <div class="card-header alert-primary">
             <h1>Listado de asistencias</h1>
         </div>
         <div class="card-body">
-            <div class="row">
-                <div class="offset-sm-6 offset-md-9 offset-lg-10 col-sm-6 col-md-3 col-lg-2">
-                    <a href="{{ path('asistencia_new') }}">
-                        <button type="button" class="btn btn-success">
-                            <i class="bi bi-plus-circle"></i>Agregar Asistencia
-                        </button>
-                    </a>
+            <form action="{{ path('reporte_actual') }}" method="post">
+                <div class="row">
+                    <div class="input-group mb-3">
+                        <div class="col-sm-3 offset-md-3 offset-lg-3 col-md-1 col-lg-1">
+                            <span class="input-group-text">Mes:</span>
+                        </div>
+                        <div class="col-sm-3 col-md-1 col-lg-1">
+                            <select id="mes" name="mes" class="form-control" title="Indica el mes">
+                                {% for i in 1..12 %}
+                                    <option value="{{ i }}">{{ i }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-sm-3 col-md-1 col-lg-1">
+                            <span class="input-group-text">Año:</span>
+                        </div>
+                        <div class="col-sm-3 col-md-1 col-lg-1">
+                            <select id="anio" name="anio" class="form-control" title="Indica el año">
+                                {% for i in 2021..2025 %}
+                                    <option value="{{ i }}">{{ i }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-sm-12 col-md-4 col-lg-2">
+                            <button type="submit" class="btn btn-info">
+                                Generar Reporte
+                            </button>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </form>
             {% include('messages/messages.html.twig') %}
             <div class="row">
                 <table class="table table-striped">
