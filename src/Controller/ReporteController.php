@@ -26,13 +26,12 @@ class ReporteController extends AbstractController
      */
     public function index(AsistenciaRepository $asistenciaRepository): Response
     {
-//        $mesActual = "01-2021"; //Debug
-//        $totalAsistenciasMes = $asistenciaRepository->contarTodasAsistenciasMes($mesActual);
-        $totalAsistenciasMes = 0;
-        $this->listadoAsistencias = $asistenciaRepository->findAll();
+        $mesActual = "2021-01"; //Debug
+        $totalAsistenciasMes = $asistenciaRepository->contarTodasAsistenciasMes($mesActual);
+        $this->listadoAsistencias = $asistenciaRepository->listarAsistencias($mesActual);
         return $this->render('reporte/index.html.twig', [
             'asistencias' => $this->listaAsistencias,
-            'totalAsistenciasMes' => $totalAsistenciasMes,
+            'totalAsistenciasMes' => $totalAsistenciasMes[1],
         ]);
     }
 
