@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Asistencia;
 use App\Repository\AsistenciaRepository;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints\Date;
@@ -21,12 +22,18 @@ class ReporteController extends AbstractController
 
     /**
      * @Route("/", name="reporte_actual")
+     * @param Request $request
      * @param AsistenciaRepository $asistenciaRepository
      * @return Response
      */
-    public function index(AsistenciaRepository $asistenciaRepository): Response
+    public function index(Request $request, AsistenciaRepository $asistenciaRepository): Response
     {
         $mesActual = "2021-01"; //Debug
+        if ($request->isMethod('POST')){
+            $mes = $request->request->get('mes', 1);
+            $anio = $request->request->get('anio', 2021);
+            $mesActual = $anio."-".$mes;
+        }
         $totalAsistenciasMes = $asistenciaRepository->contarTodasAsistenciasMes($mesActual);
         $this->listadoAsistencias = $asistenciaRepository->listarAsistencias($mesActual);
         return $this->render('reporte/index.html.twig', [
