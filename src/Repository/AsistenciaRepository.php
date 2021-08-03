@@ -72,13 +72,12 @@ class AsistenciaRepository extends ServiceEntityRepository
      * @return \Doctrine\ORM\Query|null Contiene la lista de todas las asistencias del mes indicado.
      */
     public function listarAsistencias(string $mes){
+        $resultado = null;
+        $entityManager = $this->getEntityManager();
         try{
-            $resultado = $this->createQueryBuilder('a')
-                ->select('a')
-                ->where('a.fecha like \'%:mes%\'')
-                ->setParameter('mes', $mes)
-                ->orderBy('a.nombre', 'ASC')
-                ->getQuery();
+            $resultado = $entityManager
+                ->createQuery('SELECT a FROM App\Entity\Asistencia a WHERE a.fecha LIKE \'%'.$mes.'%\' ')
+                ->getResult();
         }catch(NoResultException $e){
             return null;
         }
