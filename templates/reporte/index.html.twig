@@ -54,25 +54,23 @@
                         <th>Cedula</th>
                         <th>Nombre</th>
                         <th>Apellido</th>
-                        <th>Hora T.</th>
+                        <th>Horas Trabajadas</th>
                     </tr>
                     </thead>
                     <tbody>
                     {% for i, asistencia in asistencias %}
                         <tr>
                             <td>{{ i + 1 }}</td>
-                            {% if asistencia.empleado is defined %}
-                                <td>{{ asistencia.empleado.cedula }}</td>
-                                <td>{{ asistencia.empleado.nombre|upper }}</td>
-                                <td>{{ asistencia.empleado.apellido|upper }}</td>
-                            {% endif %}
+                            <td>{{ asistencia.cedula }}</td>
+                            <td>{{ asistencia.nombre|upper }}</td>
+                            <td>{{ asistencia.apellido|upper }}</td>
                             {% if asistencia.horasTrabajadas is defined %}
                             <td>{{ asistencia.horasTrabajadas }}</td>
                             {% endif %}
                         </tr>
                     {% else %}
                         <tr>
-                            <td colspan="6">No se encontraron datos</td>
+                            <td colspan="6" class="text-center">No se encontraron datos</td>
                         </tr>
                     {% endfor %}
                     </tbody>
