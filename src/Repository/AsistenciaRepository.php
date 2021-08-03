@@ -23,13 +23,14 @@ class AsistenciaRepository extends ServiceEntityRepository
      * Este método permite contar todas las asistencias de los empleados.
      * @return integer Cantidad total de asistencias en el sistema.
      */
-    public function contarTodas(){
+    public function contarTodas(): int
+    {
         $entityManager = $this->getEntityManager();
         try{
             $resultado = $entityManager->createQuery('SELECT count(a.id) FROM App\Entity\Asistencia a')
-                ->getScalarResult();
+                ->getSingleScalarResult();
         }catch(NoResultException $e){
-            return null;
+            return 0;
         }
         return $resultado;
     }
@@ -37,15 +38,16 @@ class AsistenciaRepository extends ServiceEntityRepository
     /**
      * Este método permite contar todas las asistencias de los empleados para un mes especifico.
      * @param string $mes
-     * @return mixed[]|null Cantidad total de asistencias en el sistema.
+     * @return int Cantidad total de asistencias en el mes indicado en el sistema.
      */
-    public function contarTodasAsistenciasMes(string $mes){
+    public function contarTodasAsistenciasMes(string $mes): int
+    {
         $entityManager = $this->getEntityManager();
         $resultado = 0;
         try{
             $resultado = $entityManager
                 ->createQuery('SELECT count(a.id) FROM App\Entity\Asistencia a WHERE a.fecha LIKE \'%'.$mes.'%\' ')
-                ->getSingleResult();
+                ->getSingleScalarResult();
         }catch(NoResultException $e){
             return 0;
         }
@@ -69,17 +71,18 @@ class AsistenciaRepository extends ServiceEntityRepository
 
     /**
      * @param string $mes
-     * @return \Doctrine\ORM\Query|null Contiene la lista de todas las asistencias del mes indicado.
+     * @return array Contiene la lista de todas las asistencias del mes indicado.
      */
-    public function listarAsistencias(string $mes){
-        $resultado = null;
+    public function listarAsistencias(string $mes): array
+    {
+        $resultado = array();
         $entityManager = $this->getEntityManager();
         try{
             $resultado = $entityManager
                 ->createQuery('SELECT a FROM App\Entity\Asistencia a WHERE a.fecha LIKE \'%'.$mes.'%\' ')
-                ->getResult();
+                ->getArrayResult();  //getResult();
         }catch(NoResultException $e){
-            return null;
+            return array();
         }
         return $resultado;
     }

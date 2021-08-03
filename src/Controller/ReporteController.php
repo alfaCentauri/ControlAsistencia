@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Empleado;
 use App\Entity\Asistencia;
 use App\Repository\AsistenciaRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,6 +22,16 @@ class ReporteController extends AbstractController
     private $listaAsistencias;
 
     /**
+     * @var Asistencia
+     */
+    private $asistencia;
+
+    /**
+     * @var Empleado
+     */
+    private $empleado;
+
+    /**
      * @Route("/", name="reporte_actual")
      * @param Request $request
      * @param AsistenciaRepository $asistenciaRepository
@@ -33,31 +44,72 @@ class ReporteController extends AbstractController
             $mes = $request->request->get('mes', "01");
             $anio = $request->request->get('anio', "2021");
             $mesActual = $anio."-".$mes;
+//            $sesion = $request->getSession(); //Debug
+//            $sesion->set('fecha', $mesActual);
+            $this->addFlash('success','Usted ha seleccionado el reporte de fecha: '.$mes."-".$anio);
         }
+        //Busca los datos en la base de datos
         $totalAsistenciasMes = $asistenciaRepository->contarTodasAsistenciasMes($mesActual);
-        //Debug el reporte cantidades
-        throw new \Exception("Total de asistencias: ".$totalAsistenciasMes[1]);
+        $asistenciasEncontradas = $asistenciaRepository->listarAsistencias($mesActual);
+        //Prepara los datos para ser mostrados
+        $cantidadAsistencias = sizeof($asistenciasEncontradas);
+        for($i = 0; $i < $cantidadAsistencias; $i++){
+            $nodo = array();
+            //Recupera una asistencia
+            $this->asistencia = $asistenciasEncontradas[$i];
+            if ($this->asistencia != null){ //Valida el objeto
+                //Debug el reporte el listado
+//                var_dump($this->asistencia);
+//                throw new \Exception("EL objeto es: ");
 
-        $this->listadoAsistencias = $asistenciaRepository->listarAsistencias($mesActual);
+                $this->empleado = $this->asistencia.getEmpleado();
+                $nodo['cedula'] = $this->empleado.getCedula();
+                $nodo['nombre'] = $this->empleado.getNombre();
+                $nodo['apellido'] = $this->empleado.getApellido();
+                $nodo['horasTrabajadas'] = 0;
+                $this->listadoAsistencias [] = $nodo;
+            }
+        }
         return $this->render('reporte/index.html.twig', [
             'asistencias' => $this->listaAsistencias,
-            'totalAsistenciasMes' => $totalAsistenciasMes[1],
+            'totalAsistenciasMes' => $totalAsistenciasMes,
+            'fecha' => $mesActual,
         ]);
     }
 
     /**
-     * @Route("/{mesAnterior}/{anio}", name="reporte_anterior")
+     * @Route("/{mesAnterior}/{anio}", name="reporte_generate")
+     * @param Request $request
      * @param AsistenciaRepository $asistenciaRepository
-     * @param string $mesAnterior
      * @return Response
      */
-    public function anterior(AsistenciaRepository $asistenciaRepository, string $mesAnterior, string $anio): Response
+    public function anterior(Request $request, AsistenciaRepository $asistenciaRepository): Response
     {
-        $totalAsistenciasMes = $asistenciaRepository->contarTodasAsistenciasMes($mesAnterior);
-        $this->listadoAsistencias = $asistenciaRepository->listarAsistencias($mesAnterior);
+        $mesActual = "2021-01"; //Debug
+        if ($request->isMethod('POST')){
+            $mes = $request->request->get('mes', "01");
+            $anio = $request->request->get('anio', "2021");
+            $mesActual = $anio."-".$mes;
+            $sesion = $request->getSession();
+            $this->addFlash('success','Usted ha seleccionado el reporte de fecha: '.$mes."-".$anio);
+        }
+        $totalAsistenciasMes = $asistenciaRepository->contarTodasAsistenciasMes($mesActual);
+        $asistenciasEncontradas = $asistenciaRepository->listarAsistencias($mesActual);
+        $cantidadAsistencias = sizeof($asistenciasEncontradas);
+        for($i = 0; $i < $cantidadAsistencias; $i++){
+            $nodo = array();
+            $this->asistencia = $asistenciasEncontradas[$i];
+            $this->empleado = $this->asistencia.getEmpleado();
+            $nodo['cedula'] = $this->empleado.getCedula();
+            $nodo['nombre'] = $this->empleado.getNombre();
+            $nodo['apellido'] = $this->empleado.getApellido();
+            $nodo['horasTrabajadas'] = 0;
+            $this->listadoAsistencias [] = $nodo;
+        }
         return $this->render('reporte/index.html.twig', [
             'asistencias' => $this->listaAsistencias,
-            'totalAsistenciasMes' => $totalAsistenciasMes,
+            'totalAsistenciasMes' => $totalAsistenciasMes[1],
+            'fecha' => $mesActual,
         ]);
     }
 }
