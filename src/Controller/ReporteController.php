@@ -58,14 +58,10 @@ class ReporteController extends AbstractController
             //Recupera una asistencia
             $this->asistencia = $asistenciasEncontradas[$i];
             if ($this->asistencia != null){ //Valida el objeto
-                //Debug el reporte el listado
-//                var_dump($this->asistencia);
-//                throw new \Exception("EL objeto es: ");
-
-                $this->empleado = $this->asistencia.getEmpleado();
-                $nodo['cedula'] = $this->empleado.getCedula();
-                $nodo['nombre'] = $this->empleado.getNombre();
-                $nodo['apellido'] = $this->empleado.getApellido();
+                $this->empleado = $this->asistencia->getEmpleado();
+                $nodo['cedula'] = $this->empleado->getCedula();
+                $nodo['nombre'] = $this->empleado->getNombre();
+                $nodo['apellido'] = $this->empleado->getApellido();
                 $nodo['horasTrabajadas'] = 0;
                 $this->listadoAsistencias [] = $nodo;
             }

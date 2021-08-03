@@ -80,7 +80,7 @@ class AsistenciaRepository extends ServiceEntityRepository
         try{
             $resultado = $entityManager
                 ->createQuery('SELECT a FROM App\Entity\Asistencia a WHERE a.fecha LIKE \'%'.$mes.'%\' ')
-                ->getArrayResult();  //getResult();
+                ->getResult(); //getArrayResult();
         }catch(NoResultException $e){
             return array();
         }
