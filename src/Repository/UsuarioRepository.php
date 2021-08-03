@@ -36,23 +36,49 @@ class UsuarioRepository extends ServiceEntityRepository implements PasswordUpgra
         $this->_em->flush();
     }
 
-    // /**
-    //  * @return Usuario[] Returns an array of Usuario objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
+    /**
+     * Este método permite buscar un usuario o usuarios que contengan una
+     * palabra o cadena en cualquiera de sus campos.
+     * @return resultset Regresa una lista de usuarios.
+     */
+    public function buscarUsuarios(string $cadena){
+        $resultado = $this->getEntityManager()
+            ->createQuery('SELECT u FROM App:Usuario u where '
+                .'u.nombre like \'%'.$cadena.'%\' or u.apellido like \'%'
+                .$cadena.'%\' or u.email like \'%'.$cadena.'%\' '
+                . 'ORDER BY u.cedula ASC')
+            ->getResult();
+        return $resultado;
+    }
+
+    /**
+     * Este método regresa una cantidad de registros indicados por el parametro
+     * $fin desde la posición del parametro $inicio.
+     * @param int $inicio
+     * @param int $fin
+     * @return Usuario[] Returns an array of Usuario objects
+     */
+    public function paginarUsuarios(int $inicio, int $fin){
         return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('u.id', 'ASC')
-            ->setMaxResults(10)
+            ->orderBy('u.nombre', 'ASC')
+            ->setFirstResult($inicio)
+            ->setMaxResults($fin)
             ->getQuery()
             ->getResult()
-        ;
+            ;
     }
-    */
 
+    /**
+     * Cuenta la cantidad de registros almacenados.
+     * @return int Cantidad total de usuarios.
+     */
+    public function contarTodos(): int
+    {
+        return $this->createQueryBuilder('u')
+            ->select('count(u.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
     /*
     public function findOneBySomeField($value): ?Usuario
     {

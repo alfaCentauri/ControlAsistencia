@@ -21,14 +21,38 @@ class UsuarioController extends AbstractController
     private $usuario;
 
     /**
-     * @Route("/", name="usuario_index", methods={"GET"})
+     * @var array
+     */
+    private $listaUsuarios;
+
+    /**
+     * @Route("/{pag}", name="usuario_index", methods={"GET","POST"})
+     * @param Request $request
+     * @param int $pag
      * @param UsuarioRepository $usuarioRepository
      * @return Response
      */
-    public function index(UsuarioRepository $usuarioRepository): Response
+    public function index(Request $request, int $pag = 1, UsuarioRepository $usuarioRepository): Response
     {
+        $palabra = $request->request->get('buscar', null);
+        $inicio = ($pag-1)*10;
+        $paginas = 1;
+        if(!$palabra){
+            $total = $usuarioRepository->contarTodos();
+            if($total>10){
+                $paginas = ceil( $total/10 );
+            }
+            $this->listaUsuarios = $usuarioRepository->paginarUsuarios($inicio, 10);
+        }
+        else{
+            $this->addFlash('info', 'Buscando: '.$palabra);
+            $this->listaUsuarios = $usuarioRepository->buscarUsuarios($palabra);
+            $total = sizeof($this->listaUsuarios);
+        }
         return $this->render('usuario/index.html.twig', [
-            'usuarios' => $usuarioRepository->findAll(),
+            'usuarios' => $this->listaUsuarios,
+            'paginaActual' => $pag,
+            'total' => $paginas,
         ]);
     }
 

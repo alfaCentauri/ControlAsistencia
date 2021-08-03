@@ -10,6 +10,7 @@
             <h1>Listado de Usuarios</h1>
         </div>
         <div class="card-body">
+            {% include('usuario/buscador.html.twig') %}
             <div class="row">
                 <div class="offset-sm-6 offset-md-9 offset-lg-10 col-sm-6 col-md-3 col-lg-2">
                     <a href="{{ path('usuario_new') }}">
@@ -74,7 +75,7 @@
                     </tbody>
                 </table>
             </div>
-            {# Paginador #}
+            {% include('usuario/paginador.html.twig') %}
         </div>
     </div>
 </div>

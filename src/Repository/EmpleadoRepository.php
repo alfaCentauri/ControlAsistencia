@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Empleado;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use phpDocumentor\Reflection\Types\Integer;
 
 /**
  * @method Empleado|null find($id, $lockMode = null, $lockVersion = null)
@@ -21,9 +22,10 @@ class EmpleadoRepository extends ServiceEntityRepository
 
     /**
      * Este método permite contar todos los empleados.
-     * @return integer Cantidad total de empleados registrados en el sistema.
+     * @return Integer Cantidad total de empleados registrados en el sistema.
      */
-    public function contarTodos(){
+    public function contarTodos(): Integer
+    {
         $qb = $this->getEntityManager()->createQueryBuilder('empleado');
         return $qb->select($qb->expr()->count('empleado.id'))
             ->from('Empleado','empleado')
@@ -37,7 +39,8 @@ class EmpleadoRepository extends ServiceEntityRepository
      * @param int $fin Cantidad de registros ha buscar.
      * @return array Arreglo con el resultado de la busqueda.
      */
-    public function paginarEmpleados($inicio, $fin){
+    public function paginarEmpleados($inicio, $fin): array
+    {
         $resultado = $this->getEntityManager()
             ->createQuery('SELECT E FROM Empleado E ORDER BY E.cedula ASC')
             ->setFirstResult($inicio)

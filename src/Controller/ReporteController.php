@@ -74,7 +74,7 @@ class ReporteController extends AbstractController
             $nodo['nombre'] = $this->empleado->getNombre();
             $nodo['apellido'] = $this->empleado->getApellido();
             $intervaloTiempo = $this->asistencia->getHoraSalida()->diff($this->asistencia->getHoraEntrada());
-            $nodo['horasTrabajadas'] = $intervaloTiempo->format("%h:%i");
+            $nodo['horasTrabajadas'] = $intervaloTiempo->format("%h horas con %i minutos");
             $this->listaAsistencias []= $nodo;
         }
     }
