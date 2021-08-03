@@ -28,13 +28,21 @@
                 <div class="input-group mb-3">
                     <select  id="hora" name="hora" class="form-control" title="Indica la hora de entrada">
                         {% for i in 0..23 %}
-                        <option value="{{ i }}">{{ i }}</option>
+                            {% if i < 10 %}
+                                <option value="0{{ i }}">0{{ i }}</option>
+                            {% else %}
+                                <option value="{{ i }}">{{ i }}</option>
+                            {% endif %}
                         {% endfor %}
                     </select>
                     <span class="input-group-text">:</span>
                     <select  id="minutos" name="minutos" class="form-control" title="Indique los minutos de la entrada">
                         {% for i in 0..59 %}
-                            <option value="{{ i }}">{{ i }}</option>
+                            {% if i < 10 %}
+                                <option value="0{{ i }}">0{{ i }}</option>
+                            {% else %}
+                                <option value="{{ i }}">{{ i }}</option>
+                            {% endif %}
                         {% endfor %}
                     </select>
                 </div>

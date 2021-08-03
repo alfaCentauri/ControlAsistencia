@@ -30,11 +30,14 @@ class ReporteController extends AbstractController
     {
         $mesActual = "2021-01"; //Debug
         if ($request->isMethod('POST')){
-            $mes = $request->request->get('mes', 1);
-            $anio = $request->request->get('anio', 2021);
+            $mes = $request->request->get('mes', "01");
+            $anio = $request->request->get('anio', "2021");
             $mesActual = $anio."-".$mes;
         }
         $totalAsistenciasMes = $asistenciaRepository->contarTodasAsistenciasMes($mesActual);
+        //Debug el reporte cantidades
+        throw new \Exception("Total de asistencias: ".$totalAsistenciasMes[1]);
+
         $this->listadoAsistencias = $asistenciaRepository->listarAsistencias($mesActual);
         return $this->render('reporte/index.html.twig', [
             'asistencias' => $this->listaAsistencias,

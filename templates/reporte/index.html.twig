@@ -19,7 +19,11 @@
                         <div class="col-sm-3 col-md-1 col-lg-1">
                             <select id="mes" name="mes" class="form-control" title="Indica el mes">
                                 {% for i in 1..12 %}
-                                    <option value="{{ i }}">{{ i }}</option>
+                                    {% if i < 10 %}
+                                        <option value="0{{ i }}">0{{ i }}</option>
+                                    {% else %}
+                                        <option value="{{ i }}">{{ i }}</option>
+                                    {% endif %}
                                 {% endfor %}
                             </select>
                         </div>
