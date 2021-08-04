@@ -29,16 +29,32 @@ class AsistenciaController extends AbstractController
     /**
      * @Route("/{pag}", name="asistencia_index")
      *
+     * @param Request $request
+     * @param int $pag
      * @param AsistenciaRepository $asistenciaRepository
      * @return Response
      */
-    public function index(AsistenciaRepository $asistenciaRepository): Response
+    public function index(Request $request, int $pag = 1, AsistenciaRepository $asistenciaRepository): Response
     {
-        $total = $asistenciaRepository->contarTodas();
-        $listadoAsistencias = $asistenciaRepository->findAll();
+        $this->listaEmpleados = null;
+        $palabra = $request->request->get('buscar', null);
+        $inicio = ($pag-1)*10;
+        $paginas = 1;
+        if(!$palabra) {
+            $total = $asistenciaRepository->contarTodas();
+            if($total>10){
+                $paginas = ceil( $total/10 );
+            }
+            $listadoAsistencias = $asistenciaRepository->paginarAsistencias($inicio, 10);
+        }
+        else {
+            $this->addFlash('info', 'Buscando: '.$palabra);
+            $this->listaEmpleados = $asistenciaRepository->buscar($palabra);
+        }
         return $this->render('asistencia/index.html.twig', [
-            'totalAsistencias' => $total,
             'asistencias' => $listadoAsistencias,
+            'paginaActual' => $pag,
+            'total' => $paginas,
         ]);
     }
 
@@ -85,7 +101,7 @@ class AsistenciaController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="asistencia_show")
+     * @Route("/{id}/show", name="asistencia_show")
      *
      * @param Asistencia $asistencia
      * @return Response

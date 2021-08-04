@@ -61,12 +61,13 @@ class AsistenciaRepository extends ServiceEntityRepository
      * @return array Arreglo con el resultado de la busqueda.
      */
     public function paginarAsistencias($inicio, $fin){
-        $resultado = $this->getEntityManager()
-            ->createQuery('SELECT a FROM Asistencia a ORDER BY a.id ASC')
+        return $this->createQueryBuilder('a')
+            ->orderBy('a.id', 'ASC')
             ->setFirstResult($inicio)
             ->setMaxResults($fin)
-            ->getResult();
-        return $resultado;
+            ->getQuery()
+            ->getResult()
+            ;
     }
 
     /**
