@@ -101,15 +101,18 @@ class ReporteController extends AbstractController
         $cantidadListado = $this->calcularItemsListado();
         if($cantidadListado > 0){ //Existen items en la lista
             for ($j = 0; $j < $cantidadListado; $j++){
-                $nodoActual = $this->listaAsistencias[$j];
-                if($nodoActual['cedula'] == $this->empleado->getCedula()){
-                    $intervaloTiempo = $this->asistencia->getHoraSalida()->diff($this->asistencia->getHoraEntrada());
+                $currentNode = $this->listaAsistencias[$j];
+                if($currentNode['cedula'] == $this->empleado->getCedula()){
+                    $timeInterval = $this->asistencia->getHoraSalida()->diff($this->asistencia->getHoraEntrada());
+                    date_default_timezone_set("America/Caracas");
                     $fecha = new \DateTime("now");
-                    $fecha->add( $nodoActual['intervaloTiempo'] );
-                    $fecha->add($intervaloTiempo);
-                    //Debug
-                    var_dump($fecha);
-                    throw new \Exception("Objeto Fecha: ".$fecha->format("d-m-y h:m"));
+                    $fechaInicial = new \DateTime("now");
+                    $fecha->add( $currentNode['intervaloTiempo'] );
+                    $fecha->add($timeInterval);
+                    //Now get diff
+                    $newTimeInterval = $fecha->diff($fechaInicial);
+                    $currentNode['intervaloTiempo'] = $newTimeInterval;
+                    $currentNode['horasTrabajadas'] = $newTimeInterval->format("%h horas con %i minutos");
                 }
                 else{
                     $this->addItemToList();
@@ -143,9 +146,9 @@ class ReporteController extends AbstractController
         $nodo['cedula'] = $this->empleado->getCedula();
         $nodo['nombre'] = $this->empleado->getNombre();
         $nodo['apellido'] = $this->empleado->getApellido();
-        $intervaloTiempo = $this->asistencia->getHoraSalida()->diff($this->asistencia->getHoraEntrada());
-        $nodo['intervaloTiempo'] = $intervaloTiempo;
-        $nodo['horasTrabajadas'] = $intervaloTiempo->format("%h horas con %i minutos");
+        $timeInterval = $this->asistencia->getHoraSalida()->diff($this->asistencia->getHoraEntrada());
+        $nodo['intervaloTiempo'] = $timeInterval;
+        $nodo['horasTrabajadas'] = $timeInterval->format("%h horas con %i minutos");
         $this->listaAsistencias []= $nodo;
     }
 }

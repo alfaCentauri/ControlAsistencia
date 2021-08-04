@@ -79,6 +79,7 @@ class AsistenciaController extends AbstractController
                 if ($empleado){
                     $this->asistencia->setUserId(1);//debug
                     $this->asistencia->setEmpleado($empleado);
+                    date_default_timezone_set("America/Caracas");
                     $this->asistencia->setFecha(new \DateTime());
                     $this->asistencia->setHoraEntrada(new \DateTime($horaEntrada.':'.$minutosEntrada));
                     $this->asistencia->setHoraSalida(new \DateTime($horaEntrada.':'.$minutosEntrada));
