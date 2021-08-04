@@ -27,7 +27,7 @@ class AsistenciaController extends AbstractController
     private $listaEmpleados;
 
     /**
-     * @Route("/", name="asistencia_index")
+     * @Route("/{pag}", name="asistencia_index")
      *
      * @param AsistenciaRepository $asistenciaRepository
      * @return Response

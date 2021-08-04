@@ -5,17 +5,17 @@
         <!-- Botones de navegación -->
         <ul class="pagination">
             {% if (paginaActual-1)>0 %}
-                <li><a href="{{ path('usuario_index', {'pag': (paginaActual-1)}) }}">&laquo;</a></li>
+                <li><a href="{{ path('empleado_index', {'pag': (paginaActual-1)}) }}" class="btn btn-light">&laquo;</a></li>
             {% endif %}
             {% for i in 1..total %}
                 {% if paginaActual == i %}
-                    <li><a href="{{ path('usuario_index', {'pag': i}) }}" class="paginaActual">{{ i }}</a></li>
+                    <li><a href="{{ path('empleado_index', {'pag': i}) }}" class="btn btn-dark">{{ i }}</a> </li>
                 {% else %}
-                    <li><a href="{{ path('usuario_index', {'pag': i}) }}" class="">{{ i }}</a></li>
+                    <li><a href="{{ path('empleado_index', {'pag': i}) }}" class="btn btn-light">{{ i }}</a> </li>
                 {% endif %}
             {% endfor %}
             {% if (paginaActual+1)<=total %}
-                <li><a href="{{ path('usuario_index', {'pag': (paginaActual+1)}) }}">&raquo;</a></li>
+                <li><a href="{{ path('empleado_index', {'pag': (paginaActual+1)}) }}" class="btn btn-light">&raquo;</a></li>
             {% endif %}
         </ul>
     </div>

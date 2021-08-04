@@ -95,7 +95,7 @@
                     {% if (empleado is defined) and (empleado != null) %}
                     <a href="{{ path('asistencia_new') }}" class="btn btn-primary">{{ button_label|default('Guardar') }}</a>
                     {% endif %}
-                    <a href="{{ path('asistencia_index') }}" class="btn btn-secondary">
+                    <a href="{{ path('asistencia_index', {'pag': 1}) }}" class="btn btn-secondary">
                         <i class="bi bi-back"></i>Regresar
                     </a>
                 </div>

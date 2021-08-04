@@ -82,7 +82,7 @@ class UsuarioController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="usuario_show", methods={"GET"})
+     * @Route("/{id}/show", name="usuario_show", methods={"GET"})
      * @param Usuario $usuario
      * @return Response
      */

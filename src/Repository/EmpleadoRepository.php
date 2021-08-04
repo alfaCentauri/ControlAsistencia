@@ -22,13 +22,12 @@ class EmpleadoRepository extends ServiceEntityRepository
 
     /**
      * Este método permite contar todos los empleados.
-     * @return Integer Cantidad total de empleados registrados en el sistema.
+     * @return int Cantidad total de empleados registrados en el sistema.
      */
-    public function contarTodos(): Integer
+    public function contarTodos(): int
     {
-        $qb = $this->getEntityManager()->createQueryBuilder('empleado');
-        return $qb->select($qb->expr()->count('empleado.id'))
-            ->from('Empleado','empleado')
+        return $this->createQueryBuilder('E')
+            ->select('count(E.id)')
             ->getQuery()
             ->getSingleScalarResult();
     }
@@ -41,28 +40,27 @@ class EmpleadoRepository extends ServiceEntityRepository
      */
     public function paginarEmpleados($inicio, $fin): array
     {
-        $resultado = $this->getEntityManager()
-            ->createQuery('SELECT E FROM Empleado E ORDER BY E.cedula ASC')
+        return $this->createQueryBuilder('E')
+            ->orderBy('E.nombre', 'ASC')
             ->setFirstResult($inicio)
             ->setMaxResults($fin)
-            ->getResult();
-        return $resultado;
-    }
-
-     /**
-      * @return Empleado[] Returns an array of Empleado objects
-      */
-    public function buscar($value)
-    {
-        return $this->createQueryBuilder('e')
-            ->where('e.cedula like :%val%')
-            ->andWhere('e.nombre like :%val%')
-            ->andWhere('e.apellido like :%val%')
-            ->setParameter('val', $value)
-            ->orderBy('e.id', 'ASC')
             ->getQuery()
             ->getResult()
-        ;
+            ;
+    }
+
+    /**
+     * @param string $value
+     * @return Empleado[] Returns an array of Empleado objects
+     */
+    public function buscar(string $value)
+    {
+        $resultado = $this->getEntityManager()
+            ->createQuery('SELECT E FROM App:Empleado E where '
+                .'E.nombre like \'%'.$value.'%\' or E.apellido like \'%'
+                .$value.'%\' ORDER BY E.cedula ASC')
+            ->getResult();
+        return $resultado;
     }
 
     /**

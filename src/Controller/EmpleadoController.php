@@ -21,17 +21,23 @@ class EmpleadoController extends AbstractController
     private $listaEmpleados;
 
     /**
-     * @Route("/", name="empleado_index", methods={"GET"})
+     * @Route("/{pag}", name="empleado_index", methods={"GET","POST"})
      * @param Request $request
      * @param EmpleadoRepository $empleadoRepository
      * @return Response
      */
-    public function index(Request $request, EmpleadoRepository $empleadoRepository): Response
+    public function index(Request $request, int $pag = 1, EmpleadoRepository $empleadoRepository): Response
     {
-        $palabra = $request->request->get('palabra', null);
         $this->listaEmpleados = null;
+        $palabra = $request->request->get('buscar', null);
+        $inicio = ($pag-1)*10;
+        $paginas = 1;
         if(!$palabra){
-            $this->listaEmpleados = $empleadoRepository->findAll();
+            $total = $empleadoRepository->contarTodos();
+            if($total>10){
+                $paginas = ceil( $total/10 );
+            }
+            $this->listaEmpleados = $empleadoRepository->paginarEmpleados($inicio, 10);
         }
         else {
             $this->addFlash('info', 'Buscando: '.$palabra);
@@ -39,11 +45,15 @@ class EmpleadoController extends AbstractController
         }
         return $this->render('empleado/index.html.twig', [
             'empleados' => $this->listaEmpleados,
+            'paginaActual' => $pag,
+            'total' => $paginas,
         ]);
     }
 
     /**
      * @Route("/new", name="empleado_new", methods={"GET","POST"})
+     * @param Request $request
+     * @return Response
      */
     public function new(Request $request): Response
     {
@@ -66,7 +76,7 @@ class EmpleadoController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="empleado_show", methods={"GET"})
+     * @Route("/{id}/show", name="empleado_show", methods={"GET"})
      */
     public function show(Empleado $empleado): Response
     {
