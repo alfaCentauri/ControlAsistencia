@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints\Date;
+use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
@@ -79,23 +80,72 @@ class ReporteController extends AbstractController
     }
 
     /**
-     * Prepara los datos para ser mostrados en la vista como una tabla.
-     * @param $asistenciasEncontradas
+     * Recupera los datos del empleado, sus asistecias y las prepara los datos para ser mostrados en la vista como una
+     * tabla.
      */
     private function prepararListadoParaVista(): void
     {
         $cantidadAsistencias = sizeof($this->listaAsistenciasEncontradas);
         for($i = 0; $i < $cantidadAsistencias; $i++){
-            $nodo = array();
-            //Recupera una asistencia
             $this->asistencia = $this->listaAsistenciasEncontradas[$i];
             $this->empleado = $this->asistencia->getEmpleado();
-            $nodo['cedula'] = $this->empleado->getCedula();
-            $nodo['nombre'] = $this->empleado->getNombre();
-            $nodo['apellido'] = $this->empleado->getApellido();
-            $intervaloTiempo = $this->asistencia->getHoraSalida()->diff($this->asistencia->getHoraEntrada());
-            $nodo['horasTrabajadas'] = $intervaloTiempo->format("%h horas con %i minutos");
-            $this->listaAsistencias []= $nodo;
+            $this->addingDataToList();
         }
+    }
+
+    /**
+     * Agregando datos al listado
+     */
+    private function addingDataToList(): void
+    {
+        $cantidadListado = $this->calcularItemsListado();
+        if($cantidadListado > 0){ //Existen items en la lista
+            for ($j = 0; $j < $cantidadListado; $j++){
+                $nodoActual = $this->listaAsistencias[$j];
+                if($nodoActual['cedula'] == $this->empleado->getCedula()){
+                    $intervaloTiempo = $this->asistencia->getHoraSalida()->diff($this->asistencia->getHoraEntrada());
+                    $fecha = new DateTime("now");
+                    date_add($fecha, new \DateInterval($intervaloTiempo));
+
+                    //Debug
+                    var_dump($fecha);
+                    throw new \Exception("Objeto Fecha: ");
+                }
+                else{
+                    $this->addItemToList();
+                }
+            }
+        }
+        else{
+            $this->addItemToList();
+        }
+    }
+
+    /**
+     * Calcular cantidad de items en el listado.
+     * @return int Regresa un entero.
+     */
+    private function calcularItemsListado(): int
+    {
+        $cantidadItemsListado = 0;
+        if(isset($this->listaAsistencias))
+            $cantidadItemsListado = sizeof($this->listaAsistencias);
+
+        return $cantidadItemsListado;
+    }
+
+    /**
+     * Agrega un item a la lista.
+     */
+    private function addItemToList(): void
+    {
+        $nodo = array();
+        $nodo['cedula'] = $this->empleado->getCedula();
+        $nodo['nombre'] = $this->empleado->getNombre();
+        $nodo['apellido'] = $this->empleado->getApellido();
+        $intervaloTiempo = $this->asistencia->getHoraSalida()->diff($this->asistencia->getHoraEntrada());
+        $nodo['intervaloTiempo'] = $intervaloTiempo;
+        $nodo['horasTrabajadas'] = $intervaloTiempo->format("%h horas con %i minutos");
+        $this->listaAsistencias []= $nodo;
     }
 }
