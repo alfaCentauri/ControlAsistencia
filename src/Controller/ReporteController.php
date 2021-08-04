@@ -37,7 +37,7 @@ class ReporteController extends AbstractController
     private $empleado;
 
     /**
-     * @Route("/{pag}", name="reporte_actual", requirements={"pag"="\d+"})
+     * @Route("/{pag}", name="reporte_actual", methods={"GET","POST"}, requirements={"pag"="\d+"})
      * @param Request $request
      * @param int $pag
      * @param AsistenciaRepository $asistenciaRepository
