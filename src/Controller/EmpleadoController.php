@@ -66,7 +66,7 @@ class EmpleadoController extends AbstractController
             $entityManager->persist($empleado);
             $entityManager->flush();
             $this->addFlash('success','El empleado fue agregado exitosamente.!');
-            return $this->redirectToRoute('empleado_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('empleado_index', ['pag' => 1], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('empleado/new.html.twig', [

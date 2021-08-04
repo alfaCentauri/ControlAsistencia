@@ -134,7 +134,7 @@ class UsuarioController extends AbstractController
             else{
                 $this->addFlash('danger','El usuario no pudo ser borrado. ');
             }
-        return $this->redirectToRoute('usuario_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('usuario_index', ['pag' => 1], Response::HTTP_SEE_OTHER);
     }
 
     /**

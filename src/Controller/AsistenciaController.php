@@ -89,7 +89,7 @@ class AsistenciaController extends AbstractController
                 else{
                     $this->addFlash('warning','La asistencia del empleado no pudo ser agregada. ');
                 }
-                return $this->redirectToRoute('asistencia_index', [], Response::HTTP_SEE_OTHER);
+                return $this->redirectToRoute('asistencia_index', ['pag' => 1]);
             }
         }
         else{
