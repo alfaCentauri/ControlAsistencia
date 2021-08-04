@@ -104,12 +104,12 @@ class ReporteController extends AbstractController
                 $nodoActual = $this->listaAsistencias[$j];
                 if($nodoActual['cedula'] == $this->empleado->getCedula()){
                     $intervaloTiempo = $this->asistencia->getHoraSalida()->diff($this->asistencia->getHoraEntrada());
-                    $fecha = new DateTime("now");
-                    date_add($fecha, new \DateInterval($intervaloTiempo));
-
+                    $fecha = new \DateTime("now");
+                    $fecha->add( $nodoActual['intervaloTiempo'] );
+                    $fecha->add($intervaloTiempo);
                     //Debug
                     var_dump($fecha);
-                    throw new \Exception("Objeto Fecha: ");
+                    throw new \Exception("Objeto Fecha: ".$fecha->format("d-m-y h:m"));
                 }
                 else{
                     $this->addItemToList();
