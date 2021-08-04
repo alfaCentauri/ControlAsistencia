@@ -45,28 +45,30 @@ class ReporteController extends AbstractController
      */
     public function index(Request $request, int $pag = 1, AsistenciaRepository $asistenciaRepository): Response
     {
+        $sesion = $request->getSession();
         $this->listadoAsistencias = array();
-        $mesActual = "2021-01";
+        $fecha = $sesion->get("fecha", "2021-01");
+        if ($request->isMethod('POST')){
+            $mes = $request->request->get('mes', "01");
+            $anio = $request->request->get('anio', "2021");
+            $fecha = $anio."-".$mes;
+            $this->addFlash('success','Usted ha seleccionado el reporte de fecha: '.$mes."-".$anio);
+            $sesion->set('fecha', $fecha);
+        }
         $palabra = $request->request->get('buscar', null);
         $inicio = ($pag-1)*10;
         $paginas = 1;
         if(!$palabra){
-            $total = $asistenciaRepository->contarTodasAsistenciasMes($mesActual);
+            $total = $asistenciaRepository->contarTodasAsistenciasMes($fecha);
             if($total>10){
                 $paginas = ceil( $total/10 );
             }
-            $this->listaAsistenciasEncontradas = $asistenciaRepository->listarAsistencias($mesActual, $inicio, 10);
+            $this->listaAsistenciasEncontradas = $asistenciaRepository->listarAsistencias($fecha, $inicio, 10);
         }
         else{
             $this->addFlash('info', 'Buscando: '.$palabra);
-            $this->listaAsistenciasEncontradas = $asistenciaRepository->buscar($mesActual, $palabra);
+            $this->listaAsistenciasEncontradas = $asistenciaRepository->buscar($fecha, $palabra);
             $total = sizeof($this->listaAsistenciasEncontradas);
-        }
-        if ($request->isMethod('POST')){
-            $mes = $request->request->get('mes', "01");
-            $anio = $request->request->get('anio', "2021");
-            $mesActual = $anio."-".$mes;
-            $this->addFlash('success','Usted ha seleccionado el reporte de fecha: '.$mes."-".$anio);
         }
         $this->prepararListadoParaVista();
         return $this->render('reporte/index.html.twig', [
