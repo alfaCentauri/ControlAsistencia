@@ -21,7 +21,7 @@ class EmpleadoController extends AbstractController
     private $listaEmpleados;
 
     /**
-     * @Route("/{pag}", name="empleado_index", methods={"GET","POST"})
+     * @Route("/{pag}", name="empleado_index", methods={"GET","POST"}, requirements={"pag"="\d+"})
      * @param Request $request
      * @param EmpleadoRepository $empleadoRepository
      * @return Response

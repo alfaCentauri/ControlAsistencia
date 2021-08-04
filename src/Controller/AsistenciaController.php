@@ -27,10 +27,10 @@ class AsistenciaController extends AbstractController
     private $listaEmpleados;
 
     /**
-     * @Route("/{pag}", name="asistencia_index")
+     * @Route("/{pag}", name="asistencia_index", requirements={"pag"="\d+"})
      *
      * @param Request $request
-     * @param int $pag
+     * @param int $pag Indica el numero de página
      * @param AsistenciaRepository $asistenciaRepository
      * @return Response
      */

@@ -26,7 +26,7 @@ class UsuarioController extends AbstractController
     private $listaUsuarios;
 
     /**
-     * @Route("/{pag}", name="usuario_index", methods={"GET","POST"})
+     * @Route("/{pag}", name="usuario_index", methods={"GET","POST"}, requirements={"pag"="\d+"})
      * @param Request $request
      * @param int $pag
      * @param UsuarioRepository $usuarioRepository

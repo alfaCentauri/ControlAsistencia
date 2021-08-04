@@ -22,6 +22,11 @@ class ReporteController extends AbstractController
     private $listaAsistencias;
 
     /**
+     * @var Asistencia[]
+     */
+    private $listaAsistenciasEncontradas;
+
+    /**
      * @var Asistencia
      */
     private $asistencia;
@@ -32,29 +37,42 @@ class ReporteController extends AbstractController
     private $empleado;
 
     /**
-     * @Route("/", name="reporte_actual")
+     * @Route("/{pag}", name="reporte_actual", requirements={"pag"="\d+"})
      * @param Request $request
+     * @param int $pag
      * @param AsistenciaRepository $asistenciaRepository
      * @return Response
      */
-    public function index(Request $request, AsistenciaRepository $asistenciaRepository): Response
+    public function index(Request $request, int $pag = 1, AsistenciaRepository $asistenciaRepository): Response
     {
         $this->listadoAsistencias = array();
-        $mesActual = "2021-01"; //Debug
+        $mesActual = "2021-01";
+        $palabra = $request->request->get('buscar', null);
+        $inicio = ($pag-1)*10;
+        $paginas = 1;
+        if(!$palabra){
+            $total = $asistenciaRepository->contarTodasAsistenciasMes($mesActual);
+            if($total>10){
+                $paginas = ceil( $total/10 );
+            }
+            $this->listaAsistenciasEncontradas = $asistenciaRepository->listarAsistencias($mesActual, $inicio, 10);
+        }
+        else{
+            $this->addFlash('info', 'Buscando: '.$palabra);
+            $this->listaAsistenciasEncontradas = $asistenciaRepository->buscar($mesActual, $palabra);
+            $total = sizeof($this->listaAsistenciasEncontradas);
+        }
         if ($request->isMethod('POST')){
             $mes = $request->request->get('mes', "01");
             $anio = $request->request->get('anio', "2021");
             $mesActual = $anio."-".$mes;
             $this->addFlash('success','Usted ha seleccionado el reporte de fecha: '.$mes."-".$anio);
         }
-        //Busca los datos en la base de datos
-        $totalAsistenciasMes = $asistenciaRepository->contarTodasAsistenciasMes($mesActual);
-        $asistenciasEncontradas = $asistenciaRepository->listarAsistencias($mesActual);
-        $this->prepararListadoParaVista($asistenciasEncontradas);
+        $this->prepararListadoParaVista();
         return $this->render('reporte/index.html.twig', [
             'asistencias' => $this->listaAsistencias,
-            'totalAsistenciasMes' => $totalAsistenciasMes,
-            'fecha' => $mesActual,
+            'paginaActual' => $pag,
+            'total' => $paginas,
         ]);
     }
 
@@ -62,13 +80,13 @@ class ReporteController extends AbstractController
      * Prepara los datos para ser mostrados en la vista como una tabla.
      * @param $asistenciasEncontradas
      */
-    private function prepararListadoParaVista($asistenciasEncontradas): void
+    private function prepararListadoParaVista(): void
     {
-        $cantidadAsistencias = sizeof($asistenciasEncontradas);
+        $cantidadAsistencias = sizeof($this->listaAsistenciasEncontradas);
         for($i = 0; $i < $cantidadAsistencias; $i++){
             $nodo = array();
             //Recupera una asistencia
-            $this->asistencia = $asistenciasEncontradas[$i];
+            $this->asistencia = $this->listaAsistenciasEncontradas[$i];
             $this->empleado = $this->asistencia->getEmpleado();
             $nodo['cedula'] = $this->empleado->getCedula();
             $nodo['nombre'] = $this->empleado->getNombre();

@@ -74,14 +74,37 @@ class AsistenciaRepository extends ServiceEntityRepository
      * @param string $mes
      * @return array Contiene la lista de todas las asistencias del mes indicado.
      */
-    public function listarAsistencias(string $mes): array
+    public function listarAsistencias(string $mes, int $inicio = 1, int $fin = 10): array
     {
         $resultado = array();
         $entityManager = $this->getEntityManager();
         try{
             $resultado = $entityManager
                 ->createQuery('SELECT a FROM App\Entity\Asistencia a WHERE a.fecha LIKE \'%'.$mes.'%\' ')
-                ->getResult(); //getArrayResult();
+                ->setFirstResult($inicio)
+                ->setMaxResults($fin)
+                ->getResult();
+        }catch(NoResultException $e){
+            return array();
+        }
+        return $resultado;
+    }
+
+    /**
+     * @param string $mes Mes y año a buscar.
+     * @param string $cadena Nombre o Apellido del empleado.
+     * @return array Contiene la lista de todas las asistencias del mes indicado.
+     */
+    public function buscar(string $mes, string $cadena, int $inicio = 1, int $fin = 10): array
+    {
+        $resultado = array();
+        $entityManager = $this->getEntityManager();
+        try{
+            $resultado = $entityManager
+                ->createQuery('SELECT a FROM App\Entity\Asistencia a WHERE a.fecha LIKE \'%'.$mes.'%\' ')
+                ->setFirstResult($inicio)
+                ->setMaxResults($fin)
+                ->getResult();
         }catch(NoResultException $e){
             return array();
         }
