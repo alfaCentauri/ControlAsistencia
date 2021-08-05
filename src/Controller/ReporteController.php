@@ -93,8 +93,8 @@ class ReporteController extends AbstractController
     private function prepararListadoParaVista(): void
     {
         $cantidadAsistencias = sizeof($this->listaAsistenciasEncontradas);
+        $entityManager = $this->getDoctrine()->getManager();
         for($i = 0; $i < $cantidadAsistencias; $i++){
-            $entityManager = $this->getDoctrine()->getManager();
             $nodoActual = $this->listaAsistenciasEncontradas[$i];
             $this->empleado = $entityManager->getRepository(Empleado::class)->find($nodoActual['empleado_id']);
             $this->addItemToList($nodoActual);
@@ -112,13 +112,18 @@ class ReporteController extends AbstractController
         $nodo['nombre'] = $this->empleado->getNombre();
         $nodo['apellido'] = $this->empleado->getApellido();
         $cantidaLetras = strlen($currentNode['horasTrabajadas']);
-        if($cantidaLetras == 6) {
-            $nodo['horasTrabajadas'] = substr($currentNode['horasTrabajadas'], 0, 2) . " horas con "
-                . substr($currentNode['horasTrabajadas'], 2, 2)." minutos";
+        if($cantidaLetras >= 5){
+            $digitosHora = $cantidaLetras - 4;
+            $nodo['horasTrabajadas'] = substr($currentNode['horasTrabajadas'], 0, $digitosHora) . " horas con "
+                . substr($currentNode['horasTrabajadas'], -4, 2)." minutos";
+        }
+        elseif($cantidaLetras >= 3 && $cantidaLetras < 5 ) {
+            $digitosMinutos = $cantidaLetras - 2;
+            $nodo['horasTrabajadas'] = "0 horas con "
+                .substr($currentNode['horasTrabajadas'],-4,$digitosMinutos)." minutos";
         }
         else{
-            $nodo['horasTrabajadas'] = substr($currentNode['horasTrabajadas'],0,1)." horas con "
-                .substr($currentNode['horasTrabajadas'],-4,2)." minutos";
+            $nodo['horasTrabajadas'] = "0 horas con 0 minutos";
         }
         $this->listaAsistencias []= $nodo;
     }
