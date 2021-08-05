@@ -58,11 +58,16 @@ class ReporteController extends AbstractController
         }
         $palabra = $request->request->get('buscar', null);
         $inicio = ($pag-1)*10;
-        $paginas = 1;
+        $paginas = $sesion->get("paginasTotales", 1);
+        if($pag == $paginas){ //Si es la ultima página limpiar la sesion
+            $sesion->remove('fecha');
+            $sesion->remove('paginasTotales');
+        }
         if(!$palabra){
             $total = $asistenciaRepository->contarTodasAsistenciasMes($fecha);
             if($total>10){
                 $paginas = ceil( $total/10 );
+                $sesion->set('paginasTotales', $paginas);
             }
             $this->listaAsistenciasEncontradas = $asistenciaRepository->listarAsistencias($fecha, $inicio, 10);
         }
@@ -76,8 +81,6 @@ class ReporteController extends AbstractController
             'asistencias' => $this->listaAsistencias,
             'paginaActual' => $pag,
             'total' => $paginas,
-            'mes' => $mes,
-            'anio' => $anio,
         ]);
     }
 
