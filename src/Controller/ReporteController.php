@@ -117,7 +117,15 @@ class ReporteController extends AbstractController
         $nodo['cedula'] = $this->empleado->getCedula();
         $nodo['nombre'] = $this->empleado->getNombre();
         $nodo['apellido'] = $this->empleado->getApellido();
-        $nodo['horasTrabajadas'] = $currentNode['horasTrabajadas'];
+        $cantidaLetras = strlen($currentNode['horasTrabajadas']);
+        if($cantidaLetras == 6) {
+            $nodo['horasTrabajadas'] = substr($currentNode['horasTrabajadas'], 0, 2) . " horas con "
+                . substr($currentNode['horasTrabajadas'], 2, 2)." minutos";
+        }
+        else{
+            $nodo['horasTrabajadas'] = substr($currentNode['horasTrabajadas'],0,1)." horas con "
+                .substr($currentNode['horasTrabajadas'],-4,2)." minutos";
+        }
         $this->listaAsistencias []= $nodo;
     }
 }
