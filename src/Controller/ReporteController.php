@@ -48,13 +48,15 @@ class ReporteController extends AbstractController
     {
         $sesion = $request->getSession();
         $this->listadoAsistencias = array();
-        $fecha = $sesion->get("fecha", "2021-01");
         if ($request->isMethod('POST')){
             $mes = $request->request->get('mes', "01");
             $anio = $request->request->get('anio', "2021");
             $fecha = $anio."-".$mes;
             $this->addFlash('success','Usted ha seleccionado el reporte de fecha: '.$mes."-".$anio);
             $sesion->set('fecha', $fecha);
+        }
+        else{
+            $fecha = $sesion->get("fecha", "2021-01");
         }
         $palabra = $request->request->get('buscar', null);
         $inicio = ($pag-1)*10;
