@@ -111,20 +111,32 @@ class ReporteController extends AbstractController
         $nodo['cedula'] = $this->empleado->getCedula();
         $nodo['nombre'] = $this->empleado->getNombre();
         $nodo['apellido'] = $this->empleado->getApellido();
-        $cantidaLetras = strlen($currentNode['horasTrabajadas']);
-        if($cantidaLetras >= 5){
-            $digitosHora = $cantidaLetras - 4;
-            $nodo['horasTrabajadas'] = substr($currentNode['horasTrabajadas'], 0, $digitosHora) . " horas con "
-                . substr($currentNode['horasTrabajadas'], -4, 2)." minutos";
+        $cantidadLetras = strlen($currentNode['horasTrabajadas']);
+        $nodo['horasTrabajadas'] = $this->getHoursToWork($currentNode['horasTrabajadas'], $cantidadLetras);
+        $this->listaAsistencias []= $nodo;
+    }
+
+    /**
+     * Genera el string con las horas de trabajo.
+     * @param $hoursToWork
+     * @param $cantidadLetras
+     * @return string
+     */
+    private function getHoursToWork($hoursToWork, $cantidadLetras): string
+    {
+        $horasTrabajadas = "";
+        if($cantidadLetras >= 5){
+            $digitosHora = $cantidadLetras - 4;
+            $horasTrabajadas = substr($hoursToWork, 0, $digitosHora) . " horas con "
+                . substr($hoursToWork, -4, 2)." minutos";
         }
-        elseif($cantidaLetras >= 3 && $cantidaLetras < 5 ) {
-            $digitosMinutos = $cantidaLetras - 2;
-            $nodo['horasTrabajadas'] = "0 horas con "
-                .substr($currentNode['horasTrabajadas'],-4,$digitosMinutos)." minutos";
+        elseif($cantidadLetras >= 3 && $cantidadLetras < 5 ) {
+            $digitosMinutos = $cantidadLetras - 2;
+            $horasTrabajadas = "0 horas con ".substr($hoursToWork,-4,$digitosMinutos)." minutos";
         }
         else{
-            $nodo['horasTrabajadas'] = "0 horas con 0 minutos";
+            $horasTrabajadas = "0 horas con 0 minutos";
         }
-        $this->listaAsistencias []= $nodo;
+        return $horasTrabajadas;
     }
 }
