@@ -120,7 +120,7 @@ class ReporteController extends AbstractController
      * Genera el string con las horas de trabajo.
      * @param $hoursToWork
      * @param $cantidadLetras
-     * @return string
+     * @return string Cadena de caracteres con la cantidad de horas y minutos trabajadas por empleado.
      */
     private function getHoursToWork($hoursToWork, $cantidadLetras): string
     {
