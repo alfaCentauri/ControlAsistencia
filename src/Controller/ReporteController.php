@@ -95,19 +95,6 @@ class ReporteController extends AbstractController
     }
 
     /**
-     * Calcular cantidad de items en el listado.
-     * @return int Regresa un entero.
-     */
-    private function calcularItemsListado(): int
-    {
-        $cantidadItemsListado = 0;
-        if(isset($this->listaAsistencias))
-            $cantidadItemsListado = sizeof($this->listaAsistencias);
-
-        return $cantidadItemsListado;
-    }
-
-    /**
      * Agrega un item a la lista.
      * @param array $currentNode
      */
