@@ -83,7 +83,12 @@ class AsistenciaRepository extends ServiceEntityRepository
         $entityManager = $this->getEntityManager();
         try{
             $resultado = $entityManager
-                ->createQuery('SELECT a FROM App\Entity\Asistencia a WHERE a.fecha LIKE \'%'.$fecha.'%\' ')
+                ->createQuery('select a.id AS id, a.empleado_id AS empleado_id, a.user_id AS user_id, a.fecha AS fecha,
+                                   a.hora_entrada AS hora_entrada, a.hora_salida AS hora_salida,
+                                   sum( timediff(a.hora_salida, a.hora_entrada) ) as horasTrabajadas
+                            from App\Entity\Asistencia a
+                            where a.fecha like \'%'.$fecha.'%\'
+                            group by a.empleado_id ')
                 ->setFirstResult($inicio)
                 ->setMaxResults($fin)
                 ->getResult();

@@ -3,7 +3,7 @@
     </div>
     <div class="col-sx-4 col-sm-4 col-lg-4 col-xg-4">
         <!-- Botones de navegación -->
-        <ul class="pagination">
+        <ul class="pagination align-content-center">
             {% if (paginaActual-1)>0 %}
                 <li><a href="{{ path('reporte_actual', {'pag': (paginaActual-1)}) }}" class="btn btn-light">&laquo;</a></li>
             {% endif %}
@@ -20,5 +20,8 @@
         </ul>
     </div>
     <div class="col-sx-4 col-sm-4 col-lg-4 col-xg-4">
+        <div class="align-content-end">
+            Total de registros: {{ asistencias|length }}
+        </div>
     </div>
 </div>
