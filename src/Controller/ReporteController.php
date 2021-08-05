@@ -90,39 +90,8 @@ class ReporteController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $nodoActual = $this->listaAsistenciasEncontradas[$i];
             $this->empleado = $entityManager->getRepository(Empleado::class)->find($nodoActual['empleado_id']);
-            $this->addingDataToList();
+            $this->addItemToList($nodoActual);
         }
-    }
-
-    /**
-     * Agregando datos al listado
-     */
-    private function addingDataToList(): void
-    {
-//        $cantidadListado = $this->calcularItemsListado();
-//        if($cantidadListado > 0){ //Existen items en la lista
-//            for ($j = 0; $j < $cantidadListado; $j++){
-//                $currentNode = $this->listaAsistencias[$j];
-//                if($currentNode['cedula'] == $this->empleado->getCedula()){
-//                    $timeInterval = $this->asistencia->getHoraSalida()->diff($this->asistencia->getHoraEntrada());
-//                    date_default_timezone_set("America/Caracas");
-//                    $fecha = new \DateTime("now");
-//                    $fechaInicial = new \DateTime("now");
-//                    $fecha->add( $currentNode['intervaloTiempo'] );
-//                    $fecha->add($timeInterval);
-//                    //Now get diff
-//                    $newTimeInterval = $fecha->diff($fechaInicial);
-//                    $currentNode['intervaloTiempo'] = $newTimeInterval;
-//                    $currentNode['horasTrabajadas'] = $newTimeInterval->format("%h horas con %i minutos");
-//                }
-//                else{
-//                    $this->addItemToList();
-//                }
-//            }
-//        }
-//        else{
-            $this->addItemToList();
-//        }
     }
 
     /**
@@ -140,16 +109,15 @@ class ReporteController extends AbstractController
 
     /**
      * Agrega un item a la lista.
+     * @param array $currentNode
      */
-    private function addItemToList(): void
+    private function addItemToList(array $currentNode): void
     {
         $nodo = array();
         $nodo['cedula'] = $this->empleado->getCedula();
         $nodo['nombre'] = $this->empleado->getNombre();
         $nodo['apellido'] = $this->empleado->getApellido();
-        $timeInterval = $this->asistencia->getHoraSalida()->diff($this->asistencia->getHoraEntrada());
-        $nodo['intervaloTiempo'] = $timeInterval;
-        $nodo['horasTrabajadas'] = $timeInterval->format("%h horas con %i minutos");
+        $nodo['horasTrabajadas'] = $currentNode['horasTrabajadas'];
         $this->listaAsistencias []= $nodo;
     }
 }
