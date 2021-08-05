@@ -41,7 +41,7 @@ class EmpleadoController extends AbstractController
         }
         else {
             $this->addFlash('info', 'Buscando: '.$palabra);
-            $this->listaEmpleados = $empleadoRepository->buscar($palabra);
+            $this->listaEmpleados = $empleadoRepository->buscar($palabra, $inicio, 10);
         }
         return $this->render('empleado/index.html.twig', [
             'empleados' => $this->listaEmpleados,
@@ -96,7 +96,7 @@ class EmpleadoController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash('success','El empleado fue editado exitosamente.!');
-            return $this->redirectToRoute('empleado_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('empleado_index', ['pag' => 1], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('empleado/edit.html.twig', [
@@ -123,7 +123,7 @@ class EmpleadoController extends AbstractController
         else{
             $this->addFlash('danger','El empleado no pudo ser borrado. ');
         }
-        return $this->redirectToRoute('empleado_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('empleado_index', ['pag' => 1], Response::HTTP_SEE_OTHER);
     }
 
     /**

@@ -53,12 +53,14 @@ class EmpleadoRepository extends ServiceEntityRepository
      * @param string $value
      * @return Empleado[] Returns an array of Empleado objects
      */
-    public function buscar(string $value)
+    public function buscar(string $value, int $inicio = 1, int $fin = 10): array
     {
         $resultado = $this->getEntityManager()
             ->createQuery('SELECT E FROM App:Empleado E where '
                 .'E.nombre like \'%'.$value.'%\' or E.apellido like \'%'
                 .$value.'%\' ORDER BY E.cedula ASC')
+            ->setFirstResult($inicio)
+            ->setMaxResults($fin)
             ->getResult();
         return $resultado;
     }
