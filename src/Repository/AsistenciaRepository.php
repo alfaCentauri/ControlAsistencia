@@ -80,22 +80,16 @@ class AsistenciaRepository extends ServiceEntityRepository
     public function listarAsistencias(string $fecha, int $inicio = 1, int $fin = 10): array
     {
         $resultado = array();
-        $entityManager = $this->getEntityManager();
-        try{
-            $resultado = $entityManager
-                ->createQuery('select a.id AS id, a.empleado_id AS empleado_id, a.user_id AS user_id, a.fecha AS fecha,
-                                   a.hora_entrada AS hora_entrada, a.hora_salida AS hora_salida,
-                                   sum( timediff(a.hora_salida, a.hora_entrada) ) as horasTrabajadas
-                            from App\Entity\Asistencia a
-                            where a.fecha like \'%'.$fecha.'%\'
-                            group by a.empleado_id ')
-                ->setFirstResult($inicio)
-                ->setMaxResults($fin)
-                ->getResult();
-        }catch(NoResultException $e){
-            return array();
-        }
-        return $resultado;
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = 'select a.id AS id, a.empleado_id AS empleado_id, a.user_id AS user_id, a.fecha AS fecha,
+            a.hora_entrada AS hora_entrada, a.hora_salida AS hora_salida,
+            sum( timediff(a.hora_salida, a.hora_entrada) ) as horasTrabajadas
+            from asistencia as a
+            where a.fecha like \''.$fecha.'%\'
+            group by a.empleado_id Limit '.$fin.' offset '.$inicio.';';
+        $stmt = $conn->prepare($sql);
+        $resultado = $stmt->executeQuery();
+        return $resultado->fetchAllAssociative();
     }
 
     /**

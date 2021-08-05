@@ -87,8 +87,9 @@ class ReporteController extends AbstractController
     {
         $cantidadAsistencias = sizeof($this->listaAsistenciasEncontradas);
         for($i = 0; $i < $cantidadAsistencias; $i++){
-            $this->asistencia = $this->listaAsistenciasEncontradas[$i];
-            $this->empleado = $this->asistencia->getEmpleado();
+            $entityManager = $this->getDoctrine()->getManager();
+            $nodoActual = $this->listaAsistenciasEncontradas[$i];
+            $this->empleado = $entityManager->getRepository(Empleado::class)->find($nodoActual['empleado_id']);
             $this->addingDataToList();
         }
     }
