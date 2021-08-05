@@ -49,7 +49,7 @@ class AsistenciaController extends AbstractController
         }
         else {
             $this->addFlash('info', 'Buscando: '.$palabra);
-            $this->listaEmpleados = $asistenciaRepository->buscar($palabra);
+            $this->listaEmpleados = $asistenciaRepository->buscar($palabra, $inicio, 10);
         }
         return $this->render('asistencia/index.html.twig', [
             'asistencias' => $listadoAsistencias,
