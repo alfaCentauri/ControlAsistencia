@@ -20,9 +20,15 @@
                             <select id="mes" name="mes" class="form-control" title="Indica el mes">
                                 {% for i in 1..12 %}
                                     {% if i < 10 %}
-                                        <option value="0{{ i }}">0{{ i }}</option>
+                                        <option value="0{{ i }}"
+                                            {% if (mes is defined) and (mes == i) %}
+                                                selected
+                                            {% endif %}>0{{ i }}</option>
                                     {% else %}
-                                        <option value="{{ i }}">{{ i }}</option>
+                                        <option value="{{ i }}"
+                                            {% if (mes is defined) and (mes == i) %}
+                                                selected
+                                            {% endif %}>{{ i }}</option>
                                     {% endif %}
                                 {% endfor %}
                             </select>
@@ -33,7 +39,11 @@
                         <div class="col-sm-3 col-md-1 col-lg-1">
                             <select id="anio" name="anio" class="form-control" title="Indica el año">
                                 {% for i in 2021..2025 %}
-                                    <option value="{{ i }}">{{ i }}</option>
+                                    {% if anio is defined and (i == anio) %}
+                                        <option value="{{ i }}" selected>{{ i }}</option>
+                                    {% else %}
+                                        <option value="{{ i }}">{{ i }}</option>
+                                    {% endif %}
                                 {% endfor %}
                             </select>
                         </div>

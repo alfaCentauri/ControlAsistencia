@@ -76,6 +76,8 @@ class ReporteController extends AbstractController
             'asistencias' => $this->listaAsistencias,
             'paginaActual' => $pag,
             'total' => $paginas,
+            'mes' => $mes,
+            'anio' => $anio,
         ]);
     }
 
