@@ -178,10 +178,8 @@ class ReporteController extends AbstractController
         $this->listaAsistencias = array();
         $operation = $request->query->get('operation', 'ui');
         $entityManager = $this->getDoctrine()->getManager();
-        if ($operation == 'ui') {
-            $this->listaEmpleados = $entityManager->getRepository('App:Empleado')->findAll();
-        }
-        else{
+        $this->listaEmpleados = $entityManager->getRepository('App:Empleado')->findAll();
+        if ($operation == 'do') {
             //Lee los datos del formulario
             $id = intval($request->request->get('selectEmpleados',0));
             $mes = $request->request->get('mes', "01");
@@ -191,7 +189,6 @@ class ReporteController extends AbstractController
             //Busca las asistencias del empleado
             if($id > 0) {
                 $arregloAsistencia = $asistenciaRepository->buscarReporteDeUnEmpleado($this->fecha, $id);
-                $total = sizeof($this->listaAsistenciasEncontradas);
                 $this->prepararAsistenciaParaVista($id, $arregloAsistencia);
             }
             //Renderiza la vista con el resultado

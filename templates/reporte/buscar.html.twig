@@ -25,7 +25,7 @@
                 </div>
                 <div class="row mb-1">
                     <div class="input-group mb-3">
-                        <div class="col-sm-1 col-md-1 col-lg-1">
+                        <div class="offset-1 col-sm-1 col-md-1 col-lg-1">
                             <span class="input-group-text">Mes:</span>
                         </div>
                         <div class="col-sm-3 col-md-1 col-lg-1">
@@ -59,22 +59,22 @@
                                 {% endfor %}
                             </select>
                         </div>
-                        <div class="col-sm-1 col-md-4 col-lg-2">
+                        <div class="col-sm-1 col-md-3 col-lg-2">
                             <button type="submit" class="btn btn-info" name="btnGenerar" id="btnGenerar">
                                 Generar Reporte
                             </button>
                         </div>
-                        <div class="col-sm-1 col-md-4 col-lg-2">
+                        <div class="col-sm-1 col-md-3 col-lg-2">
                             <button type="reset" class="btn btn-secondary" name="btnLimpiar" id="btnLimpiar">
                                 Limpiar
                             </button>
                         </div>
                     </div>
                 </div>
-                {% if reporte is defined %}
+                {% if reporte is defined and reporte != null %}
                 <div class="card">
                     <div class="card-header alert-info">
-                        <h2>Información del empleado</h2>
+                        <h2>Información de la asistencia del empleado</h2>
                     </div>
                     <div class="card-body">
                         <div class="row mb-1">
@@ -99,6 +99,20 @@
                                 {{ reporte.apellido }}
                             </div>
                         </div>
+                        <div class="row mb-1">
+                            <div class="offset-2 col-sm-2 col-md-2 col-lg-2">
+                                Horas Trabajadas:
+                            </div>
+                            <div class="col-sm-2 col-md-2 col-lg-2">
+                                {{ reporte.horasTrabajadas }}
+                            </div>
+                            <div class="col-sm-2 col-md-2 col-lg-2">
+
+                            </div>
+                            <div class="col-sm-2 col-md-2 col-lg-2">
+
+                            </div>
+                        </div>
                     </div>
                 </div>
                 {% endif %}
@@ -106,7 +120,7 @@
             <div class="card-footer alert-primary">
                 <div class="row">
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <a href="{{ path('reportes_index') }}" class="btn btn-secondary" name="btnRegresar" id="btnRegresar">
+                        <a href="{{ path('reporte_index') }}" class="btn btn-secondary" name="btnRegresar" id="btnRegresar">
                             Regresar
                         </a>
                     </div>
@@ -115,3 +129,4 @@
         </form>
     </div>
 </div>
+{% endblock %}
