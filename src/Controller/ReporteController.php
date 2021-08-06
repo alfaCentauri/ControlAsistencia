@@ -189,14 +189,15 @@ class ReporteController extends AbstractController
             $this->fecha = $anio."-".$mes;
             //Busca las asistencias del empleado
             if($id > 0) {
-                $this->listaAsistenciasEncontradas = $asistenciaRepository->buscarReporteDeUnEmpleado($this->fecha, $id);
+                $this->asistencia = $asistenciaRepository->buscarReporteDeUnEmpleado($this->fecha, $id);
                 $total = sizeof($this->listaAsistenciasEncontradas);
                 $this->prepararListadoParaVista();
             }
         }
         //Renderiza la vista
         return $this->render('reporte/buscar.html.twig', [
-            'asistencias' => $this->listaAsistencias,
+            'listaEmpleados' => $this->listaEmpleados,
+            'asistencia' => $this->asistencia,
             'mes' => $mes,
             'anio' => $anio,
         ]);
