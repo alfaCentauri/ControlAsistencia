@@ -34,20 +34,32 @@ class EmpleadoController extends AbstractController
         $paginas = 1;
         if(!$palabra){
             $total = $empleadoRepository->contarTodos();
-            if($total>10){
-                $paginas = ceil( $total/10 );
-            }
             $this->listaEmpleados = $empleadoRepository->paginarEmpleados($inicio, 10);
         }
         else {
             $this->addFlash('info', 'Buscando: '.$palabra);
             $this->listaEmpleados = $empleadoRepository->buscar($palabra, $inicio, 10);
+            $total = $empleadoRepository->contarEmpleadosBuscados($palabra);
         }
+        $paginas = $this->calcularPaginasTotalesAMostrar($total);
         return $this->render('empleado/index.html.twig', [
             'empleados' => $this->listaEmpleados,
             'paginaActual' => $pag,
             'total' => $paginas,
         ]);
+    }
+
+    /**
+     * @param int $total
+     * @return int Regresa la cantidad de páginas a mostrar en el paginador.
+     */
+    private function calcularPaginasTotalesAMostrar(int $total): int
+    {
+        $paginasTotales = 0;
+        if($total > 10){
+            $paginasTotales = ceil( $total/10 );
+        }
+        return $paginasTotales;
     }
 
     /**

@@ -36,7 +36,7 @@
                     <tbody>
                     {% for i, asistencia in asistencias %}
                         <tr>
-                            <td>{{ i + 1 }}</td>
+                            <td>{{ paginaActual>1?((paginaActual-1)*10)+i+1 : i+1}}</td>
                             {% if asistencia.empleado is defined %}
                                 <td>{{ asistencia.empleado.cedula }}</td>
                                 <td>{{ asistencia.empleado.nombre|upper }}</td>

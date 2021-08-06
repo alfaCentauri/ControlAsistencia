@@ -70,7 +70,7 @@
                     <tbody>
                     {% for i, asistencia in asistencias %}
                         <tr>
-                            <td>{{ i + 1 }}</td>
+                            <td>{{ paginaActual>1?((paginaActual-1)*10)+i+1 : i+1}}</td>
                             <td>{{ asistencia.cedula }}</td>
                             <td>{{ asistencia.nombre|upper }}</td>
                             <td>{{ asistencia.apellido|upper }}</td>

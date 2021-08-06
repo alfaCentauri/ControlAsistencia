@@ -35,7 +35,7 @@
                         <tbody>
                         {% for i, empleado in empleados %}
                             <tr>
-                                <td>{{ i + 1 }}</td>
+                                <td>{{ paginaActual>1?((paginaActual-1)*10)+i+1 : i+1}}</td>
                                 <td>{{ empleado.cedula }}</td>
                                 <td>{{ empleado.nombre }}</td>
                                 <td>{{ empleado.apellido }}</td>

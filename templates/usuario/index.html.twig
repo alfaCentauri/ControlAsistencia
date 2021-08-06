@@ -36,7 +36,7 @@
                     <tbody>
                     {% for i, usuario in usuarios %}
                         <tr>
-                            <td>{{ i + 1 }}</td>
+                            <td>{{ paginaActual>1?((paginaActual-1)*10)+i+1 : i+1}}</td>
                             <td>{{ usuario.nombre }}</td>
                             <td>{{ usuario.apellido }}</td>
                             <td>{{ usuario.email }}</td>

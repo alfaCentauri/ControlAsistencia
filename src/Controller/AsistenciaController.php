@@ -22,6 +22,11 @@ class AsistenciaController extends AbstractController
     private $asistencia;
 
     /**
+     * @var Asistencia[]
+     */
+    private $listadoAsistencias;
+
+    /**
      * @var array
      */
     private $listaEmpleados;
@@ -37,25 +42,30 @@ class AsistenciaController extends AbstractController
     public function index(Request $request, int $pag = 1, AsistenciaRepository $asistenciaRepository): Response
     {
         $this->listaEmpleados = null;
-        $palabra = $request->request->get('buscar', null);
         $inicio = ($pag-1)*10;
         $paginas = 1;
-        if(!$palabra) {
-            $total = $asistenciaRepository->contarTodas();
-            if($total>10){
-                $paginas = ceil( $total/10 );
-            }
-            $listadoAsistencias = $asistenciaRepository->paginarAsistencias($inicio, 10);
-        }
-        else {
-            $this->addFlash('info', 'Buscando: '.$palabra);
-            $listadoAsistencias = $asistenciaRepository->buscar($palabra, $inicio, 10);
-        }
+        $total = $asistenciaRepository->contarTodas();
+        $this->listadoAsistencias = $asistenciaRepository->paginarAsistencias($inicio, 10);
+        $paginas = $this->calcularPaginasTotalesAMostrar($total);
+
         return $this->render('asistencia/index.html.twig', [
-            'asistencias' => $listadoAsistencias,
+            'asistencias' => $this->listadoAsistencias,
             'paginaActual' => $pag,
             'total' => $paginas,
         ]);
+    }
+
+    /**
+     * @param int $total
+     * @return int Regresa la cantidad de páginas a mostrar en el paginador.
+     */
+    private function calcularPaginasTotalesAMostrar(int $total): int
+    {
+        $paginasTotales = 0;
+        if($total > 10){
+            $paginasTotales = ceil( $total/10 );
+        }
+        return $paginasTotales;
     }
 
     /**
@@ -178,6 +188,34 @@ class AsistenciaController extends AbstractController
         return $this->renderForm('asistencia/salida.html.twig', [
             'asistencia' => $asistencia,
             'form' => $form,
+        ]);
+    }
+
+    /**
+     * @Route("/{pag}/busqueda", name="asistencia_find", requirements={"pag"="\d+"})
+     *
+     * @param Request $request
+     * @param int $pag Indica el numero de página
+     * @param AsistenciaRepository $asistenciaRepository
+     * @return Response
+     */
+    public function buscarFecha(Request $request, int $pag = 1, AsistenciaRepository $asistenciaRepository): Response
+    {
+        $this->listaEmpleados = null;
+        $inicio = ($pag-1)*10;
+        $paginas = 1;
+        $total = 0;
+        $mesBuscado = $request->request->get('buscar', null);
+        if($mesBuscado){
+            $this->addFlash('info', 'Buscando: '.$mesBuscado);
+            $this->listadoAsistencias = $asistenciaRepository->buscar($mesBuscado, $inicio, 10);
+            $total = $asistenciaRepository->contarTodasAsistenciasMes($mesBuscado);
+        }
+        $paginas = $this->calcularPaginasTotalesAMostrar($total);
+        return $this->render('asistencia/index.html.twig', [
+            'asistencias' => $this->listadoAsistencias,
+            'paginaActual' => $pag,
+            'total' => $paginas,
         ]);
     }
 }

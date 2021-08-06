@@ -39,9 +39,6 @@ class UsuarioController extends AbstractController
         $paginas = 1;
         if(!$palabra){
             $total = $usuarioRepository->contarTodos();
-            if($total>10){
-                $paginas = ceil( $total/10 );
-            }
             $this->listaUsuarios = $usuarioRepository->paginarUsuarios($inicio, 10);
         }
         else{
@@ -49,6 +46,7 @@ class UsuarioController extends AbstractController
             $this->listaUsuarios = $usuarioRepository->buscarUsuarios($palabra);
             $total = sizeof($this->listaUsuarios);
         }
+        $paginas = $this->calcularPaginasTotalesAMostrar($total);
         return $this->render('usuario/index.html.twig', [
             'usuarios' => $this->listaUsuarios,
             'paginaActual' => $pag,

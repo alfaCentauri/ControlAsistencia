@@ -90,4 +90,18 @@ class EmpleadoRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * @param string $value
+     * @return int Returns an integer with number of Empleado objects
+     */
+    public function contarEmpleadosBuscados(string $value): int
+    {
+        return $this->createQueryBuilder('E')
+            ->select('count(E.id)')
+            ->where('E.nombre like \'%'.$value.'%\' ')
+            ->orWhere('E.apellido like \'%'.$value.'%\' ')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }

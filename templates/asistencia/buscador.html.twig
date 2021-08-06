@@ -1,9 +1,9 @@
-<form action="{{ path('asistencia_index', {'pag': 1}) }}" method="post">
+<form action="{{ path('asistencia_find', {'pag': 1}) }}" method="post">
     <div class="row mb-1">
         <div class="offset-2 col-sm-8 col-md-8 col-lg-8">
             <div class="input-group mb-1">
                 <input name="buscar" id="buscar" class="form-control" maxlength="100" required
-                       placeholder="Escriba una palabra para buscar">
+                       placeholder="Escriba una fecha para buscarla">
                 <button type="submit" name="btnBuscar" id="btnBuscar" class="btn btn-primary">Buscar</button>
             </div>
         </div>
