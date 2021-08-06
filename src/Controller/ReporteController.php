@@ -83,6 +83,7 @@ class ReporteController extends AbstractController
             'total' => $paginas,
             'mes' => $mes,
             'anio' => $anio,
+            'totalReportes' => $total,
         ]);
     }
 

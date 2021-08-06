@@ -55,6 +55,19 @@ class UsuarioController extends AbstractController
     }
 
     /**
+     * @param int $total
+     * @return int Regresa la cantidad de páginas a mostrar en el paginador.
+     */
+    private function calcularPaginasTotalesAMostrar(int $total): int
+    {
+        $paginasTotales = 0;
+        if($total > 10){
+            $paginasTotales = ceil( $total/10 );
+        }
+        return $paginasTotales;
+    }
+
+    /**
      * @Route("/new", name="usuario_new", methods={"GET","POST"})
      * @param Request $request
      * @return Response
