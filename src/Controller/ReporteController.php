@@ -71,8 +71,8 @@ class ReporteController extends AbstractController
         $this->fecha = $anio."-".$mes;
         //Calcula el inicio de los items para mostrar
         $inicio = ($pag-1)*10;
-        $total = $asistenciaRepository->contarTodasAsistenciasMes($this->fecha);
         $this->listaAsistenciasEncontradas = $asistenciaRepository->listarAsistencias($this->fecha, $inicio, 10);
+        $total = $asistenciaRepository->contarTodasAsistenciasDelReporteDelMes($this->fecha);
         $paginas = $this->calcularPaginasTotalesAMostrar($total);
         //
         $this->prepararListadoParaVista();
