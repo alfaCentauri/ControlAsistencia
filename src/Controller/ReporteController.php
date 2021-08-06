@@ -189,7 +189,7 @@ class ReporteController extends AbstractController
             //Busca las asistencias del empleado
             if($id > 0) {
                 $arregloAsistencia = $asistenciaRepository->buscarReporteDeUnEmpleado($this->fecha, $id);
-                $this->prepararAsistenciaParaVista($id, $arregloAsistencia);
+                $this->prepararAsistenciaEmpleadoParaVista($id, $arregloAsistencia);
             }
             //Renderiza la vista con el resultado
             return $this->render('reporte/buscar.html.twig', [
@@ -213,7 +213,7 @@ class ReporteController extends AbstractController
      * @param int $idEmpleado
      * @param array $arregloAsistencia
      */
-    private function prepararAsistenciaParaVista(int $idEmpleado, array $arregloAsistencia): void
+    private function prepararAsistenciaEmpleadoParaVista(int $idEmpleado, array $arregloAsistencia): void
     {
         $entityManager = $this->getDoctrine()->getManager();
         $this->empleado = $entityManager->getRepository(Empleado::class)->find($idEmpleado);
