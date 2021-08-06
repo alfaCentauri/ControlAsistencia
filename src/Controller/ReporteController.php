@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints\Date;
 use Symfony\Component\Validator\Constraints\DateTime;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
@@ -38,6 +39,11 @@ class ReporteController extends AbstractController
     private $empleado;
 
     /**
+     * @var string
+     */
+    private $fecha;
+
+    /**
      * @Route("/{pag}", name="reporte_actual", methods={"GET","POST"}, requirements={"pag"="\d+"})
      * @param Request $request
      * @param int $pag
@@ -46,44 +52,63 @@ class ReporteController extends AbstractController
      */
     public function index(Request $request, int $pag = 1, AsistenciaRepository $asistenciaRepository): Response
     {
+        //Inicializa los parámetros
         $sesion = $request->getSession();
         $this->listadoAsistencias = array();
+        //Procesa la petición del formulario
         if ($request->isMethod('POST')){
             $mes = $request->request->get('mes', "01");
             $anio = $request->request->get('anio', "2021");
-            $fecha = $anio."-".$mes;
             $this->addFlash('success','Usted ha seleccionado el reporte de fecha: '.$mes."-".$anio);
-            $sesion->set('fecha', $fecha);
+            $sesion->set('mes', $mes);
+            $sesion->set('anio', $anio);
         }
-        else{
-            $fecha = $sesion->get("fecha", "2021-01");
+        else{  //Procesa la sesion
+            $mes = $sesion->get("mes", "01");
+            $anio = $sesion->get("anio", "2021");
         }
-        $palabra = $request->request->get('buscar', null);
+        //Formato de fecha para el reporte
+        $this->fecha = $anio."-".$mes;
+        //Calcula el inicio de los items para mostrar
         $inicio = ($pag-1)*10;
-        $paginas = $sesion->get("paginasTotales", 1);
-        if($pag == $paginas){ //Si es la ultima página limpiar la sesion
-            $sesion->remove('fecha');
-            $sesion->remove('paginasTotales');
-        }
-        if(!$palabra){
-            $total = $asistenciaRepository->contarTodasAsistenciasMes($fecha);
-            if($total>10){
-                $paginas = ceil( $total/10 );
-                $sesion->set('paginasTotales', $paginas);
-            }
-            $this->listaAsistenciasEncontradas = $asistenciaRepository->listarAsistencias($fecha, $inicio, 10);
-        }
-        else{
-            $this->addFlash('info', 'Buscando: '.$palabra);
-            $this->listaAsistenciasEncontradas = $asistenciaRepository->buscar($fecha, $palabra);
-            $total = sizeof($this->listaAsistenciasEncontradas);
-        }
+        $total = $asistenciaRepository->contarTodasAsistenciasMes($this->fecha);
+        $this->listaAsistenciasEncontradas = $asistenciaRepository->listarAsistencias($this->fecha, $inicio, 10);
+        $paginas = $this->calcularPaginasTotalesAMostrar($total);
+        //
         $this->prepararListadoParaVista();
+        //Renderiza la vista
         return $this->render('reporte/index.html.twig', [
             'asistencias' => $this->listaAsistencias,
             'paginaActual' => $pag,
             'total' => $paginas,
+            'mes' => $mes,
+            'anio' => $anio,
         ]);
+    }
+
+    /**
+     * @param int $total
+     * @return int Regresa la cantidad de páginas a mostrar en el paginador.
+     */
+    private function calcularPaginasTotalesAMostrar(int $total): int
+    {
+        $paginasTotales = 0;
+        if($total > 10){
+            $paginasTotales = ceil( $total/10 );
+        }
+        return $paginasTotales;
+    }
+
+    /**
+     * Limpia la sesion.
+     * @param SessionInterface $sesion The session
+     */
+    private function clearSesion(SessionInterface $sesion): void
+    {
+        $sesion->remove('fecha');
+        $sesion->remove('paginasTotales');
+        $sesion->remove('mes');
+        $sesion->remove('anio');
     }
 
     /**
@@ -138,5 +163,42 @@ class ReporteController extends AbstractController
             $horasTrabajadas = "0 horas con 0 minutos";
         }
         return $horasTrabajadas;
+    }
+
+    /**
+     * @Route("/{id}/buscar", name="buscar_reporte", methods={"GET","POST"}, requirements={"id"="\d+"})
+     * @param Request $request
+     * @param AsistenciaRepository $asistenciaRepository
+     * @return Response
+     */
+    public function buscarUnReporte(Request $request, AsistenciaRepository $asistenciaRepository): Response
+    {
+        //
+        $this->listaEmpleados = array();
+        $operation = $request->query->get('operation', 'ui');
+        $entityManager = $this->getDoctrine()->getManager();
+        if ($operation == 'ui') {
+            $this->listaEmpleados = $entityManager->getRepository('App:Empleado')->findAll();
+        }
+        else{
+            //Lee los datos del formulario
+            $id = intval($request->request->get('selectEmpleados',0));
+            $mes = $request->request->get('mes', "01");
+            $anio = $request->request->get('anio', "2021");
+            //Formato de fecha para el reporte
+            $this->fecha = $anio."-".$mes;
+            //Busca las asistencias del empleado
+            if($id > 0) {
+                $this->listaAsistenciasEncontradas = $asistenciaRepository->buscarReporteDeUnEmpleado($this->fecha, $id);
+                $total = sizeof($this->listaAsistenciasEncontradas);
+                $this->prepararListadoParaVista();
+            }
+        }
+        //Renderiza la vista
+        return $this->render('reporte/buscar.html.twig', [
+            'asistencias' => $this->listaAsistencias,
+            'mes' => $mes,
+            'anio' => $anio,
+        ]);
     }
 }
