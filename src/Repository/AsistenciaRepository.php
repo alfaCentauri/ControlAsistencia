@@ -112,6 +112,27 @@ class AsistenciaRepository extends ServiceEntityRepository
         return $resultado;
     }
 
+    /**
+     * Genera la lista de asistencias de un mes y año específico,
+     * @param string $fecha
+     * @param int $inicio
+     * @param int $fin
+     * @return array Contiene la lista de todas las asistencias del mes indicado.
+     */
+    public function buscarReporteDeUnEmpleado(string $fecha, int $idEmpleado = 0): array
+    {
+        $resultado = array();
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = 'select a.id AS id, a.empleado_id AS empleado_id, a.user_id AS user_id, a.fecha AS fecha,
+            a.hora_entrada AS hora_entrada, a.hora_salida AS hora_salida,
+            sum( timediff(a.hora_salida, a.hora_entrada) ) as horasTrabajadas
+            from asistencia as a
+            where a.fecha like \''.$fecha.'%\' and a.empleado_id = '.$idEmpleado.'
+            group by a.empleado_id ;';
+        $stmt = $conn->prepare($sql);
+        $resultado = $stmt->executeQuery();
+        return $resultado->fetchAssociative();
+    }
     // /**
     //  * @return Asistencia[] Returns an array of Asistencia objects
     //  */

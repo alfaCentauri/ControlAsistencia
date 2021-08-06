@@ -44,7 +44,7 @@ class ReporteController extends AbstractController
     private $fecha;
 
     /**
-     * @Route("/{pag}", name="reporte_actual", methods={"GET","POST"}, requirements={"pag"="\d+"})
+     * @Route("/{pag}", name="reporte_index", methods={"GET","POST"}, requirements={"pag"="\d+"})
      * @param Request $request
      * @param int $pag
      * @param AsistenciaRepository $asistenciaRepository
@@ -166,7 +166,7 @@ class ReporteController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/buscar", name="buscar_reporte", methods={"GET","POST"}, requirements={"id"="\d+"})
+     * @Route("/buscar", name="buscar_reporte", methods={"GET","POST"}, requirements={"id"="\d+"})
      * @param Request $request
      * @param AsistenciaRepository $asistenciaRepository
      * @return Response
@@ -175,6 +175,7 @@ class ReporteController extends AbstractController
     {
         //
         $this->listaEmpleados = array();
+        $this->listaAsistencias = array();
         $operation = $request->query->get('operation', 'ui');
         $entityManager = $this->getDoctrine()->getManager();
         if ($operation == 'ui') {
@@ -189,17 +190,51 @@ class ReporteController extends AbstractController
             $this->fecha = $anio."-".$mes;
             //Busca las asistencias del empleado
             if($id > 0) {
-                $this->asistencia = $asistenciaRepository->buscarReporteDeUnEmpleado($this->fecha, $id);
+                $arregloAsistencia = $asistenciaRepository->buscarReporteDeUnEmpleado($this->fecha, $id);
                 $total = sizeof($this->listaAsistenciasEncontradas);
-                $this->prepararListadoParaVista();
+                $this->prepararAsistenciaParaVista($id, $arregloAsistencia);
             }
+            //Renderiza la vista con el resultado
+            return $this->render('reporte/buscar.html.twig', [
+                'listaEmpleados' => $this->listaEmpleados,
+                'reporte' => $this->listaAsistencias[0],
+                'mes' => $mes,
+                'anio' => $anio,
+            ]);
         }
         //Renderiza la vista
         return $this->render('reporte/buscar.html.twig', [
             'listaEmpleados' => $this->listaEmpleados,
-            'asistencia' => $this->asistencia,
-            'mes' => $mes,
-            'anio' => $anio,
+            'reporte' => null,
+            'mes' => '01',
+            'anio' => '2021',
         ]);
+    }
+
+    /**
+     * Recupera los datos del empleado, sus asistecias y las prepara los datos para ser mostrados en la vista.
+     * @param int $idEmpleado
+     * @param array $arregloAsistencia
+     */
+    private function prepararAsistenciaParaVista(int $idEmpleado, array $arregloAsistencia): void
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $this->empleado = $entityManager->getRepository(Empleado::class)->find($idEmpleado);
+        $this->addItemToList($arregloAsistencia);
+    }
+
+    /**
+     * Agrega un item a la lista.
+     * @param array $currentNode
+     */
+    private function addItemToArray(array $currentNode): array
+    {
+        $nodo = array();
+        $nodo['cedula'] = $this->empleado->getCedula();
+        $nodo['nombre'] = $this->empleado->getNombre();
+        $nodo['apellido'] = $this->empleado->getApellido();
+        $cantidadLetras = strlen($currentNode['horasTrabajadas']);
+        $nodo['horasTrabajadas'] = $this->getHoursToWork($currentNode['horasTrabajadas'], $cantidadLetras);
+        return $nodo;
     }
 }
