@@ -220,18 +220,4 @@ class ReporteController extends AbstractController
         $this->addItemToList($arregloAsistencia);
     }
 
-    /**
-     * Agrega un item a la lista.
-     * @param array $currentNode
-     */
-    private function addItemToArray(array $currentNode): array
-    {
-        $nodo = array();
-        $nodo['cedula'] = $this->empleado->getCedula();
-        $nodo['nombre'] = $this->empleado->getNombre();
-        $nodo['apellido'] = $this->empleado->getApellido();
-        $cantidadLetras = strlen($currentNode['horasTrabajadas']);
-        $nodo['horasTrabajadas'] = $this->getHoursToWork($currentNode['horasTrabajadas'], $cantidadLetras);
-        return $nodo;
-    }
 }

@@ -7,13 +7,15 @@
             {% if (paginaActual-1)>0 %}
                 <li><a href="{{ path('asistencia_index', {'pag': (paginaActual-1)}) }}" class="btn btn-light">&laquo;</a></li>
             {% endif %}
-            {% for i in 1..total %}
-                {% if paginaActual == i %}
-                    <li><a href="{{ path('asistencia_index', {'pag': i}) }}" class="btn btn-dark">{{ i }}</a> </li>
-                {% else %}
-                    <li><a href="{{ path('asistencia_index', {'pag': i}) }}" class="btn btn-light">{{ i }}</a> </li>
-                {% endif %}
-            {% endfor %}
+            {% if total > 0 %}
+                {% for i in 1..total %}
+                    {% if paginaActual == i %}
+                        <li><a href="{{ path('asistencia_index', {'pag': i}) }}" class="btn btn-dark">{{ i }}</a> </li>
+                    {% else %}
+                        <li><a href="{{ path('asistencia_index', {'pag': i}) }}" class="btn btn-light">{{ i }}</a> </li>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
             {% if (paginaActual+1)<=total %}
                 <li><a href="{{ path('asistencia_index', {'pag': (paginaActual+1)}) }}" class="btn btn-light">&raquo;</a></li>
             {% endif %}
