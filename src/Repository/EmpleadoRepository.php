@@ -79,4 +79,15 @@ class EmpleadoRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
+
+    /**
+     * @return Empleado[] Returns an array of Empleado objects
+     */
+    public function listarTodos(): array
+    {
+        return $this->createQueryBuilder('E')
+            ->orderBy('E.nombre', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }

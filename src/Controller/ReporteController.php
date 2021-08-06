@@ -178,7 +178,7 @@ class ReporteController extends AbstractController
         $this->listaAsistencias = array();
         $operation = $request->query->get('operation', 'ui');
         $entityManager = $this->getDoctrine()->getManager();
-        $this->listaEmpleados = $entityManager->getRepository('App:Empleado')->findAll();
+        $this->listaEmpleados = $entityManager->getRepository('App:Empleado')->listarTodos();
         if ($operation == 'do') {
             //Lee los datos del formulario
             $id = intval($request->request->get('selectEmpleados',0));

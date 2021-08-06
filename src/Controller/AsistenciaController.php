@@ -94,7 +94,7 @@ class AsistenciaController extends AbstractController
             }
         }
         else{
-            $this->listaEmpleados = $entityManager->getRepository('App:Empleado')->findAll();
+            $this->listaEmpleados = $entityManager->getRepository('App:Empleado')->listarTodos();
         }
         return $this->renderForm('asistencia/new.html.twig', [
             'listaEmpleados' => $this->listaEmpleados,
