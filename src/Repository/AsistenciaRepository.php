@@ -132,52 +132,32 @@ class AsistenciaRepository extends ServiceEntityRepository
     }
 
     /**
-     * Genera la lista de asistencias de un mes y año específico,
+     * Genera la lista de asistencias de un mes y año específico si existe, sino regresa un arreglo vacio.
      * @param string $fecha
-     * @param int $inicio
-     * @param int $fin
-     * @return array Contiene la lista de todas las asistencias del mes indicado.
+     * @param int $idEmpleado
+     * @return array|null Contiene la lista de todas las asistencias del mes indicado.
+     * @throws \Doctrine\DBAL\Driver\Exception
      */
-    public function buscarReporteDeUnEmpleado(string $fecha, int $idEmpleado = 0): array
+    public function buscarReporteDeUnEmpleado(string $fecha, int $idEmpleado = 0)
     {
-        $resultado = array();
-        $conn = $this->getEntityManager()->getConnection();
-        $sql = 'select a.id AS id, a.empleado_id AS empleado_id, a.user_id AS user_id, a.fecha AS fecha,
+        try{
+            $conn = $this->getEntityManager()->getConnection();
+            $sql = 'select a.id AS id, a.empleado_id AS empleado_id, a.user_id AS user_id, a.fecha AS fecha,
             a.hora_entrada AS hora_entrada, a.hora_salida AS hora_salida,
             sum( timediff(a.hora_salida, a.hora_entrada) ) as horasTrabajadas
             from asistencia as a
             where a.fecha like \''.$fecha.'%\' and a.empleado_id = '.$idEmpleado.'
             group by a.empleado_id ;';
-        $stmt = $conn->prepare($sql);
-        $resultado = $stmt->executeQuery();
-        return $resultado->fetchAssociative();
+            $stmt = $conn->prepare($sql);
+            $resultado = $stmt->executeQuery();
+            $arregloReultante = $resultado->fetchAssociative(); //Regresa un falso cuando no encuentra nada
+            if($arregloReultante == false)
+                return null;
+            else
+                return $arregloReultante;
+        }catch (\Exception $exception){
+            return null;
+        }
     }
-    // /**
-    //  * @return Asistencia[] Returns an array of Asistencia objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('a.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Asistencia
-    {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

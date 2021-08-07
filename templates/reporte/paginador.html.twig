@@ -22,8 +22,10 @@
         </ul>
     </div>
     <div class="col-sx-4 col-sm-4 col-lg-4 col-xg-4">
-        <div class="align-content-end">
-            Total de registros: {{ totalReportes }}
-        </div>
+        {% if totalReportes is defined %}
+            <div class="align-content-end">
+                Total de registros: {{ totalReportes }}
+            </div>
+        {% endif %}
     </div>
 </div>

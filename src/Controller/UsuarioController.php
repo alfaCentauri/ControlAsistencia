@@ -8,6 +8,7 @@ use App\Repository\UsuarioRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -34,6 +35,7 @@ class UsuarioController extends AbstractController
      */
     public function index(Request $request, int $pag = 1, UsuarioRepository $usuarioRepository): Response
     {
+        $this->clearSesion($request->getSession());
         $palabra = $request->request->get('buscar', null);
         $inicio = ($pag-1)*10;
         $paginas = 1;
@@ -52,6 +54,18 @@ class UsuarioController extends AbstractController
             'paginaActual' => $pag,
             'total' => $paginas,
         ]);
+    }
+
+    /**
+     * Limpia la sesion.
+     * @param SessionInterface $sesion The session
+     */
+    private function clearSesion(SessionInterface $sesion): void
+    {
+        $sesion->remove('fecha');
+        $sesion->remove('paginasTotales');
+        $sesion->remove('mes');
+        $sesion->remove('anio');
     }
 
     /**

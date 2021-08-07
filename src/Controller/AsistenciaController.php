@@ -6,6 +6,7 @@ use App\Entity\Asistencia;
 use App\Form\AsistenciaType;
 use App\Form\AsistenciaSalidaType;
 use App\Repository\AsistenciaRepository;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -41,6 +42,7 @@ class AsistenciaController extends AbstractController
      */
     public function index(Request $request, int $pag = 1, AsistenciaRepository $asistenciaRepository): Response
     {
+        $this->clearSesion($request->getSession());
         $this->listaEmpleados = null;
         $inicio = ($pag-1)*10;
         $paginas = 1;
@@ -217,5 +219,17 @@ class AsistenciaController extends AbstractController
             'paginaActual' => $pag,
             'total' => $paginas,
         ]);
+    }
+
+    /**
+     * Limpia la sesion.
+     * @param SessionInterface $sesion The session
+     */
+    private function clearSesion(SessionInterface $sesion): void
+    {
+        $sesion->remove('fecha');
+        $sesion->remove('paginasTotales');
+        $sesion->remove('mes');
+        $sesion->remove('anio');
     }
 }

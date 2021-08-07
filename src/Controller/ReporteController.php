@@ -174,7 +174,7 @@ class ReporteController extends AbstractController
      */
     public function buscarUnReporte(Request $request, AsistenciaRepository $asistenciaRepository): Response
     {
-        //
+        $this->clearSesion($request->getSession());
         $this->listaEmpleados = array();
         $this->listaAsistencias = array();
         $operation = $request->query->get('operation', 'ui');
@@ -190,12 +190,14 @@ class ReporteController extends AbstractController
             //Busca las asistencias del empleado
             if($id > 0) {
                 $arregloAsistencia = $asistenciaRepository->buscarReporteDeUnEmpleado($this->fecha, $id);
-                $this->prepararAsistenciaEmpleadoParaVista($id, $arregloAsistencia);
+                if(isset($arregloAsistencia) and !is_null($arregloAsistencia)) {
+                    $this->prepararAsistenciaEmpleadoParaVista($id, $arregloAsistencia);
+                }
             }
             //Renderiza la vista con el resultado
             return $this->render('reporte/buscar.html.twig', [
                 'listaEmpleados' => $this->listaEmpleados,
-                'reporte' => $this->listaAsistencias[0],
+                'reporte' => $this->listaAsistencias? $this->listaAsistencias[0]: null,
                 'mes' => $mes,
                 'anio' => $anio,
             ]);
