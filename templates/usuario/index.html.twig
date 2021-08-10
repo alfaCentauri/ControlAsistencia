@@ -50,10 +50,12 @@
                                    title="Editar">
                                     <span class="material-icons">edit</span>
                                 </a>
+                                {% if is_granted('ROLE_SUPER_ADMIN') %}
                                 <a href="{{ path('usuario_delete', {'id': usuario.id}) }}" class="btn btn-danger btn-sm"
                                    title="Borrar">
                                     <span class="material-icons">delete</span>
                                 </a>
+                                {% endif %}
                                 {% if usuario.isActive %}
                                     <a href="{{ path('usuario_desactivar', {'id': usuario.id}) }}"
                                        class="btn btn-warning btn-sm" title="Desactivar">

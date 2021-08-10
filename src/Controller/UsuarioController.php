@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 /**
  * @Route("/usuario")
@@ -84,15 +85,18 @@ class UsuarioController extends AbstractController
     /**
      * @Route("/new", name="usuario_new", methods={"GET","POST"})
      * @param Request $request
+     * @param UserPasswordHasherInterface $passwordHasher
      * @return Response
      */
-    public function new(Request $request): Response
+    public function new(Request $request, UserPasswordHasherInterface $passwordHasher): Response
     {
         $usuario = new Usuario();
         $form = $this->createForm(UsuarioType::class, $usuario);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $clave = $form['password']->getData();
+            $usuario->setPassword($passwordHasher->hashPassword($usuario, $clave));
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($usuario);
             $entityManager->flush();

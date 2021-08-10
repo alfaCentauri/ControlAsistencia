@@ -48,10 +48,12 @@
                                        title="Editar">
                                         <span class="material-icons">edit</span>
                                     </a>
+                                    {% if is_granted('ROLE_ADMIN') %}
                                     <a href="{{ path('empleado_delete', {'id': empleado.id}) }}" class="btn btn-danger btn-sm"
                                        title="Borrar">
                                         <span class="material-icons">delete</span>
                                     </a>
+                                    {% endif %}
                                 </td>
                             </tr>
                         {% else %}

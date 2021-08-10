@@ -52,6 +52,7 @@
                                    title="Agregar hora de salida">
                                     <span class="material-icons">watch_later</span>
                                 </a>
+                                {% if is_granted('ROLE_ADMIN') %}
                                 <a href="{{ path('asistencia_edit', {'id': asistencia.id}) }}" class="btn btn-success btn-sm"
                                    title="Editar">
                                     <span class="material-icons">edit</span>
@@ -60,6 +61,7 @@
                                    title="Borrar">
                                     <span class="material-icons">delete</span>
                                 </a>
+                                {% endif %}
                             </td>
                         </tr>
                     {% else %}

@@ -26,8 +26,17 @@ security:
             # https://symfony.com/doc/current/security/impersonating_user.html
             # switch_user: true
 
+    # Definición de roles
+    role_hierarchy:
+        ROLE_OPERADOR:    ROLE_USER
+        ROLE_ADMIN:       [ROLE_USER, ROLE_OPERADOR]
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
+    #Definición del acceso
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/usuario, roles: ROLE_ADMIN }
+        - { path: ^/empleado, roles: ROLE_ADMIN }
+        - { path: ^/asistencia, roles: ROLE_ADMIN }
+       # - { path: ^/reportes, roles: ROLE_OPERADOR }

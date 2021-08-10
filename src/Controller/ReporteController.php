@@ -167,7 +167,7 @@ class ReporteController extends AbstractController
     }
 
     /**
-     * @Route("/buscar", name="buscar_reporte", methods={"GET","POST"}, requirements={"id"="\d+"})
+     * @Route("/buscar", name="reporte_search", methods={"GET","POST"})
      * @param Request $request
      * @param AsistenciaRepository $asistenciaRepository
      * @return Response
