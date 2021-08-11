@@ -89,7 +89,6 @@ class AsistenciaController extends AbstractController
             if($id > 0){
                 $empleado = $entityManager->getRepository('App:Empleado')->find($id);
                 if ($empleado){
-                    $this->asistencia->setUserId(1);//debug
                     $this->asistencia->setEmpleado($empleado);
                     date_default_timezone_set("America/Caracas");
                     $this->asistencia->setFecha(new \DateTime());

@@ -23,11 +23,6 @@ class Asistencia
     private $empleadoId;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $userId;
-
-    /**
      * @ORM\Column(type="date")
      */
     private $fecha;
@@ -64,18 +59,6 @@ class Asistencia
     public function setEmpleadoId(int $empleadoId): self
     {
         $this->empleadoId = $empleadoId;
-
-        return $this;
-    }
-
-    public function getUserId(): ?int
-    {
-        return $this->userId;
-    }
-
-    public function setUserId(int $userId): self
-    {
-        $this->userId = $userId;
 
         return $this;
     }
