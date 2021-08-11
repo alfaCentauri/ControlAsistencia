@@ -36,7 +36,11 @@ security:
     # Note: Only the *first* access control that matches will be used
     #Definición del acceso
     access_control:
-        - { path: ^/usuario, roles: ROLE_ADMIN }
-        - { path: ^/empleado, roles: ROLE_ADMIN }
-        - { path: ^/asistencia, roles: ROLE_ADMIN }
+       # - { path: ^/usuario, roles: ROLE_ADMIN }
+        - { path: ^/usuario/eliminar/{id}, roles: ROLE_SUPER_ADMIN }
+       # - { path: ^/empleado, roles: ROLE_OPERADOR }
+       # - { path: ^/empleado/eliminar/{id}, roles: ROLE_ADMIN }
+       # - { path: ^/asistencia, roles: ROLE_OPERADOR }
+       # - { path: ^/asistencia/eliminar/{id}, roles: ROLE_ADMIN }
+       # - { path: ^/asistencia/{id}/edit, roles: ROLE_ADMIN }
        # - { path: ^/reportes, roles: ROLE_OPERADOR }
