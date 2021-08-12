@@ -27,10 +27,10 @@ class UsuarioType extends AbstractType
                     'tooltip' => 'Escriba un email de usuario',
                     'required'   => true)))
             ->add('roles', ChoiceType::class, array(
-                'choices'  => array('ROLE_SUPER_ADMIN' => 'ADMINISTRADOR',
-                    'ROLE_ADMIN' => 'JEFE',
-                    'ROLE_OPERADOR' => 'OPERADOR'),
-                'choices_as_values' => false,
+                'multiple' => true,
+                'choices'  => array( 'ADMINISTRADOR' => 'ROLE_SUPER_ADMIN' ,
+                    'JEFE' => 'ROLE_ADMIN',
+                    'OPERADOR' => 'ROLE_OPERADOR' ),
                 'attr' => array('class' => 'form-control',
                     'required' => true,
                     'placeholder'=>'Indique una opción'),
