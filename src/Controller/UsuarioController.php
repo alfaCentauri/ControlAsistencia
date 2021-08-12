@@ -28,6 +28,11 @@ class UsuarioController extends AbstractController
     private $listaUsuarios;
 
     /**
+     * @var array
+     */
+    private $listaUsuariosEncontrados;
+
+    /**
      * @Route("/{pag}", name="usuario_index", methods={"GET","POST"}, requirements={"pag"="\d+"})
      * @param Request $request
      * @param int $pag
@@ -42,14 +47,15 @@ class UsuarioController extends AbstractController
         $paginas = 1;
         if(!$palabra){
             $total = $usuarioRepository->contarTodos();
-            $this->listaUsuarios = $usuarioRepository->paginarUsuarios($inicio, 10);
+            $this->listaUsuariosEncontrados = $usuarioRepository->paginarUsuarios($inicio, 10);
         }
         else{
             $this->addFlash('info', 'Buscando: '.$palabra);
-            $this->listaUsuarios = $usuarioRepository->buscarUsuarios($palabra);
-            $total = sizeof($this->listaUsuarios);
+            $this->listaUsuariosEncontrados = $usuarioRepository->buscarUsuarios($palabra);
+            $total = sizeof($this->listaUsuariosEncontrados);
         }
         $paginas = $this->calcularPaginasTotalesAMostrar($total);
+        $this->prepararListadoParaVista();
         return $this->render('usuario/index.html.twig', [
             'usuarios' => $this->listaUsuarios,
             'paginaActual' => $pag,
@@ -80,6 +86,45 @@ class UsuarioController extends AbstractController
             $paginasTotales = ceil( $total/10 );
         }
         return $paginasTotales;
+    }
+
+    /***/
+    private function prepararListadoParaVista(): void
+    {
+        $rol = "";
+        $cantidadUsuarios = sizeof($this->listaUsuariosEncontrados);
+        for($i = 0; $i < $cantidadUsuarios; $i++){
+            $nodoActual = $this->listaUsuariosEncontrados[$i];
+            $roles = implode(" ",$nodoActual->getRoles());
+            if(str_contains($roles, "ROLE_SUPER_ADMIN")){
+                $rol = "ADMINISTRADOR";
+            }
+            elseif (str_contains($roles, "ROLE_ADMIN")){
+                $rol = "JEFE";
+            }
+            else{
+                $rol = "OPERADOR";
+            }
+            $this->addItemToList($nodoActual, $rol);
+        }
+    }
+
+    /**
+     * Agrega un item a la lista.
+     * @param Usuario $currentUser
+     * @param string $rolUser
+     */
+    private function addItemToList(Usuario $currentUser, string $rolUser): void
+    {
+        $nodo = array();
+        $nodo['id'] = $currentUser->getId();
+        $nodo['cedula'] = $currentUser->getCedula();
+        $nodo['nombre'] = $currentUser->getNombre();
+        $nodo['apellido'] = $currentUser->getApellido();
+        $nodo['email'] = $currentUser->getEmail();
+        $nodo['isActive'] = $currentUser->isActive();
+        $nodo['rol'] = $rolUser;
+        $this->listaUsuarios []= $nodo;
     }
 
     /**
