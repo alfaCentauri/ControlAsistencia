@@ -7,7 +7,7 @@
     {% include ('reporte/menu.html.twig') %}
     <div class="card">
         <div class="card-header alert-primary">
-            <h1>Listado de asistencias</h1>
+            <h1 class="text-center">Listado de asistencias</h1>
         </div>
         <div class="card-body">
             <form action="{{ path('reporte_index', {'pag': 1}) }}" method="post">

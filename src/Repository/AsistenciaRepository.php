@@ -81,7 +81,7 @@ class AsistenciaRepository extends ServiceEntityRepository
     {
         $resultado = array();
         $conn = $this->getEntityManager()->getConnection();
-        $sql = 'select a.id AS id, a.empleado_id AS empleado_id, a.user_id AS user_id, a.fecha AS fecha,
+        $sql = 'select a.id AS id, a.empleado_id AS empleado_id, a.fecha AS fecha,
             a.hora_entrada AS hora_entrada, a.hora_salida AS hora_salida,
             sum( timediff(a.hora_salida, a.hora_entrada) ) as horasTrabajadas
             from asistencia as a
@@ -100,7 +100,7 @@ class AsistenciaRepository extends ServiceEntityRepository
     public function contarTodasAsistenciasDelReporteDelMes(string $fecha): int
     {
         $conn = $this->getEntityManager()->getConnection();
-        $sql = 'select a.id AS id, a.empleado_id AS empleado_id, a.user_id AS user_id, a.fecha AS fecha,
+        $sql = 'select a.id AS id, a.empleado_id AS empleado_id, a.fecha AS fecha,
             a.hora_entrada AS hora_entrada, a.hora_salida AS hora_salida,
             sum( timediff(a.hora_salida, a.hora_entrada) ) as horasTrabajadas
             from asistencia as a
@@ -142,7 +142,7 @@ class AsistenciaRepository extends ServiceEntityRepository
     {
         try{
             $conn = $this->getEntityManager()->getConnection();
-            $sql = 'select a.id AS id, a.empleado_id AS empleado_id, a.user_id AS user_id, a.fecha AS fecha,
+            $sql = 'select a.id AS id, a.empleado_id AS empleado_id, a.fecha AS fecha,
             a.hora_entrada AS hora_entrada, a.hora_salida AS hora_salida,
             sum( timediff(a.hora_salida, a.hora_entrada) ) as horasTrabajadas
             from asistencia as a

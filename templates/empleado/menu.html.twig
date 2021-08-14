@@ -1,14 +1,34 @@
-<ul class="nav">
-    <li class="nav-item">
-        <a class="nav-link" href="{{ path('usuario_index', {'pag': 1}) }}">Usuarios</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link active btn-light" aria-current="page" href="{{ path('empleado_index', {'pag': 1}) }}">Empleados</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{{ path('asistencia_index', {'pag': 1}) }}">Asistencias</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{{ path('reporte_index', {'pag': 1}) }}">Reportes</a>
-    </li>
-</ul>
+<nav class="navbar navbar-expand-md navbar-light" style="background-color: #e3f2fd;">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+                aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link btn-outline-info" href="{{ path('usuario_index', {'pag': 1}) }}">Usuarios</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn-outline-info active" aria-current="page" href="{{ path('empleado_index', {'pag': 1}) }}">Empleados</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn-outline-info" href="{{ path('asistencia_index', {'pag': 1}) }}">Asistencias</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="btn dropdown-toggle nav-link btn-outline-info" href="#" id="navbarDropdown" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        Reportes
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="{{ path('reporte_index', {'pag': 1}) }}">Reportes por mes</a></li>
+                        <li><a class="dropdown-item" href="{{ path('reporte_search') }}">Buscar Reporte</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <span class="navbar-text align-content-end">
+                Usuario
+            </span>
+        </div>
+    </div>
+</nav>

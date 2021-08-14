@@ -24,6 +24,7 @@ class EmpleadoController extends AbstractController
     /**
      * @Route("/{pag}", name="empleado_index", methods={"GET","POST"}, requirements={"pag"="\d+"})
      * @param Request $request
+     * @param int $pag
      * @param EmpleadoRepository $empleadoRepository
      * @return Response
      */
@@ -152,23 +153,4 @@ class EmpleadoController extends AbstractController
         return $this->redirectToRoute('empleado_index', ['pag' => 1], Response::HTTP_SEE_OTHER);
     }
 
-    /**
-     * @Route("/buscar", name="buscar_empleado", methods={"POST"})
-     * @param Request $request
-     * @return Response
-     */
-    public function buscar(Request $request): Response
-    {
-        $empleado = null;
-        $entityManager = $this->getDoctrine()->getManager();
-        $cedula = $request->request->get('buscar', 0);
-        if($cedula > 0) {
-            $empleado = $entityManager->getRepository('App:Empleado')->findOneByCedula($cedula);
-            return $this->renderForm('asistencia/formBuscar.html.twig', array( 'empleado' => $empleado ));
-        }
-        else{
-            $this->addFlash('warning','La información del empleado no pudo ser encontrada.');
-        }
-        return $this->renderForm('asistencia/formBuscar.html.twig', array( 'empleado' => $empleado ));
-    }
 }
