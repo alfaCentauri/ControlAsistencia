@@ -58,16 +58,18 @@
                                     <span class="material-icons">delete</span>
                                 </a>
                                 {% endif %}
-                                {% if usuario.isActive %}
-                                    <a href="{{ path('usuario_desactivar', {'id': usuario.id}) }}"
-                                       class="btn btn-warning btn-sm" title="Desactivar">
-                                        <span class="material-icons">highlight_off</span>
-                                    </a>
-                                {% else %}
-                                    <a href="{{ path('usuario_activar', {'id': usuario.id}) }}"
-                                       class="btn btn-secondary btn-sm" title="Activar">
-                                        <span class="material-icons">check_circle_outline</span>
-                                    </a>
+                                {% if is_granted('ROLE_ADMIN') and usuario.rol != "ADMINISTRADOR"  %}
+                                    {% if usuario.isActive %}
+                                        <a href="{{ path('usuario_desactivar', {'id': usuario.id}) }}"
+                                           class="btn btn-warning btn-sm" title="Desactivar">
+                                            <span class="material-icons">highlight_off</span>
+                                        </a>
+                                    {% else %}
+                                        <a href="{{ path('usuario_activar', {'id': usuario.id}) }}"
+                                           class="btn btn-secondary btn-sm" title="Activar">
+                                            <span class="material-icons">check_circle_outline</span>
+                                        </a>
+                                    {% endif %}
                                 {% endif %}
                             </td>
                         </tr>

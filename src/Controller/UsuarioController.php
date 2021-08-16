@@ -88,24 +88,33 @@ class UsuarioController extends AbstractController
         return $paginasTotales;
     }
 
-    /***/
+    /**
+     */
     private function prepararListadoParaVista(): void
     {
-        $rol = "";
         $cantidadUsuarios = sizeof($this->listaUsuariosEncontrados);
         for($i = 0; $i < $cantidadUsuarios; $i++){
             $nodoActual = $this->listaUsuariosEncontrados[$i];
-            $roles = implode(" ",$nodoActual->getRoles());
-            $rolForView = $this->getRolesForView($roles);
+            $rolForView = $this->convertArrayRolesToString($nodoActual->getRoles());
             $this->addItemToList($nodoActual, $rolForView);
         }
+    }
+
+    /**
+     * @param array $arrayRoles
+     * @return string
+     */
+    private function convertArrayRolesToString(array $arrayRoles): string
+    {
+        $roles = implode(" ",$arrayRoles);
+        return $this->getRolesForView($roles);
     }
 
     /**
      * @param string $roles
      * @return string
      */
-    public function getRolesForView(string $roles): string
+    private function getRolesForView(string $roles): string
     {
         if(str_contains($roles, "ROLE_SUPER_ADMIN")){
             $rol = "ADMINISTRADOR";
@@ -172,8 +181,7 @@ class UsuarioController extends AbstractController
      */
     public function show(Usuario $usuario): Response
     {
-        $roles = implode(" ",$usuario->getRoles());
-        $rolForView = $this->getRolesForView($roles);
+        $rolForView = $this->convertArrayRolesToString($usuario->getRoles());
         return $this->render('usuario/show.html.twig', [
             'usuario' => $usuario,
             'rol' => $rolForView,
