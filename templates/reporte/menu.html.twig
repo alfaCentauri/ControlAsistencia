@@ -29,10 +29,10 @@
                     </ul>
                 </li>
             </ul>
-            <span class="navbar-text text-capitalize text-end">
-                Usuario
-            </span>
         </div>
+        <span class="navbar-text text-capitalize text-end">
+            {{ app.user.nombre }} {{ app.user.apellido }}
+        </span>
     </div>
 </nav>
 {% endif %}

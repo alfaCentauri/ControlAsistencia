@@ -29,9 +29,18 @@
                     </ul>
                 </li>
             </ul>
-            <span class="navbar-text align-content-end">
-                Usuario
-            </span>
+        </div>
+        <div class="" id="navbarUser">
+            <ul class="nav">
+                <li class="nav-item">
+                    <span class="navbar-text align-content-center">
+                        {{ app.user.nombre }} {{ app.user.apellido }}
+                    </span>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn-outline-info" href="{{ path('app_logout') }}">Logout</a>
+                </li>
+            </ul>
         </div>
     </div>
 </nav>

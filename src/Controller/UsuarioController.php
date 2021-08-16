@@ -96,17 +96,27 @@ class UsuarioController extends AbstractController
         for($i = 0; $i < $cantidadUsuarios; $i++){
             $nodoActual = $this->listaUsuariosEncontrados[$i];
             $roles = implode(" ",$nodoActual->getRoles());
-            if(str_contains($roles, "ROLE_SUPER_ADMIN")){
-                $rol = "ADMINISTRADOR";
-            }
-            elseif (str_contains($roles, "ROLE_ADMIN")){
-                $rol = "JEFE";
-            }
-            else{
-                $rol = "OPERADOR";
-            }
-            $this->addItemToList($nodoActual, $rol);
+            $rolForView = $this->getRolesForView($roles);
+            $this->addItemToList($nodoActual, $rolForView);
         }
+    }
+
+    /**
+     * @param string $roles
+     * @return string
+     */
+    public function getRolesForView(string $roles): string
+    {
+        if(str_contains($roles, "ROLE_SUPER_ADMIN")){
+            $rol = "ADMINISTRADOR";
+        }
+        elseif (str_contains($roles, "ROLE_ADMIN")){
+            $rol = "JEFE";
+        }
+        else{
+            $rol = "OPERADOR";
+        }
+        return $rol;
     }
 
     /**
@@ -162,8 +172,11 @@ class UsuarioController extends AbstractController
      */
     public function show(Usuario $usuario): Response
     {
+        $roles = implode(" ",$usuario->getRoles());
+        $rolForView = $this->getRolesForView($roles);
         return $this->render('usuario/show.html.twig', [
             'usuario' => $usuario,
+            'rol' => $rolForView,
         ]);
     }
 
