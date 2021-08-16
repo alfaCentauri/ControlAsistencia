@@ -14,36 +14,47 @@
                     You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
                 </div>
             {% endif %}
-            <div class="offset-1 col-sm-10 col-md-10 col-lg-10">
-                <form method="post">
-                    <div class="row">
-                        <div class="col-sm-2 col-md-2 col-lg-1">
-                            <label for="email">Login: </label>
+            <form method="post">
+                <div class="card">
+                    <div class="card-header alert-primary">
+                        <h1 class="text-center">Inicio de sesión</h1>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="offset-1 col-sm-2 col-md-2 col-lg-1">
+                                <label for="email">Login: </label>
+                            </div>
+                            <div class="col-sm-8 col-md-8 col-lg-9">
+                                <input type="email" name="email" id="email" value="{{ last_username }}" class="form-control"
+                                    placeholder="correo@dominio.com" required>
+                            </div>
                         </div>
-                        <div class="col-sm-8 col-md-8 col-lg-9">
-                            <input type="email" name="email" id="email" value="{{ last_username }}" class="form-control"
-                                placeholder="correo@dominio.com" required>
+                        <div class="row">
+                            <div class="offset-1 col-sm-2 col-md-2 col-lg-1">
+                                <label for="password">Login: </label>
+                            </div>
+                            <div class="col-sm-8 col-md-8 col-lg-9">
+                                <input type="password" name="password" id="password" class="form-control" required>
+                            </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-sm-2 col-md-2 col-lg-1">
-                            <label for="password">Login: </label>
-                        </div>
-                        <div class="col-sm-8 col-md-8 col-lg-9">
-                            <input type="password" name="password" id="password" class="form-control" required>
+                    <div class="card-footer alert-primary">
+                        <div class="row">
+                            <div class="offset-md-6 col-sm-3 col-md-2 col-lg-2">
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-lg btn-primary" type="submit" name="btnAceptar" id="btnAceptar">Aceptar</button>
+                                </div>
+                            </div>
+                            <div class="col-sm-3 col-md-2 col-lg-2">
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-lg btn-danger" type="reset" name="btnReset" id="btnReset">Limpiar</button>
+                                </div>
+                            </div>
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-sm-4 col-md-4 col-lg-4">
-                            <button class="btn btn-lg btn-primary" type="submit" name="btnAceptar" id="btnAceptar">Aceptar</button>
-                        </div>
-                        <div class="col-sm-4 col-md-4 col-lg-4">
-                            <button class="btn btn-lg btn-danger" type="reset" name="btnReset" id="btnReset">Limpiar</button>
-                        </div>
-                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-                    </div>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
     </div>
 {% endblock %}

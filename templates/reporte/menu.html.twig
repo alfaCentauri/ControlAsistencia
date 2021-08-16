@@ -1,3 +1,4 @@
+{% if is_granted('IS_AUTHENTICATED_FULLY') %}
 <nav class="navbar navbar-expand-md navbar-light" style="background-color: #e3f2fd;">
     <div class="container-fluid">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
@@ -6,9 +7,11 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarText">
             <ul class="nav">
+                {% if is_granted('ROLE_ADMIN') %}
                 <li class="nav-item">
                     <a class="nav-link btn-outline-info" href="{{ path('usuario_index', {'pag': 1}) }}">Usuarios</a>
                 </li>
+                {% endif %}
                 <li class="nav-item">
                     <a class="nav-link btn-outline-info" href="{{ path('empleado_index', {'pag': 1}) }}">Empleados</a>
                 </li>
@@ -26,9 +29,10 @@
                     </ul>
                 </li>
             </ul>
-            <span class="navbar-text align-content-end">
+            <span class="navbar-text text-capitalize text-end">
                 Usuario
             </span>
         </div>
     </div>
 </nav>
+{% endif %}
