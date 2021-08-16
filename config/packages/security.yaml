@@ -41,11 +41,11 @@ security:
     # Note: Only the *first* access control that matches will be used
     #Definición del acceso
     access_control:
-       # - { path: ^/usuario, roles: ROLE_ADMIN }
+        - { path: ^/usuario, roles: ROLE_ADMIN }
         - { path: ^/usuario/eliminar/\d+$, roles: ROLE_SUPER_ADMIN }
-       # - { path: ^/empleado, roles: ROLE_OPERADOR }
-       # - { path: ^/empleado/eliminar/, roles: ROLE_ADMIN }
-       # - { path: ^/asistencia, roles: ROLE_OPERADOR }
-       # - { path: ^/asistencia/eliminar/, roles: ROLE_ADMIN }
-       # - { path: ^/asistencia/\d+$/edit, roles: ROLE_ADMIN }
-       # - { path: ^/reportes, roles: ROLE_OPERADOR }
+        - { path: ^/empleado, roles: ROLE_OPERADOR }
+        - { path: ^/empleado/eliminar/, roles: ROLE_ADMIN }
+        - { path: ^/asistencia, roles: ROLE_OPERADOR }
+        - { path: ^/asistencia/eliminar/, roles: ROLE_ADMIN }
+        - { path: ^/asistencia/\d+$/edit, roles: ROLE_ADMIN }
+        - { path: ^/reportes, roles: ROLE_OPERADOR }

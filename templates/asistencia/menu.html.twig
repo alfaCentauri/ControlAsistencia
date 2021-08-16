@@ -30,16 +30,13 @@
                 </li>
             </ul>
         </div>
-        <div class="" id="navbarUser">
-            <ul class="nav">
-                <li class="nav-item">
-                    <span class="navbar-text align-content-center">
-                        {{ app.user.nombre }} {{ app.user.apellido }}
-                    </span>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link btn-outline-info" href="{{ path('app_logout') }}">Logout</a>
-                </li>
+        <!-- Boton de opciones de sesion -->
+        <div class="btn-group">
+            <button type="button" class="btn btn-outline-info dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                {{ app.user.nombre }} {{ app.user.apellido }}
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{{ path('app_logout') }}">Logout</a></li>
             </ul>
         </div>
     </div>

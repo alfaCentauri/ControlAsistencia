@@ -58,7 +58,7 @@
                                     <span class="material-icons">delete</span>
                                 </a>
                                 {% endif %}
-                                {% if is_granted('ROLE_ADMIN') and usuario.rol != "ADMINISTRADOR"  %}
+                                {% if (is_granted('ROLE_ADMIN') and usuario.rol != "ADMINISTRADOR") or is_granted('ROLE_SUPER_ADMIN') %}
                                     {% if usuario.isActive %}
                                         <a href="{{ path('usuario_desactivar', {'id': usuario.id}) }}"
                                            class="btn btn-warning btn-sm" title="Desactivar">
