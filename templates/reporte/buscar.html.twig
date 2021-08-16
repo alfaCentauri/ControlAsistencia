@@ -1,0 +1,129 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Control de Asistencias!{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    {% include ('reporte/menu.html.twig') %}
+    <div class="card">
+        <div class="card-header alert-primary">
+            <h1>Reporte de Horas trabajadas</h1>
+        </div>
+        <form action="{{ path('reporte_search') }}?operation=do" method="post" name="formulario" id="formulario">
+            <div class="card-body">
+                <div class="row mb-1">
+                    <div class="col-sx-6 col-sm-6 offset-md-1 col-md-2 col-lg-2">
+                        <label class="form-label">Empleado: </label>
+                    </div>
+                    <div class="col-sx-6 col-sm-6 col-md-6 col-lg-6">
+                        <select class="js-example-basic-single" id="selectEmpleados" name="selectEmpleados">
+                            {% for empleado in listaEmpleados %}
+                                <option value="{{ empleado.id }}">{{ empleado.nombre }} {{ empleado.apellido }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="row mb-1">
+                    <div class="input-group mb-3">
+                        <div class="offset-1 col-sm-1 col-md-1 col-lg-1">
+                            <span class="input-group-text">Mes:</span>
+                        </div>
+                        <div class="col-sm-3 col-md-1 col-lg-1">
+                            <select id="mes" name="mes" class="form-control" title="Indica el mes">
+                                {% for i in 1..12 %}
+                                    {% if i < 10 %}
+                                        <option value="0{{ i }}"
+                                                {% if (mes is defined) and (mes == i) %}
+                                        selected
+                                                {% endif %}>0{{ i }}</option>
+                                    {% else %}
+                                        <option value="{{ i }}"
+                                                {% if (mes is defined) and (mes == i) %}
+                                        selected
+                                                {% endif %}>{{ i }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-sm-3 col-md-1 col-lg-1">
+                            <span class="input-group-text">Año:</span>
+                        </div>
+                        <div class="col-sm-3 col-md-1 col-lg-1">
+                            <select id="anio" name="anio" class="form-control" title="Indica el año">
+                                {% for i in 2021..2025 %}
+                                    {% if anio is defined and (i == anio) %}
+                                        <option value="{{ i }}" selected>{{ i }}</option>
+                                    {% else %}
+                                        <option value="{{ i }}">{{ i }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-sm-1 col-md-3 col-lg-2">
+                            <button type="submit" class="btn btn-info" name="btnGenerar" id="btnGenerar">
+                                Generar Reporte
+                            </button>
+                        </div>
+                        <div class="col-sm-1 col-md-3 col-lg-2">
+                        </div>
+                    </div>
+                </div>
+                {% if reporte is defined and reporte != null %}
+                <div class="card">
+                    <div class="card-header alert-info">
+                        <h2>Información de la asistencia del empleado</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-1">
+                            <div class="offset-2 col-sm-2 col-md-2 col-lg-2">
+                                Cedula:
+                            </div>
+                            <div class="col-sm-2 col-md-2 col-lg-2">
+                                {{ reporte.cedula }}
+                            </div>
+                        </div>
+                        <div class="row mb-1">
+                            <div class="offset-2 col-sm-2 col-md-2 col-lg-2">
+                                Nombre:
+                            </div>
+                            <div class="col-sm-2 col-md-2 col-lg-2">
+                                {{ reporte.nombre }}
+                            </div>
+                            <div class="col-sm-2 col-md-2 col-lg-2">
+                                Apellido:
+                            </div>
+                            <div class="col-sm-2 col-md-2 col-lg-2">
+                                {{ reporte.apellido }}
+                            </div>
+                        </div>
+                        <div class="row mb-1">
+                            <div class="offset-2 col-sm-2 col-md-2 col-lg-2">
+                                Horas Trabajadas:
+                            </div>
+                            <div class="col-sm-2 col-md-2 col-lg-2">
+                                {{ reporte.horasTrabajadas }}
+                            </div>
+                            <div class="col-sm-2 col-md-2 col-lg-2">
+
+                            </div>
+                            <div class="col-sm-2 col-md-2 col-lg-2">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            <div class="card-footer alert-primary">
+                <div class="row">
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{{ path('reporte_index') }}" class="btn btn-secondary" name="btnRegresar" id="btnRegresar">
+                            Regresar
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

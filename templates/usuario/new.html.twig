@@ -1,15 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Nuevo Empleado{% endblock %}
+{% block title %}Nuevo Usuario{% endblock %}
 
 {% block body %}
 <div class="container-fluid">
-    {% include ('empleado/menu.html.twig') %}
+    {% include ('usuario/menu.html.twig') %}
     <div class="card">
         <div class="card-header alert-primary">
-            <h1>Nuevo Empleado</h1>
+            <h1>Nuevo Usuario</h1>
         </div>
-        {{ include('empleado/_form.html.twig') }}
+        {{ include('usuario/_form.html.twig') }}
 
     </div>
 </div>

@@ -1,16 +1,24 @@
 security:
     # https://symfony.com/doc/current/security/experimental_authenticators.html
     enable_authenticator_manager: true
+    password_hashers:
+        App\Entity\Usuario:
+            algorithm: auto
+
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
-        users_in_memory: { memory: null }
+        # used to reload user from session & other features (e.g. switch_user)
+        app_user_provider:
+            entity:
+                class: App\Entity\Usuario
+                property: email
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
             lazy: true
-            provider: users_in_memory
+            provider: app_user_provider
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
@@ -18,8 +26,21 @@ security:
             # https://symfony.com/doc/current/security/impersonating_user.html
             # switch_user: true
 
+    # Definición de roles
+    role_hierarchy:
+        ROLE_OPERADOR:    ROLE_USER
+        ROLE_ADMIN:       [ROLE_USER, ROLE_OPERADOR]
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
+    #Definición del acceso
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+       # - { path: ^/usuario, roles: ROLE_ADMIN }
+        - { path: ^/usuario/eliminar/\d+$, roles: ROLE_SUPER_ADMIN }
+       # - { path: ^/empleado, roles: ROLE_OPERADOR }
+       # - { path: ^/empleado/eliminar/, roles: ROLE_ADMIN }
+       # - { path: ^/asistencia, roles: ROLE_OPERADOR }
+       # - { path: ^/asistencia/eliminar/, roles: ROLE_ADMIN }
+       # - { path: ^/asistencia/\d+$/edit, roles: ROLE_ADMIN }
+       # - { path: ^/reportes, roles: ROLE_OPERADOR }

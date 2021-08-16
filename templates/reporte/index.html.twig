@@ -1,0 +1,93 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Control de Asistencias!{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    {% include ('reporte/menu.html.twig') %}
+    <div class="card">
+        <div class="card-header alert-primary">
+            <h1 class="text-center">Listado de asistencias</h1>
+        </div>
+        <div class="card-body">
+            <form action="{{ path('reporte_index', {'pag': 1}) }}" method="post">
+                <div class="row">
+                    <div class="input-group mb-3">
+                        <div class="col-sm-3 offset-md-3 offset-lg-3 col-md-1 col-lg-1">
+                            <span class="input-group-text">Mes:</span>
+                        </div>
+                        <div class="col-sm-3 col-md-1 col-lg-1">
+                            <select id="mes" name="mes" class="form-control" title="Indica el mes">
+                                {% for i in 1..12 %}
+                                    {% if i < 10 %}
+                                        <option value="0{{ i }}"
+                                            {% if (mes is defined) and (mes == i) %}
+                                                selected
+                                            {% endif %}>0{{ i }}</option>
+                                    {% else %}
+                                        <option value="{{ i }}"
+                                            {% if (mes is defined) and (mes == i) %}
+                                                selected
+                                            {% endif %}>{{ i }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-sm-3 col-md-1 col-lg-1">
+                            <span class="input-group-text">Año:</span>
+                        </div>
+                        <div class="col-sm-3 col-md-1 col-lg-1">
+                            <select id="anio" name="anio" class="form-control" title="Indica el año">
+                                {% for i in 2021..2025 %}
+                                    {% if anio is defined and (i == anio) %}
+                                        <option value="{{ i }}" selected>{{ i }}</option>
+                                    {% else %}
+                                        <option value="{{ i }}">{{ i }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-sm-12 col-md-4 col-lg-2">
+                            <button type="submit" class="btn btn-info">
+                                Generar Reporte
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            {% include('messages/messages.html.twig') %}
+            <div class="row">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Cedula</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Horas Trabajadas</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for i, asistencia in asistencias %}
+                        <tr>
+                            <td>{{ paginaActual>1?((paginaActual-1)*10)+i+1 : i+1}}</td>
+                            <td>{{ asistencia.cedula }}</td>
+                            <td>{{ asistencia.nombre|upper }}</td>
+                            <td>{{ asistencia.apellido|upper }}</td>
+                            {% if asistencia.horasTrabajadas is defined %}
+                            <td>{{ asistencia.horasTrabajadas }}</td>
+                            {% endif %}
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="6" class="text-center">No se encontraron datos</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% include('reporte/paginador.html.twig') %}
+        </div>
+    </div>
+</div>
+{% endblock %}

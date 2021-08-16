@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hola mundo!{% endblock %}
+{% block title %}Sistema de Control de Asistencia{% endblock %}
 
 {% block body %}
 <style>
@@ -9,12 +9,15 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/var/www/html/ControlAsistencia/src/Controller/DefaultController.php'|file_link(0) }}">src/Controller/DefaultController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/var/www/html/ControlAsistencia/templates/default/index.html.twig'|file_link(0) }}">templates/default/index.html.twig</a></code></li>
-    </ul>
+    <h1>Bienvenido al sistema de control de asistencia ✅</h1>
+    <p>Para continuar deberá ingresar con su usuario y clave. Si no posee una cuenta de usuario comuniquese con el
+        administrador del sistema.</p>
+    <div class="container">
+        <div class="row">
+            <div class="offset-2 col-sm-4 col-md-2">
+                Login
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

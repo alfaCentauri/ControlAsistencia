@@ -1,0 +1,67 @@
+<form action="{{ path('asistencia_new') }}?operation=do" method="post" name="formulario" id="formulario">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sx-12 col-sm-12 offset-md-8 col-md-2 col-lg-2">
+                <div class="mb-1">
+                    Fecha actual: {{ "now"|date("d/m/Y") }}
+                </div>
+            </div>
+        </div>
+        {% include('messages/messages.html.twig') %}
+        <div class="row mb-1">
+            <div class="col-sx-6 col-sm-6 offset-md-1 col-md-2 col-lg-2">
+                <label class="form-label">Empleado: </label>
+            </div>
+            <div class="col-sx-6 col-sm-6 col-md-6 col-lg-6">
+                <select class="js-example-basic-single" id="selectEmpleados" name="selectEmpleados">
+                    {% for empleado in listaEmpleados %}
+                    <option value="{{ empleado.id }}">{{ empleado.nombre }} {{ empleado.apellido }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="row mb-1">
+            <div class="col-sx-5 col-sm-2 offset-md-1 col-md-2 col-lg-2">
+                <label class="form-label">Hora de entrada: </label>
+            </div>
+            <div class="col-sx-3 col-sm-3 col-md-1 col-lg-2">
+                <div class="input-group mb-3">
+                    <select  id="hora" name="hora" class="form-control" title="Indica la hora de entrada">
+                        {% for i in 0..23 %}
+                            {% if i < 10 %}
+                                <option value="0{{ i }}">0{{ i }}</option>
+                            {% else %}
+                                <option value="{{ i }}">{{ i }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                    <span class="input-group-text">:</span>
+                    <select  id="minutos" name="minutos" class="form-control" title="Indique los minutos de la entrada">
+                        {% for i in 0..59 %}
+                            {% if i < 10 %}
+                                <option value="0{{ i }}">0{{ i }}</option>
+                            {% else %}
+                                <option value="{{ i }}">{{ i }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="col-sx-6 col-sm-12 col-md-5 col-lg-3">
+                <small>El horario de oficina comienza a las 08:00</small>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer alert-primary">
+        <div class="row">
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button type="submit" class="btn btn-primary" name="btnGuardar" id="btnGuardar" >
+                    Guardar
+                </button>
+                <a href="{{ path('asistencia_index', {'pag': 1}) }}" class="btn btn-secondary" name="btnRegresar" id="btnRegresar">
+                    <i class="bi bi-back"></i>Regresar
+                </a>
+            </div>
+        </div>
+    </div>
+</form>

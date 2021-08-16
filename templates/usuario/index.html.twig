@@ -1,0 +1,86 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Listado de Usuarios{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    {% include ('usuario/menu.html.twig') %}
+    <div class="card">
+        <div class="card-header alert-primary">
+            <h1 class="text-center">Listado de Usuarios</h1>
+        </div>
+        <div class="card-body">
+            {% include('usuario/buscador.html.twig') %}
+            <div class="row">
+                <div class="offset-sm-6 offset-md-9 offset-lg-10 col-sm-6 col-md-3 col-lg-2">
+                    <a href="{{ path('usuario_new') }}">
+                        <button type="button" class="btn btn-success">
+                            <i class="bi bi-plus-circle"></i>Agregar Usuario
+                        </button>
+                    </a>
+                </div>
+            </div>
+            {% include('messages/messages.html.twig') %}
+            <div class="row">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Cedulas</th>
+                        <th>Nombres</th>
+                        <th>Apellidos</th>
+                        <th>Correo electr&oacute;nico</th>
+                        <th>Roles</th>
+                        <th>Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for i, usuario in usuarios %}
+                        <tr>
+                            <td>{{ paginaActual>1?((paginaActual-1)*10)+i+1 : i+1}}</td>
+                            <td>{{ usuario.cedula }}</td>
+                            <td>{{ usuario.nombre }}</td>
+                            <td>{{ usuario.apellido }}</td>
+                            <td>{{ usuario.email }}</td>
+                            <td>{{ usuario.rol }}</td>
+                            <td>
+                                <a href="{{ path('usuario_show', {'id': usuario.id}) }}" class="btn btn-info btn-sm"
+                                   title="Ver">
+                                    <span class="material-icons">description</span>
+                                </a>
+                                <a href="{{ path('usuario_edit', {'id': usuario.id}) }}" class="btn btn-success btn-sm"
+                                   title="Editar">
+                                    <span class="material-icons">edit</span>
+                                </a>
+                                {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                <a href="{{ path('usuario_delete', {'id': usuario.id}) }}" class="btn btn-danger btn-sm"
+                                   title="Borrar">
+                                    <span class="material-icons">delete</span>
+                                </a>
+                                {% endif %}
+                                {% if usuario.isActive %}
+                                    <a href="{{ path('usuario_desactivar', {'id': usuario.id}) }}"
+                                       class="btn btn-warning btn-sm" title="Desactivar">
+                                        <span class="material-icons">highlight_off</span>
+                                    </a>
+                                {% else %}
+                                    <a href="{{ path('usuario_activar', {'id': usuario.id}) }}"
+                                       class="btn btn-secondary btn-sm" title="Activar">
+                                        <span class="material-icons">check_circle_outline</span>
+                                    </a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="6" class="text-center">No se encontraron datos</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% include('usuario/paginador.html.twig') %}
+        </div>
+    </div>
+</div>
+{% endblock %}

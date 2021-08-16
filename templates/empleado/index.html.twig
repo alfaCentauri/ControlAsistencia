@@ -3,37 +3,69 @@
 {% block title %}Listado de Empleados{% endblock %}
 
 {% block body %}
-    <h1>Lista de Empleados</h1>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Cedula</th>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for empleado in empleados %}
-            <tr>
-                <td>{{ empleado.id }}</td>
-                <td>{{ empleado.cedula }}</td>
-                <td>{{ empleado.nombre }}</td>
-                <td>{{ empleado.apellido }}</td>
-                <td>
-                    <a href="{{ path('empleado_show', {'id': empleado.id}) }}">Ver</a>
-                    <a href="{{ path('empleado_edit', {'id': empleado.id}) }}">Editar</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="5">no hay datos disponibles</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('empleado_new') }}">Nuevo Empleado</a>
+    <div class="container-fluid">
+        {% include ('empleado/menu.html.twig') %}
+        <div class="card">
+            <div class="card-header alert-primary">
+                <h1 class="text-center">Listado de empleados</h1>
+            </div>
+            <div class="card-body">
+                {% include('empleado/buscador.html.twig') %}
+                <div class="row">
+                    <div class="offset-sm-6 offset-md-9 offset-lg-10 col-sm-6 col-md-3 col-lg-2">
+                        <a href="{{ path('empleado_new') }}">
+                            <button type="button" class="btn btn-success">
+                                <i class="bi bi-plus-circle"></i>Agregar empleado
+                            </button>
+                        </a>
+                    </div>
+                </div>
+                {% include('messages/messages.html.twig') %}
+                <div class="row">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Cedula</th>
+                                <th>Nombre</th>
+                                <th>Apellido</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for i, empleado in empleados %}
+                            <tr>
+                                <td>{{ paginaActual>1?((paginaActual-1)*10)+i+1 : i+1}}</td>
+                                <td>{{ empleado.cedula }}</td>
+                                <td>{{ empleado.nombre }}</td>
+                                <td>{{ empleado.apellido }}</td>
+                                <td>
+                                    <a href="{{ path('empleado_show', {'id': empleado.id}) }}" class="btn btn-info btn-sm"
+                                       title="Ver">
+                                        <span class="material-icons">description</span>
+                                    </a>
+                                    <a href="{{ path('empleado_edit', {'id': empleado.id}) }}" class="btn btn-success btn-sm"
+                                       title="Editar">
+                                        <span class="material-icons">edit</span>
+                                    </a>
+                                    {% if is_granted('ROLE_ADMIN') %}
+                                    <a href="{{ path('empleado_delete', {'id': empleado.id}) }}" class="btn btn-danger btn-sm"
+                                       title="Borrar">
+                                        <span class="material-icons">delete</span>
+                                    </a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="5" class="text-center">No se encontraron datos</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% include('empleado/paginador.html.twig') %}
+            </div>
+        </div>
+    </div>
 {% endblock %}

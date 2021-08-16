@@ -1,13 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Empleado{% endblock %}
+{% block title %}Modificar Empleado{% endblock %}
 
 {% block body %}
-    <h1>Edit Empleado</h1>
-
-    {{ include('empleado/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('empleado_index') }}">back to list</a>
-
-    {{ include('empleado/_delete_form.html.twig') }}
+<div class="container-fluid">
+    {% include ('empleado/menu.html.twig') %}
+    <div class="card">
+        <div class="card-header alert-primary">
+            <h1>Modificar Empleado</h1>
+        </div>
+        {{ include('empleado/_form.html.twig', {'button_label': 'Actualizar'}) }}
+</div>
 {% endblock %}

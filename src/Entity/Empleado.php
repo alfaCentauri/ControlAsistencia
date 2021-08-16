@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\EmpleadoRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=EmpleadoRepository::class)
@@ -18,19 +20,51 @@ class Empleado
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @var integer
+     * @ORM\Column(type="bigint")
      */
     private $cedula;
 
     /**
+     * @var string Nombre del empleado.
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(
+     *     min = 2,
+     *     max = 100,
+     *     minMessage = "El nombre debe ser mínimo {{ limit }} caracteres de largo",
+     *     maxMessage = "El nombre no debe tener más de {{ limit }} caracteres")
      * @ORM\Column(type="string", length=100)
      */
     private $nombre;
 
     /**
+     * @var string Apellido del empleado.
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(
+     *     min = 2,
+     *     max = 100,
+     *     minMessage = "El apellido debe ser mínimo {{ limit }} caracteres de largo",
+     *     maxMessage = "El apellido no debe tener más de {{ limit }} caracteres")
      * @ORM\Column(type="string", length=100)
      */
     private $apellido;
+
+    /**
+     * @var Asistencia
+     * @ORM\OneToMany(targetEntity="Asistencia", mappedBy="empleado")
+     */
+    private $asistencias;
+
+    /**
+     * Empleado constructor.
+     */
+    public function __construct()
+    {
+        $this->asistencias = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {
@@ -72,4 +106,21 @@ class Empleado
 
         return $this;
     }
+
+    /**
+     * @return Asistencia
+     */
+    public function getAsistencias(): Asistencia
+    {
+        return $this->asistencias;
+    }
+
+    /**
+     * @param Asistencia $asistencias
+     */
+    public function setAsistencias(Asistencia $asistencias): void
+    {
+        $this->asistencias = $asistencias;
+    }
+
 }

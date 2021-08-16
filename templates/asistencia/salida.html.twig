@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container-fluid">
+    {% include ('asistencia/menu.html.twig') %}
+    <div class="card">
+        <div class="card-header alert-primary">
+            <h1>Agregar la hora de salida</h1>
+        </div>
+        {% include('asistencia/formSalida.html.twig') %}
+    </div>
+{% endblock %}

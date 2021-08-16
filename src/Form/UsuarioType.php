@@ -2,14 +2,17 @@
 
 namespace App\Form;
 
-use App\Entity\Empleado;
+use App\Entity\Usuario;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 
-class EmpleadoType extends AbstractType
+class UsuarioType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -18,6 +21,25 @@ class EmpleadoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('email', EmailType::class, array('label'=> 'Login: ',
+                'attr' => array('class' => 'form-control',
+                    'placeholder' => 'Indique un email',
+                    'tooltip' => 'Escriba un email de usuario',
+                    'required'   => true)))
+            ->add('roles', ChoiceType::class, array(
+                'multiple' => true,
+                'choices'  => array( 'ADMINISTRADOR' => 'ROLE_SUPER_ADMIN' ,
+                    'JEFE' => 'ROLE_ADMIN',
+                    'OPERADOR' => 'ROLE_OPERADOR' ),
+                'attr' => array('class' => 'form-control',
+                    'required' => true,
+                    'placeholder'=>'Indique una opción'),
+            ))
+            ->add('password', PasswordType::class, array('label'=> 'Clave: ',
+                'attr' => array('class' => 'form-control',
+                    'placeholder' => 'Indique una clave',
+                    'tooltip' => 'Escriba una clave',
+                    'required'   => true)))
             ->add('cedula', NumberType::class, array('label'=> 'Cédula: ',
                 'attr' => array('class' => 'form-control',
                     'placeholder' => '0000000',
@@ -44,7 +66,7 @@ class EmpleadoType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Empleado::class,
+            'data_class' => Usuario::class,
         ]);
     }
 }

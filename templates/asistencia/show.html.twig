@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Asistencia del empleado{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    {% include ('asistencia/menu.html.twig') %}
+    <div class="card">
+        <div class="card-header alert-info">
+            <h1>Detalles de la asistencia del empleado</h1>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="offset-md-1 col-sm-6 col-md-1">
+                    Cedula:
+                </div>
+                <div class="col-sm-6 col-md-2">
+                    {{ asistencia.empleado.cedula }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="offset-md-1 col-sm-6 col-md-1">
+                    Nombre:
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    {{ asistencia.empleado.nombre }}
+                </div>
+                <div class="col-sm-6 col-md-1">
+                    Apellido:
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    {{ asistencia.empleado.apellido }}
+                </div>
+            </div>
+            <div class="row mt-1">
+                <div class="offset-md-1 col-sm-6 col-md-2">
+                    Fecha de la asistencia:
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    {{ asistencia.fecha|date("d/m/Y") }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="offset-md-1 col-sm-6 col-md-2">
+                    Hora de Entrada:
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    {{ asistencia.horaEntrada|date("h:i") }}
+                </div>
+                <div class="col-sm-6 col-md-2">
+                    Hora de salida:
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    {{ asistencia.horaSalida|date("h:i") }}
+                </div>
+            </div>
+        </div>
+        <div class="card-footer alert-info">
+            <div class="row">
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <a href="{{ path('asistencia_index', {'pag': 1}) }}" class="btn btn-secondary" name="btnRegresar" id="btnRegresar">
+                        Regresar
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -8,27 +8,77 @@ use App\Repository\EmpleadoRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route('/empleado')
- **/
+ * @Route("/empleado")
+ */
 class EmpleadoController extends AbstractController
 {
     /**
-     * @Route('/', name: 'empleado_index', methods: ['GET'])
+     * @var array
+     */
+    private $listaEmpleados;
+
+    /**
+     * @Route("/{pag}", name="empleado_index", methods={"GET","POST"}, requirements={"pag"="\d+"})
+     * @param Request $request
+     * @param int $pag
      * @param EmpleadoRepository $empleadoRepository
      * @return Response
      */
-    public function index(EmpleadoRepository $empleadoRepository): Response
+    public function index(Request $request, int $pag = 1, EmpleadoRepository $empleadoRepository): Response
     {
+        $this->clearSesion($request->getSession());
+        $this->listaEmpleados = null;
+        $palabra = $request->request->get('buscar', null);
+        $inicio = ($pag-1)*10;
+        $paginas = 1;
+        if(!$palabra){
+            $total = $empleadoRepository->contarTodos();
+            $this->listaEmpleados = $empleadoRepository->paginarEmpleados($inicio, 10);
+        }
+        else {
+            $this->addFlash('info', 'Buscando: '.$palabra);
+            $this->listaEmpleados = $empleadoRepository->buscar($palabra, $inicio, 10);
+            $total = $empleadoRepository->contarEmpleadosBuscados($palabra);
+        }
+        $paginas = $this->calcularPaginasTotalesAMostrar($total);
         return $this->render('empleado/index.html.twig', [
-            'empleados' => $empleadoRepository->findAll(),
+            'empleados' => $this->listaEmpleados,
+            'paginaActual' => $pag,
+            'total' => $paginas,
         ]);
     }
 
     /**
-     * @Route('/new', name: 'empleado_new', methods: ['GET', 'POST'])
+     * Limpia la sesion.
+     * @param SessionInterface $sesion The session
+     */
+    private function clearSesion(SessionInterface $sesion): void
+    {
+        $sesion->remove('fecha');
+        $sesion->remove('paginasTotales');
+        $sesion->remove('mes');
+        $sesion->remove('anio');
+    }
+
+    /**
+     * @param int $total
+     * @return int Regresa la cantidad de páginas a mostrar en el paginador.
+     */
+    private function calcularPaginasTotalesAMostrar(int $total): int
+    {
+        $paginasTotales = 0;
+        if($total > 10){
+            $paginasTotales = ceil( $total/10 );
+        }
+        return $paginasTotales;
+    }
+
+    /**
+     * @Route("/new", name="empleado_new", methods={"GET","POST"})
      * @param Request $request
      * @return Response
      */
@@ -42,8 +92,8 @@ class EmpleadoController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($empleado);
             $entityManager->flush();
-
-            return $this->redirectToRoute('empleado_index', [], Response::HTTP_SEE_OTHER);
+            $this->addFlash('success','El empleado fue agregado exitosamente.!');
+            return $this->redirectToRoute('empleado_index', ['pag' => 1], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('empleado/new.html.twig', [
@@ -53,9 +103,7 @@ class EmpleadoController extends AbstractController
     }
 
     /**
-     * @Route('/{id}', name: 'empleado_show', methods: ['GET'])
-     * @param Empleado $empleado
-     * @return Response
+     * @Route("/{id}/show", name="empleado_show", methods={"GET"})
      */
     public function show(Empleado $empleado): Response
     {
@@ -65,10 +113,7 @@ class EmpleadoController extends AbstractController
     }
 
     /**
-     * @Route('/{id}/edit', name: 'empleado_edit', methods: ['GET', 'POST'])
-     * @param Request $request
-     * @param Empleado $empleado
-     * @return Response
+     * @Route("/{id}/edit", name="empleado_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Empleado $empleado): Response
     {
@@ -77,8 +122,8 @@ class EmpleadoController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('empleado_index', [], Response::HTTP_SEE_OTHER);
+            $this->addFlash('success','El empleado fue editado exitosamente.!');
+            return $this->redirectToRoute('empleado_index', ['pag' => 1], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('empleado/edit.html.twig', [
@@ -88,19 +133,24 @@ class EmpleadoController extends AbstractController
     }
 
     /**
-     * @Route('/{id}', name: 'empleado_delete', methods: ['POST'])
+     * @Route("/eliminar/{id}", name="empleado_delete", methods={"GET","POST"})
      * @param Request $request
-     * @param Empleado $empleado
+     * @param int $id
      * @return Response
      */
-    public function delete(Request $request, Empleado $empleado): Response
+    public function delete(Request $request, int $id): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$empleado->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
+        $entityManager = $this->getDoctrine()->getManager();
+        $empleado = $entityManager->getRepository('App:Empleado')->find($id);
+        if($empleado) {
             $entityManager->remove($empleado);
             $entityManager->flush();
+            $this->addFlash('success','El empleado fue borrado con exito. ');
         }
-
-        return $this->redirectToRoute('empleado_index', [], Response::HTTP_SEE_OTHER);
+        else{
+            $this->addFlash('danger','El empleado no pudo ser borrado. ');
+        }
+        return $this->redirectToRoute('empleado_index', ['pag' => 1], Response::HTTP_SEE_OTHER);
     }
+
 }
