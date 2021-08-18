@@ -6,20 +6,37 @@
     <link href="{{ asset('/ControlAsistencia/public/css/generales.css') }}" type="text/css" rel="stylesheet" />
 {% endblock %}
 {% block body %}
-
-<div class="example-wrapper">
-    <img src="{{ asset('/ControlAsistencia/public/img/logo.png') }}" class="img-fluid" alt="Logo">
-    <h1>Bienvenido al sistema de control de asistencia ✅</h1>
-    <p>Para continuar deberá ingresar con su usuario y clave. Si no posee una cuenta de usuario comuniquese con el
-        administrador del sistema.</p>
-    <div class="container">
-        <div class="row">
-            <div class="offset-3 col-sm-4 col-md-4 col-lg-4">
-                <div class="d-grid gap-2">
-                    <a href="{{ path('app_login') }}" class="btn btn-lg btn-primary">Inicio de sesión</a>
-                </div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="offset-4 col-sm-4 col-md-4 col-lg-4">
+            <img src="{{ asset('/ControlAsistencia/public/img/logo.png') }}" class="img-fluid" alt="Logo">
+        </div>
+    </div>
+    <div class="row">
+        <div class="offset-1 col-sm-10 col-md-10 col-lg-10">
+            <h1 class="text-center">Bienvenido al sistema de control de asistencia ✅</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="offset-1 col-sm-10 col-md-10 col-lg-10">
+            <p class="alert-light">Para continuar deberá ingresar con su usuario y clave. Si no posee una cuenta de usuario comuniquese con el
+                administrador del sistema.</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="offset-4 col-sm-4 col-md-4 col-lg-4">
+            <div class="d-grid gap-2">
+                <a href="{{ path('app_login') }}" class="btn btn-lg btn-primary">Inicio de sesión</a>
             </div>
         </div>
+    </div>
+</div>
+<div class="example-wrapper">
+
+
+
+    <div class="container">
+
     </div>
 </div>
 {% endblock %}
