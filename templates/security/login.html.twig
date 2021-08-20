@@ -21,19 +21,24 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="offset-1 col-sm-2 col-md-2 col-lg-1">
+                            <div class="offset-4 col-sm-4 col-md-4 col-lg-4">
+                                <img src="{{ asset('/ControlAsistencia/public/img/logo.png') }}" class="img-fluid" alt="Logo">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="offset-2 col-sm-2 col-md-2 col-lg-1">
                                 <label for="email">Login: </label>
                             </div>
-                            <div class="col-sm-8 col-md-8 col-lg-9">
+                            <div class="col-sm-6 col-md-6 col-lg-7">
                                 <input type="email" name="email" id="email" value="{{ last_username }}" class="form-control"
                                     placeholder="correo@dominio.com" required>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="offset-1 col-sm-2 col-md-2 col-lg-1">
+                            <div class="offset-2 col-sm-2 col-md-2 col-lg-1">
                                 <label for="password">Login: </label>
                             </div>
-                            <div class="col-sm-8 col-md-8 col-lg-9">
+                            <div class="col-sm-6 col-md-6 col-lg-7">
                                 <input type="password" name="password" id="password" class="form-control" required>
                             </div>
                         </div>
